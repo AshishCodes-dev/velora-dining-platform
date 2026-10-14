@@ -1,0 +1,250 @@
+import React, { useState, useEffect } from 'react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { Shield } from 'lucide-react';
+import { useRestaurant } from '../context/RestaurantContext';
+import { apiRequest } from '../services/api';
+import type { Order, Reservation, Review } from '../types/restaurant';
+import { AuthSection } from '../components/auth/AuthSection';
+import { UserProfileView, type ProfileTab } from '../components/profile/UserProfileView';
+
+export const AuthAndProfilePage: React.FC = () => {
+  const {
+    user,
+    foods,
+    favorites,
+    login,
+    register,
+    demoLogin,
+    logout,
+    refreshUser,
+    saveAddress,
+    deleteAddress,
+    showToast,
+  } = useRestaurant();
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+
+  const isDemoMode = import.meta.env.VITE_DEMO_MODE === 'true';
+  const [showDemoAccounts, setShowDemoAccounts] = useState(false);
+
+  // Profile Active Tab
+  const initialTab = (searchParams.get('tab') as ProfileTab) || 'overview';
+  const [activeTab, setActiveTab] = useState<ProfileTab>(initialTab);
+
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [reservations, setReservations] = useState<Reservation[]>([]);
+  const [myReviews, setMyReviews] = useState<Review[]>([]);
+
+  useEffect(() => {
+    const t = searchParams.get('tab');
+    if (t) setActiveTab(t as ProfileTab);
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (user) {
+      apiRequest<{ orders: Order[] }>('/api/orders')
+        .then((r) => setOrders(r.orders))
+        .catch(() => {});
+      apiRequest<{ reservations: Reservation[] }>('/api/reservations')
+        .then((r) => setReservations(r.reservations))
+        .catch(() => {});
+      apiRequest<{ reviews: Review[] }>('/api/reviews/my')
+        .then((r) => setMyReviews(r.reviews))
+        .catch(() => {});
+    }
+  }, [user]);
+
+  const selectTab = (tab: ProfileTab) => {
+    setActiveTab(tab);
+    setSearchParams({ tab });
+  };
+
+  const handleLogin = async (emailInput: string, passInput: string) => {
+    try {
+      await login(emailInput, passInput);
+      showToast('✓ Welcome back to VELORA', 'success');
+      navigate('/profile');
+    } catch (err) {
+      showToast(err instanceof Error ? `✕ ${err.message}` : '✕ Invalid credentials', 'error');
+    }
+  };
+
+  const handleRegister = async (data: { name: string; email: string; phone: string; password: string }) => {
+    try {
+      await register(data);
+      showToast('✓ Welcome! Your profile is ready', 'success');
+      navigate('/profile');
+    } catch (err) {
+      showToast(err instanceof Error ? `✕ ${err.message}` : '✕ Registration failed', 'error');
+    }
+  };
+
+  const handleRequestForgot = async (emailInput: string): Promise<string | null> => {
+    try {
+      const res = await apiRequest<{ message: string; resetToken?: string }>(
+        '/api/auth/forgot-password',
+        {
+          method: 'POST',
+          body: JSON.stringify({ email: emailInput }),
+        }
+      );
+      showToast(res.message, 'info');
+      return res.resetToken || null;
+    } catch (err) {
+      showToast(err instanceof Error ? `✕ ${err.message}` : '✕ Error requesting reset', 'error');
+      return null;
+    }
+  };
+
+  const handleResetPassword = async (token: string, newPass: string) => {
+    try {
+      await apiRequest('/api/auth/reset-password', {
+        method: 'POST',
+        body: JSON.stringify({ token, newPassword: newPass }),
+      });
+      showToast('✓ Password reset successfully! Please sign in.', 'success');
+    } catch (err) {
+      showToast(err instanceof Error ? `✕ ${err.message}` : '✕ Reset failed', 'error');
+    }
+  };
+
+  const handleUpdateProfile = async (name: string, phone: string) => {
+    try {
+      await apiRequest('/api/auth/profile', {
+        method: 'PUT',
+        body: JSON.stringify({ name, phone }),
+      });
+      await refreshUser();
+      showToast('✓ Profile updated successfully', 'success');
+    } catch {
+      showToast('✕ Failed to update profile', 'error');
+    }
+  };
+
+  const handleAddAddress = async (data: {
+    label: string;
+    houseFlat: string;
+    street: string;
+    area: string;
+    city: string;
+    state: string;
+    pincode: string;
+  }) => {
+    try {
+      await saveAddress(data);
+    } catch {
+      showToast('✕ Please complete address fields', 'error');
+    }
+  };
+
+  const favoriteFoods = foods.filter((f) => favorites.includes(f.id));
+
+  return (
+    <div className="max-w-[1280px] mx-auto px-4 sm:px-6 py-10 space-y-10">
+      {/* Demo Accounts Bar (Controlled by VITE_DEMO_MODE=true) */}
+      {isDemoMode && (
+        <div className="nocturne-surface rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-[#8B5CF6]/30">
+          <div className="flex items-center gap-3">
+            <Shield className="w-5 h-5 text-[#8B5CF6] shrink-0" />
+            <div>
+              <div className="flex items-center gap-2">
+                <p className="text-xs font-semibold text-[#F5F2FA]">
+                  Demo Accounts
+                </p>
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#8B5CF6]/20 text-[#A78BFA] border border-[#8B5CF6]/30">
+                  DEMO MODE
+                </span>
+              </div>
+              <p className="text-[11px] text-[#B8AFC9]">
+                One-click access to pre-configured Customer, Staff, and Admin test accounts.
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setShowDemoAccounts((prev) => !prev)}
+              className="px-3.5 py-2 rounded-xl text-xs font-semibold bg-[#8B5CF6]/20 text-[#C4B5FD] hover:bg-[#8B5CF6]/30 border border-[#8B5CF6]/40 transition-colors"
+            >
+              {showDemoAccounts ? 'Hide Demo Accounts ▲' : 'Demo Accounts ▼'}
+            </button>
+            {showDemoAccounts && (
+              <>
+                <button
+                  type="button"
+                  onClick={() => demoLogin('CUSTOMER')}
+                  className={`px-3.5 py-2 rounded-xl text-xs font-semibold transition-colors ${
+                    user?.role === 'CUSTOMER'
+                      ? 'bg-[#10B981] text-[#081C15]'
+                      : 'bg-[#0D0914] text-[#B8AFC9] hover:text-white border border-white/10'
+                  }`}
+                >
+                  Customer (Elena)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => demoLogin('STAFF')}
+                  className={`px-3.5 py-2 rounded-xl text-xs font-semibold transition-colors ${
+                    user?.role === 'STAFF'
+                      ? 'bg-[#F59E0B] text-[#0D0914]'
+                      : 'bg-[#0D0914] text-[#B8AFC9] hover:text-white border border-white/10'
+                  }`}
+                >
+                  Staff (Maître D’)
+                </button>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    await demoLogin('ADMIN');
+                  }}
+                  className={`px-3.5 py-2 rounded-xl text-xs font-semibold transition-colors ${
+                    user?.role === 'ADMIN'
+                      ? 'bg-[#8B5CF6] text-white'
+                      : 'bg-[#0D0914] text-[#B8AFC9] hover:text-white border border-white/10'
+                  }`}
+                >
+                  Admin (Chef Julian)
+                </button>
+              </>
+            )}
+            {(user?.role === 'ADMIN' || user?.role === 'STAFF') && (
+              <button
+                type="button"
+                onClick={() => navigate('/admin')}
+                className="px-3.5 py-2 rounded-xl bg-[#EC4899] text-white text-xs font-semibold"
+              >
+                Open Admin Console →
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* RENDER AUTH OR PROFILE VIEW */}
+      {!user ? (
+        <AuthSection
+          favoriteFoods={favoriteFoods}
+          onLogin={handleLogin}
+          onRegister={handleRegister}
+          onRequestForgot={handleRequestForgot}
+          onResetPassword={handleResetPassword}
+        />
+      ) : (
+        <UserProfileView
+          user={user}
+          activeTab={activeTab}
+          onSelectTab={selectTab}
+          orders={orders}
+          reservations={reservations}
+          favoriteFoods={favoriteFoods}
+          myReviews={myReviews}
+          onUpdateProfile={handleUpdateProfile}
+          onAddAddress={handleAddAddress}
+          onDeleteAddress={deleteAddress}
+          onLogout={logout}
+        />
+      )}
+    </div>
+  );
+};
