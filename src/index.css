@@ -1,21 +1,23 @@
 @import "tailwindcss";
 
-@layer base {
-  :root {
-    --bg-canvas: #0d0914;
-    --bg-surface: #150f20;
-    --bg-elevated: #1d152c;
-    --border-hairline: rgba(255, 255, 255, 0.08);
-    --border-accent: rgba(139, 92, 246, 0.32);
-    --purple-brand: #8b5cf6;
-    --emerald-accent: #10b981;
-    --pink-accent: #ec4899;
-    --gold-accent: #f59e0b;
-    --text-primary: #f5f2fa;
-    --text-secondary: #b8afc9;
-    --text-muted: #7e7394;
-  }
+@theme {
+  --color-canvas:        #000000;
+  --color-surface:       #0A0D0B;
+  --color-elevated:      #101A15;
+  --color-green-deep:    #0F3D2E;
+  --color-green-mid:     #1F6B4F;
+  --color-green-light:   #4ADE80;
+  --color-yellow:        #F5C518;
+  --color-yellow-hover:  #D9A908;
+  --color-text:          #F7F5EE;
+  --color-text-soft:     #B9BDB3;
+  --color-text-muted:    #7C847A;
+  --color-danger:        #F43F5E;
+  --color-border:        rgba(255, 255, 255, 0.08);
+  --color-border-accent: rgba(245, 197, 24, 0.35);
+}
 
+@layer base {
   html,
   body {
     max-width: 100vw;
@@ -23,13 +25,11 @@
   }
 
   body {
-    background-color: #0d0914;
-    background-image: 
-      radial-gradient(circle at 15% 10%, rgba(139, 92, 246, 0.12) 0%, transparent 40%),
-      radial-gradient(circle at 85% 25%, rgba(236, 72, 153, 0.07) 0%, transparent 35%),
-      radial-gradient(circle at 50% 90%, rgba(16, 185, 129, 0.05) 0%, transparent 45%);
+    background-color: #000000;
+    background-image:
+      radial-gradient(circle at 30% 20%, rgba(15, 61, 46, 0.25) 0%, transparent 50%);
     background-attachment: fixed;
-    color: #f5f2fa;
+    color: #F7F5EE;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     letter-spacing: 0.01em;
     line-height: 1.5;
@@ -54,21 +54,21 @@
   input:focus-visible,
   select:focus-visible,
   textarea:focus-visible {
-    outline: 2px solid #8b5cf6;
+    outline: 2px solid var(--color-yellow);
     outline-offset: 2px;
   }
 }
 
 .nocturne-surface {
-  background-color: #150f20;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
 }
 
 .nocturne-glass {
-  background: rgba(21, 15, 32, 0.85);
+  background: rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .card-lift {
@@ -77,7 +77,7 @@
 
 .card-lift:hover {
   transform: translateY(-2px);
-  border-color: rgba(139, 92, 246, 0.35);
+  border-color: var(--color-border-accent);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -96,14 +96,14 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #0d0914;
+  background: #000000;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #271c3a;
+  background: #1F6B4F;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3b2a56;
+  background: #4ADE80;
 }

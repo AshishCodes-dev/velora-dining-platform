@@ -38,19 +38,19 @@ export const FoodReviewsSection: React.FC<FoodReviewsSectionProps> = ({
   onDeleteReview,
 }) => {
   return (
-    <section className="pt-10 border-t border-white/10 grid grid-cols-1 lg:grid-cols-12 gap-10">
+    <section className="pt-10 border-t border-border grid grid-cols-1 lg:grid-cols-12 gap-10">
       {/* Left Column: Rating Summary + Write a Review Form */}
       <div className="lg:col-span-5 space-y-6">
         <div className="nocturne-surface rounded-2xl p-6 space-y-4">
-          <h2 className="font-serif-display text-2xl font-semibold text-[#F5F2FA]">
+          <h2 className="font-serif-display text-2xl font-semibold text-text">
             Guest Ratings &amp; Reviews
           </h2>
           <div className="flex items-center gap-6">
             <div>
-              <p className="font-mono-tabular text-4xl font-semibold text-[#F59E0B]">
+              <p className="font-mono-tabular text-4xl font-semibold text-yellow">
                 {food.rating.toFixed(1)}
               </p>
-              <p className="text-xs text-[#7E7394] mt-1">
+              <p className="text-xs text-text-muted mt-1">
                 Based on {food.reviewCount} reviews
               </p>
             </div>
@@ -61,14 +61,14 @@ export const FoodReviewsSection: React.FC<FoodReviewsSectionProps> = ({
                   reviews.length > 0 ? Math.round((count / reviews.length) * 100) : star === 5 ? 90 : 0;
                 return (
                   <div key={star} className="flex items-center gap-2 text-xs font-mono-tabular">
-                    <span className="w-8 text-[#B8AFC9]">{star} ★</span>
-                    <div className="flex-1 h-2 rounded-full bg-[#0D0914] overflow-hidden">
+                    <span className="w-8 text-text-soft">{star} ★</span>
+                    <div className="flex-1 h-2 rounded-full bg-canvas overflow-hidden">
                       <div
-                        className="h-full bg-[#F59E0B] rounded-full"
+                        className="h-full bg-yellow rounded-full"
                         style={{ width: `${pct}%` }}
                       />
                     </div>
-                    <span className="w-8 text-right text-[#7E7394]">{count}</span>
+                    <span className="w-8 text-right text-text-muted">{count}</span>
                   </div>
                 );
               })}
@@ -81,12 +81,12 @@ export const FoodReviewsSection: React.FC<FoodReviewsSectionProps> = ({
           onSubmit={onSubmitReview}
           className="nocturne-surface rounded-2xl p-6 space-y-4"
         >
-          <h3 className="font-serif-display text-xl font-semibold text-[#F5F2FA]">
+          <h3 className="font-serif-display text-xl font-semibold text-text">
             {editingReviewId ? 'Edit Your Culinary Review' : 'Share Your Tasting Experience'}
           </h3>
 
           <div>
-            <label className="block text-xs text-[#B8AFC9] mb-1.5">
+            <label className="block text-xs text-text-soft mb-1.5">
               Select Star Rating
             </label>
             <div className="flex items-center gap-2">
@@ -97,8 +97,8 @@ export const FoodReviewsSection: React.FC<FoodReviewsSectionProps> = ({
                   onClick={() => setReviewRating(star)}
                   className={`px-3 py-1.5 rounded-lg font-mono-tabular text-xs font-semibold transition-colors ${
                     reviewRating >= star
-                      ? 'bg-[#F59E0B] text-[#0D0914]'
-                      : 'bg-[#0D0914] text-[#7E7394] border border-white/10'
+                      ? 'bg-yellow text-black'
+                      : 'bg-canvas text-text-muted border border-border hover:border-yellow/40'
                   }`}
                 >
                   {star} ★
@@ -108,7 +108,7 @@ export const FoodReviewsSection: React.FC<FoodReviewsSectionProps> = ({
           </div>
 
           <div>
-            <label htmlFor="review-comment" className="block text-xs text-[#B8AFC9] mb-1.5">
+            <label htmlFor="review-comment" className="block text-xs text-text-soft mb-1.5">
               Your Review
             </label>
             <textarea
@@ -117,12 +117,12 @@ export const FoodReviewsSection: React.FC<FoodReviewsSectionProps> = ({
               value={reviewComment}
               onChange={(e) => setReviewComment(e.target.value)}
               placeholder="Describe the flavor profile, presentation, and temperature..."
-              className="w-full px-3.5 py-2.5 rounded-xl bg-[#0D0914] border border-white/10 text-xs text-[#F5F2FA] placeholder-[#7E7394] focus:outline-none focus:border-[#8B5CF6]"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted focus:outline-none focus:border-yellow"
             />
           </div>
 
           <div>
-            <label htmlFor="review-photo" className="block text-xs text-[#B8AFC9] mb-1.5">
+            <label htmlFor="review-photo" className="block text-xs text-text-soft mb-1.5">
               Optional Dish Photo URL
             </label>
             <input
@@ -131,7 +131,7 @@ export const FoodReviewsSection: React.FC<FoodReviewsSectionProps> = ({
               value={reviewImageUrl}
               onChange={(e) => setReviewImageUrl(e.target.value)}
               placeholder="Optional photo URL or leave blank"
-              className="w-full px-3.5 py-2 rounded-xl bg-[#0D0914] border border-white/10 text-xs text-[#F5F2FA] placeholder-[#7E7394] focus:outline-none focus:border-[#8B5CF6]"
+              className="w-full px-3.5 py-2 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted focus:outline-none focus:border-yellow"
             />
           </div>
 
@@ -139,7 +139,7 @@ export const FoodReviewsSection: React.FC<FoodReviewsSectionProps> = ({
             <button
               type="submit"
               disabled={submittingReview}
-              className="flex-1 py-2.5 rounded-xl bg-[#8B5CF6] hover:bg-[#7C3AED] text-white text-xs font-semibold transition-colors"
+              className="flex-1 py-2.5 rounded-xl bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold transition-colors disabled:opacity-50"
             >
               {submittingReview
                 ? 'Saving...'
@@ -155,7 +155,7 @@ export const FoodReviewsSection: React.FC<FoodReviewsSectionProps> = ({
                   setReviewComment('');
                   setReviewRating(5);
                 }}
-                className="px-4 py-2.5 rounded-xl border border-white/15 text-xs text-[#B8AFC9]"
+                className="px-4 py-2.5 rounded-xl border border-border text-xs text-text-soft hover:text-text transition-colors"
               >
                 Cancel
               </button>
@@ -168,10 +168,10 @@ export const FoodReviewsSection: React.FC<FoodReviewsSectionProps> = ({
       <div className="lg:col-span-7 space-y-4">
         {reviews.length === 0 ? (
           <div className="nocturne-surface rounded-2xl p-10 text-center space-y-2">
-            <p className="font-serif-display text-2xl text-[#F5F2FA]">
+            <p className="font-serif-display text-2xl text-text">
               No guest reviews for this dish yet
             </p>
-            <p className="text-xs text-[#7E7394]">
+            <p className="text-xs text-text-muted">
               Be the first to taste and review {food.name}.
             </p>
           </div>
@@ -187,14 +187,18 @@ export const FoodReviewsSection: React.FC<FoodReviewsSectionProps> = ({
               >
                 <div className="flex items-center justify-between gap-4">
                   <div>
-                    <p className="text-sm font-semibold text-[#F5F2FA]">{rev.userName}</p>
-                    <p className="text-[11px] font-mono-tabular text-[#7E7394]">
+                    <p className="text-sm font-semibold text-text">{rev.userName}</p>
+                    <p className="text-[11px] font-mono-tabular text-text-muted">
                       {new Date(rev.createdAt).toLocaleDateString()} · Verified Tasting
                     </p>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className="font-mono-tabular text-sm font-semibold text-[#F59E0B]">
-                      {'★'.repeat(rev.rating)} ({rev.rating}.0)
+                    <span className="font-mono-tabular text-sm font-semibold">
+                      <span className="text-yellow">{'★'.repeat(rev.rating)}</span>
+                      {5 - rev.rating > 0 && (
+                        <span className="text-text-muted">{'★'.repeat(5 - rev.rating)}</span>
+                      )}
+                      <span className="text-yellow ml-1">({rev.rating}.0)</span>
                     </span>
                     {canManage && (
                       <div className="flex items-center gap-1">
@@ -206,7 +210,7 @@ export const FoodReviewsSection: React.FC<FoodReviewsSectionProps> = ({
                             setReviewComment(rev.comment);
                           }}
                           aria-label="Edit review"
-                          className="p-1.5 rounded-lg text-[#B8AFC9] hover:text-white hover:bg-white/5"
+                          className="p-1.5 rounded-lg text-text-soft hover:text-text hover:bg-elevated transition-colors"
                         >
                           <Edit3 className="w-3.5 h-3.5" />
                         </button>
@@ -214,7 +218,7 @@ export const FoodReviewsSection: React.FC<FoodReviewsSectionProps> = ({
                           type="button"
                           onClick={() => onDeleteReview(rev.id)}
                           aria-label="Delete review"
-                          className="p-1.5 rounded-lg text-[#F43F5E] hover:bg-white/5"
+                          className="p-1.5 rounded-lg text-danger hover:bg-elevated transition-colors"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
@@ -222,7 +226,7 @@ export const FoodReviewsSection: React.FC<FoodReviewsSectionProps> = ({
                     )}
                   </div>
                 </div>
-                <p className="text-xs sm:text-sm text-[#B8AFC9] leading-relaxed">
+                <p className="text-xs sm:text-sm text-text-soft leading-relaxed">
                   {rev.comment}
                 </p>
               </article>

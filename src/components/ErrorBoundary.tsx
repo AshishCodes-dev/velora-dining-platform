@@ -33,20 +33,20 @@ export class ErrorBoundary extends Component<Props, State> {
 
       return (
         <div className="min-h-[60vh] flex items-center justify-center px-4 py-16">
-          <div className="max-w-md w-full nocturne-surface rounded-2xl p-8 border border-white/10 text-center space-y-6 shadow-2xl">
-            <div className="w-14 h-14 rounded-2xl bg-[#EF4444]/15 border border-[#EF4444]/30 flex items-center justify-center mx-auto text-[#EF4444]">
+          <div className="max-w-md w-full nocturne-surface rounded-2xl p-8 border border-border text-center space-y-6 shadow-2xl">
+            <div className="w-14 h-14 rounded-2xl bg-danger/15 border border-danger/30 flex items-center justify-center mx-auto text-danger">
               <AlertTriangle className="w-7 h-7" />
             </div>
 
             <div className="space-y-2">
-              <h2 className="font-serif-display text-2xl font-semibold text-[#F5F2FA]">
+              <h2 className="font-serif-display text-2xl font-semibold text-text">
                 Something went wrong
               </h2>
-              <p className="text-xs text-[#B8AFC9] leading-relaxed">
+              <p className="text-xs text-text-soft leading-relaxed">
                 An unexpected error occurred while rendering this view. Our kitchen telemetry has logged the issue.
               </p>
               {this.state.error?.message && (
-                <div className="mt-3 p-3 rounded-lg bg-black/40 border border-white/5 font-mono-tabular text-[11px] text-[#EF4444] text-left overflow-x-auto">
+                <div className="mt-3 p-3 rounded-lg bg-black/40 border border-border font-mono-tabular text-[11px] text-danger text-left overflow-x-auto">
                   {this.state.error.message}
                 </div>
               )}
@@ -56,14 +56,14 @@ export class ErrorBoundary extends Component<Props, State> {
               <button
                 type="button"
                 onClick={() => this.setState({ hasError: false, error: null })}
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#8B5CF6] hover:bg-[#7C3AED] text-white text-xs font-semibold transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold transition-colors"
               >
                 <RefreshCw className="w-3.5 h-3.5" />
                 <span>Try Again</span>
               </button>
               <a
                 href="/"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-white/15 hover:border-white/30 text-[#F5F2FA] text-xs font-semibold transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border hover:border-yellow text-text text-xs font-semibold transition-colors"
               >
                 <Home className="w-3.5 h-3.5" />
                 <span>Return Home</span>

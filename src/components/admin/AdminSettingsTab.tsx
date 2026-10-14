@@ -48,68 +48,68 @@ export const AdminSettingsTab: React.FC<AdminSettingsTabProps> = ({
       onSubmit={handleSubmit}
       className="nocturne-surface rounded-2xl p-6 sm:p-8 space-y-6 max-w-3xl"
     >
-      <h2 className="font-serif-display text-2xl font-semibold text-[#F5F2FA]">
+      <h2 className="font-serif-display text-2xl font-semibold text-text">
         Restaurant Configuration &amp; Tax Rules
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-xs text-[#B8AFC9] mb-1">Restaurant Name</label>
+          <label className="block text-xs text-text-soft mb-1">Restaurant Name</label>
           <input
             type="text"
             value={restName}
             onChange={(e) => setRestName(e.target.value)}
-            className="w-full px-3.5 py-2.5 rounded-xl bg-[#0D0914] border border-white/10 text-xs text-[#F5F2FA]"
+            className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text focus:border-yellow"
           />
         </div>
         <div>
-          <label className="block text-xs text-[#B8AFC9] mb-1">Concierge Phone</label>
+          <label className="block text-xs text-text-soft mb-1">Concierge Phone</label>
           <input
             type="text"
             value={restPhone}
             onChange={(e) => setRestPhone(e.target.value)}
-            className="w-full px-3.5 py-2.5 rounded-xl bg-[#0D0914] border border-white/10 text-xs text-[#F5F2FA]"
+            className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text focus:border-yellow"
           />
         </div>
         <div>
-          <label className="block text-xs text-[#B8AFC9] mb-1">Concierge Email</label>
+          <label className="block text-xs text-text-soft mb-1">Concierge Email</label>
           <input
             type="email"
             value={restEmail}
             onChange={(e) => setRestEmail(e.target.value)}
-            className="w-full px-3.5 py-2.5 rounded-xl bg-[#0D0914] border border-white/10 text-xs text-[#F5F2FA]"
+            className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text focus:border-yellow"
           />
         </div>
         <div>
-          <label className="block text-xs text-[#B8AFC9] mb-1">Address</label>
+          <label className="block text-xs text-text-soft mb-1">Address</label>
           <input
             type="text"
             value={restAddress}
             onChange={(e) => setRestAddress(e.target.value)}
-            className="w-full px-3.5 py-2.5 rounded-xl bg-[#0D0914] border border-white/10 text-xs text-[#F5F2FA]"
+            className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text focus:border-yellow"
           />
         </div>
         <div>
-          <label className="block text-xs text-[#B8AFC9] mb-1">Delivery Fee ($)</label>
+          <label className="block text-xs text-text-soft mb-1">Delivery Fee ($)</label>
           <input
             type="number"
             value={restDeliveryFee}
             onChange={(e) => setRestDeliveryFee(e.target.value)}
-            className="w-full px-3.5 py-2.5 rounded-xl bg-[#0D0914] border border-white/10 text-xs font-mono-tabular text-[#F5F2FA]"
+            className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs font-mono-tabular text-text focus:border-yellow"
           />
         </div>
         <div>
-          <label className="block text-xs text-[#B8AFC9] mb-1">Tax Percentage (%)</label>
+          <label className="block text-xs text-text-soft mb-1">Tax Percentage (%)</label>
           <input
             type="number"
             value={restTax}
             onChange={(e) => setRestTax(e.target.value)}
-            className="w-full px-3.5 py-2.5 rounded-xl bg-[#0D0914] border border-white/10 text-xs font-mono-tabular text-[#F5F2FA]"
+            className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs font-mono-tabular text-text focus:border-yellow"
           />
         </div>
       </div>
       <button
         type="submit"
-        className="px-6 py-2.5 rounded-xl bg-[#10B981] text-[#081C15] text-xs font-semibold"
+        className="px-6 py-2.5 rounded-xl bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold transition-colors"
       >
         Save Restaurant Settings
       </button>

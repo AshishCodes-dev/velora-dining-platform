@@ -171,8 +171,8 @@ export const FoodDetailsPage: React.FC = () => {
   if (loading) {
     return (
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 py-12 grid grid-cols-1 lg:grid-cols-12 gap-10">
-        <div className="lg:col-span-6 h-96 rounded-2xl bg-[#150F20] animate-pulse" />
-        <div className="lg:col-span-6 h-96 rounded-2xl bg-[#150F20] animate-pulse" />
+        <div className="lg:col-span-6 h-96 rounded-2xl bg-surface animate-pulse" />
+        <div className="lg:col-span-6 h-96 rounded-2xl bg-surface animate-pulse" />
       </div>
     );
   }
@@ -180,13 +180,13 @@ export const FoodDetailsPage: React.FC = () => {
   if (!food) {
     return (
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 py-20 text-center space-y-4">
-        <h1 className="font-serif-display text-3xl text-[#F5F2FA]">Dish Not Found</h1>
-        <p className="text-xs text-[#B8AFC9]">
+        <h1 className="font-serif-display text-3xl text-text">Dish Not Found</h1>
+        <p className="text-xs text-text-soft">
           This creation may have rotated out of our seasonal tasting menu.
         </p>
         <Link
           to="/menu"
-          className="inline-block px-5 py-2.5 rounded-xl bg-[#8B5CF6] text-white text-xs font-semibold"
+          className="inline-block px-5 py-2.5 rounded-xl bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold transition-colors"
         >
           Return to Menu
         </Link>
@@ -203,16 +203,16 @@ export const FoodDetailsPage: React.FC = () => {
         <button
           type="button"
           onClick={() => navigate('/menu')}
-          className="inline-flex items-center gap-2 text-xs font-medium text-[#B8AFC9] hover:text-[#F5F2FA] transition-colors"
+          className="inline-flex items-center gap-2 text-xs font-medium text-text-soft hover:text-text transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Artisanal Menu</span>
         </button>
 
-        <div className="text-xs text-[#7E7394]">
+        <div className="text-xs text-text-muted">
           <span>{food.categoryName}</span>
           <span className="mx-1.5">·</span>
-          <span className="text-[#F5F2FA]">{food.name}</span>
+          <span className="text-text">{food.name}</span>
         </div>
       </div>
 
@@ -220,7 +220,7 @@ export const FoodDetailsPage: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
         {/* Left Column: Dish Visual + Ingredients + Nutritional Telemetry */}
         <div className="lg:col-span-6 space-y-6 lg:sticky lg:top-24">
-          <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 bg-[#150F20]">
+          <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-border bg-surface">
             <DishVisual
               src={food.image}
               alt={food.name}
@@ -229,14 +229,14 @@ export const FoodDetailsPage: React.FC = () => {
             />
 
             {/* Visual Mode Switcher: Photo vs 2D Culinary Art */}
-            <div className="absolute top-3 left-3 flex items-center gap-1 p-1 rounded-xl bg-[#0D0914]/85 backdrop-blur-md border border-white/10">
+            <div className="absolute top-3 left-3 flex items-center gap-1 p-1 rounded-xl bg-canvas/85 backdrop-blur-md border border-border">
               <button
                 type="button"
                 onClick={() => setVisualMode('photo')}
                 className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors ${
                   visualMode === 'photo'
-                    ? 'bg-[#8B5CF6] text-white'
-                    : 'text-[#B8AFC9] hover:text-white'
+                    ? 'bg-yellow text-black'
+                    : 'text-text-soft hover:text-text'
                 }`}
               >
                 Editorial Photo
@@ -246,8 +246,8 @@ export const FoodDetailsPage: React.FC = () => {
                 onClick={() => setVisualMode('illustration')}
                 className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors ${
                   visualMode === 'illustration'
-                    ? 'bg-[#8B5CF6] text-white'
-                    : 'text-[#B8AFC9] hover:text-white'
+                    ? 'bg-yellow text-black'
+                    : 'text-text-soft hover:text-text'
                 }`}
               >
                 2D Culinary Art
@@ -258,11 +258,11 @@ export const FoodDetailsPage: React.FC = () => {
               type="button"
               onClick={() => toggleFavorite(food.id)}
               aria-label="Toggle favorite"
-              className="absolute top-3 right-3 w-10 h-10 rounded-full bg-[#0D0914]/85 flex items-center justify-center text-white hover:bg-[#0D0914] transition-colors"
+              className="absolute top-3 right-3 w-10 h-10 rounded-full bg-canvas/85 flex items-center justify-center text-text hover:bg-canvas transition-colors"
             >
               <Heart
                 className={`w-5 h-5 ${
-                  fav ? 'fill-[#EC4899] text-[#EC4899]' : 'text-[#F5F2FA]'
+                  fav ? 'fill-yellow text-yellow' : 'text-text'
                 }`}
               />
             </button>
@@ -271,20 +271,20 @@ export const FoodDetailsPage: React.FC = () => {
           {/* Nutritional & Preparation Facts */}
           <div className="nocturne-surface rounded-2xl p-5 grid grid-cols-3 gap-4 text-center">
             <div>
-              <p className="text-xs text-[#7E7394]">Preparation Time</p>
-              <p className="font-mono-tabular text-base font-semibold text-[#F5F2FA] mt-1">
+              <p className="text-xs text-text-muted">Preparation Time</p>
+              <p className="font-mono-tabular text-base font-semibold text-text mt-1">
                 {food.prepTimeMinutes} mins
               </p>
             </div>
-            <div className="border-x border-white/10">
-              <p className="text-xs text-[#7E7394]">Energy Profile</p>
-              <p className="font-mono-tabular text-base font-semibold text-[#10B981] mt-1">
+            <div className="border-x border-border">
+              <p className="text-xs text-text-muted">Energy Profile</p>
+              <p className="font-mono-tabular text-base font-semibold text-green-light mt-1">
                 {food.calories} kcal
               </p>
             </div>
             <div>
-              <p className="text-xs text-[#7E7394]">Guest Rating</p>
-              <p className="font-mono-tabular text-base font-semibold text-[#F59E0B] mt-1">
+              <p className="text-xs text-text-muted">Guest Rating</p>
+              <p className="font-mono-tabular text-base font-semibold text-yellow mt-1">
                 ★ {food.rating.toFixed(1)} ({food.reviewCount})
               </p>
             </div>
@@ -292,15 +292,15 @@ export const FoodDetailsPage: React.FC = () => {
 
           {/* Provenance & Ingredients */}
           <div className="nocturne-surface rounded-2xl p-6 space-y-3">
-            <h2 className="font-serif-display text-xl font-semibold text-[#F5F2FA]">
+            <h2 className="font-serif-display text-xl font-semibold text-text">
               Key Ingredients &amp; Provenance
             </h2>
-            <p className="text-xs text-[#B8AFC9] leading-relaxed">
+            <p className="text-xs text-text-soft leading-relaxed">
               {food.ingredients.join(' · ')}
             </p>
-            <div className="pt-2 border-t border-white/5 flex flex-wrap items-center gap-2 text-xs text-[#8B5CF6]">
+            <div className="pt-2 border-t border-border flex flex-wrap items-center gap-2 text-xs text-yellow">
               <span>Dietary &amp; Preparation Notes:</span>
-              <span className="text-[#F5F2FA]">
+              <span className="text-text">
                 {food.isVeg ? '100% Vegetarian' : 'Chef Cut'} · {food.dietaryTags.join(' · ')}
               </span>
             </div>

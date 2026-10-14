@@ -89,13 +89,13 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
       {/* Profile Sidebar */}
       <aside className="lg:col-span-3 nocturne-surface rounded-2xl p-5 space-y-6">
-        <div className="flex items-center gap-3 pb-4 border-b border-white/10">
-          <div className="w-12 h-12 rounded-full bg-[#8B5CF6]/25 border border-[#8B5CF6] flex items-center justify-center font-serif-display text-xl font-bold text-[#F5F2FA]">
+        <div className="flex items-center gap-3 pb-4 border-b border-border">
+          <div className="w-12 h-12 rounded-full bg-yellow/15 border border-yellow/30 flex items-center justify-center font-serif-display text-xl font-bold text-text">
             {user.name.charAt(0)}
           </div>
           <div className="min-w-0">
-            <p className="text-sm font-semibold text-[#F5F2FA] truncate">{user.name}</p>
-            <p className="text-xs text-[#8B5CF6] font-mono-tabular">{user.role}</p>
+            <p className="text-sm font-semibold text-text truncate">{user.name}</p>
+            <p className="text-xs text-yellow font-mono-tabular">{user.role}</p>
           </div>
         </div>
 
@@ -129,8 +129,8 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                 onClick={() => onSelectTab(item.id)}
                 className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium transition-colors ${
                   active
-                    ? 'bg-[#8B5CF6] text-white font-semibold'
-                    : 'text-[#B8AFC9] hover:text-white hover:bg-white/5'
+                    ? 'bg-yellow text-black font-semibold'
+                    : 'text-text-soft hover:text-text hover:bg-elevated'
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -140,11 +140,11 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
           })}
         </nav>
 
-        <div className="pt-4 border-t border-white/10">
+        <div className="pt-4 border-t border-border">
           <button
             type="button"
             onClick={onLogout}
-            className="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-medium text-[#F43F5E] hover:bg-white/5 transition-colors"
+            className="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-medium text-danger hover:bg-elevated transition-colors"
           >
             <LogOut className="w-4 h-4" />
             <span>Sign Out</span>
@@ -159,52 +159,52 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
             onSubmit={handleProfileSubmit}
             className="nocturne-surface rounded-2xl p-6 sm:p-8 space-y-6"
           >
-            <h2 className="font-serif-display text-2xl font-semibold text-[#F5F2FA]">
+            <h2 className="font-serif-display text-2xl font-semibold text-text">
               Personal Information
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs text-[#B8AFC9] mb-1">Full Name</label>
+                <label className="block text-xs text-text-soft mb-1">Full Name</label>
                 <input
                   type="text"
                   value={profileName}
                   onChange={(e) => setProfileName(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#0D0914] border border-white/10 text-xs text-[#F5F2FA]"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted"
                 />
               </div>
               <div>
-                <label className="block text-xs text-[#B8AFC9] mb-1">Phone Number</label>
+                <label className="block text-xs text-text-soft mb-1">Phone Number</label>
                 <input
                   type="tel"
                   value={profilePhone}
                   onChange={(e) => setProfilePhone(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#0D0914] border border-white/10 text-xs text-[#F5F2FA]"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted"
                 />
               </div>
               <div>
-                <label className="block text-xs text-[#B8AFC9] mb-1">
+                <label className="block text-xs text-text-soft mb-1">
                   Registered Email (Verified)
                 </label>
                 <input
                   type="email"
                   disabled
                   value={user.email}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#0D0914]/50 border border-white/5 text-xs text-[#7E7394]"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-canvas/50 border border-border text-xs text-text-muted"
                 />
               </div>
               <div>
-                <label className="block text-xs text-[#B8AFC9] mb-1">Account Role</label>
+                <label className="block text-xs text-text-soft mb-1">Account Role</label>
                 <input
                   type="text"
                   disabled
                   value={user.role}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#0D0914]/50 border border-white/5 text-xs font-mono-tabular text-[#8B5CF6]"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-canvas/50 border border-border text-xs font-mono-tabular text-yellow"
                 />
               </div>
             </div>
             <button
               type="submit"
-              className="px-6 py-2.5 rounded-xl bg-[#10B981] hover:bg-[#059669] text-[#081C15] text-xs font-semibold"
+              className="px-6 py-2.5 rounded-xl bg-green-light hover:bg-green-mid text-black text-xs font-semibold transition-colors"
             >
               Save Profile Changes
             </button>
@@ -213,15 +213,15 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
 
         {activeTab === 'orders' && (
           <div className="space-y-4">
-            <h2 className="font-serif-display text-2xl font-semibold text-[#F5F2FA]">
+            <h2 className="font-serif-display text-2xl font-semibold text-text">
               Order History ({orders.length})
             </h2>
             {orders.length === 0 ? (
               <div className="nocturne-surface rounded-2xl p-10 text-center space-y-3">
-                <p className="text-sm text-[#B8AFC9]">No orders placed yet.</p>
+                <p className="text-sm text-text-soft">No orders placed yet.</p>
                 <Link
                   to="/menu"
-                  className="inline-block px-5 py-2.5 rounded-xl bg-[#10B981] text-[#081C15] text-xs font-semibold"
+                  className="inline-block px-5 py-2.5 rounded-xl bg-green-light hover:bg-green-mid text-black text-xs font-semibold transition-colors"
                 >
                   Order Now
                 </Link>
@@ -234,25 +234,25 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                 >
                   <div className="space-y-1">
                     <div className="flex items-center gap-2 font-mono-tabular text-xs">
-                      <span className="font-bold text-[#F59E0B]">#{ord.orderNumber}</span>
+                      <span className="font-bold text-yellow">#{ord.orderNumber}</span>
                       <span>·</span>
-                      <span className="text-[#10B981]">{ord.status}</span>
+                      <span className="text-green-light">{ord.status}</span>
                       <span>·</span>
-                      <span className="text-[#7E7394]">
+                      <span className="text-text-muted">
                         {new Date(ord.createdAt).toLocaleDateString()}
                       </span>
                     </div>
-                    <p className="text-sm font-semibold text-[#F5F2FA]">
+                    <p className="text-sm font-semibold text-text">
                       {ord.items.map((i) => `${i.quantity}x ${i.foodName}`).join(', ')}
                     </p>
-                    <p className="text-xs font-mono-tabular text-[#B8AFC9]">
+                    <p className="text-xs font-mono-tabular text-text-soft">
                       Total: ${ord.grandTotal.toFixed(2)} · {ord.orderType} ·{' '}
                       {ord.paymentMethod}
                     </p>
                   </div>
                   <Link
                     to={`/track/${ord.orderNumber}`}
-                    className="px-4 py-2 rounded-xl bg-[#8B5CF6] hover:bg-[#7C3AED] text-white text-xs font-semibold whitespace-nowrap self-start sm:self-auto"
+                    className="px-4 py-2 rounded-xl bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold whitespace-nowrap self-start sm:self-auto transition-colors"
                   >
                     Track Order →
                   </Link>
@@ -265,18 +265,18 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
         {activeTab === 'reservations' && (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="font-serif-display text-2xl font-semibold text-[#F5F2FA]">
+              <h2 className="font-serif-display text-2xl font-semibold text-text">
                 Table Reservations ({reservations.length})
               </h2>
               <Link
                 to="/reservations"
-                className="px-4 py-2 rounded-xl bg-[#8B5CF6] text-white text-xs font-semibold"
+                className="px-4 py-2 rounded-xl bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold transition-colors"
               >
                 + New Reservation
               </Link>
             </div>
             {reservations.length === 0 ? (
-              <div className="nocturne-surface rounded-2xl p-8 text-center text-xs text-[#B8AFC9]">
+              <div className="nocturne-surface rounded-2xl p-8 text-center text-xs text-text-soft">
                 No reservations yet.
               </div>
             ) : (
@@ -286,17 +286,17 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                   className="nocturne-surface rounded-2xl p-5 flex items-center justify-between gap-4"
                 >
                   <div className="space-y-1">
-                    <p className="font-mono-tabular text-xs font-bold text-[#F59E0B]">
+                    <p className="font-mono-tabular text-xs font-bold text-yellow">
                       #{res.reservationCode} · {res.date} at {res.time}
                     </p>
-                    <p className="text-sm font-semibold text-[#F5F2FA]">
+                    <p className="text-sm font-semibold text-text">
                       {res.tableArea} · {res.guests} Guests
                     </p>
                     {res.specialRequest && (
-                      <p className="text-xs text-[#B8AFC9]">"{res.specialRequest}"</p>
+                      <p className="text-xs text-text-soft">"{res.specialRequest}"</p>
                     )}
                   </div>
-                  <span className="font-mono-tabular text-xs font-semibold text-[#10B981]">
+                  <span className="font-mono-tabular text-xs font-semibold text-green-light">
                     {res.status}
                   </span>
                 </div>
@@ -307,17 +307,17 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
 
         {activeTab === 'favorites' && (
           <div className="space-y-4">
-            <h2 className="font-serif-display text-2xl font-semibold text-[#F5F2FA]">
+            <h2 className="font-serif-display text-2xl font-semibold text-text">
               Saved Favorites &amp; Wishlist ({favoriteFoods.length})
             </h2>
             {favoriteFoods.length === 0 ? (
               <div className="nocturne-surface rounded-2xl p-10 text-center space-y-3">
-                <p className="text-xs text-[#B8AFC9]">
+                <p className="text-xs text-text-soft">
                   Your wishlist is empty. Explore the menu to save your favorite dishes.
                 </p>
                 <Link
                   to="/menu"
-                  className="inline-block px-5 py-2.5 rounded-xl bg-[#8B5CF6] text-white text-xs font-semibold"
+                  className="inline-block px-5 py-2.5 rounded-xl bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold transition-colors"
                 >
                   Explore Menu
                 </Link>
@@ -334,7 +334,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
 
         {activeTab === 'addresses' && (
           <div className="space-y-6">
-            <h2 className="font-serif-display text-2xl font-semibold text-[#F5F2FA]">
+            <h2 className="font-serif-display text-2xl font-semibold text-text">
               Saved Delivery Addresses
             </h2>
 
@@ -345,11 +345,11 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                   className="nocturne-surface rounded-2xl p-5 flex items-start justify-between gap-4"
                 >
                   <div className="space-y-1 text-xs">
-                    <p className="font-semibold text-[#8B5CF6]">{addr.label}</p>
-                    <p className="text-sm font-semibold text-[#F5F2FA]">
+                    <p className="font-semibold text-yellow">{addr.label}</p>
+                    <p className="text-sm font-semibold text-text">
                       {addr.houseFlat}, {addr.street}
                     </p>
-                    <p className="text-[#B8AFC9]">
+                    <p className="text-text-soft">
                       {addr.area}, {addr.city}, {addr.state} {addr.pincode}
                     </p>
                   </div>
@@ -357,7 +357,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                     type="button"
                     onClick={() => onDeleteAddress(addr.id)}
                     aria-label={`Delete address ${addr.label}`}
-                    className="p-1.5 text-[#F43F5E] hover:bg-white/5 rounded-lg"
+                    className="p-1.5 text-danger hover:bg-elevated rounded-lg transition-colors"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -370,7 +370,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
               onSubmit={handleAddressSubmit}
               className="nocturne-surface rounded-2xl p-6 space-y-4"
             >
-              <h3 className="font-serif-display text-xl font-semibold text-[#F5F2FA]">
+              <h3 className="font-serif-display text-xl font-semibold text-text">
                 Add New Address
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -380,7 +380,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                   value={addrLabel}
                   onChange={(e) => setAddrLabel(e.target.value)}
                   placeholder="Label (e.g. Home, Studio)"
-                  className="px-3.5 py-2.5 rounded-xl bg-[#0D0914] border border-white/10 text-xs text-[#F5F2FA]"
+                  className="px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted"
                 />
                 <input
                   type="text"
@@ -388,7 +388,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                   value={addrHouse}
                   onChange={(e) => setAddrHouse(e.target.value)}
                   placeholder="House / Flat / Apt"
-                  className="px-3.5 py-2.5 rounded-xl bg-[#0D0914] border border-white/10 text-xs text-[#F5F2FA]"
+                  className="px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted"
                 />
                 <input
                   type="text"
@@ -396,7 +396,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                   value={addrStreet}
                   onChange={(e) => setAddrStreet(e.target.value)}
                   placeholder="Street Name"
-                  className="px-3.5 py-2.5 rounded-xl bg-[#0D0914] border border-white/10 text-xs text-[#F5F2FA]"
+                  className="px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted"
                 />
                 <input
                   type="text"
@@ -404,7 +404,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                   value={addrArea}
                   onChange={(e) => setAddrArea(e.target.value)}
                   placeholder="Area / Neighborhood"
-                  className="px-3.5 py-2.5 rounded-xl bg-[#0D0914] border border-white/10 text-xs text-[#F5F2FA]"
+                  className="px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted"
                 />
                 <input
                   type="text"
@@ -412,7 +412,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                   value={addrCity}
                   onChange={(e) => setAddrCity(e.target.value)}
                   placeholder="City"
-                  className="px-3.5 py-2.5 rounded-xl bg-[#0D0914] border border-white/10 text-xs text-[#F5F2FA]"
+                  className="px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted"
                 />
                 <input
                   type="text"
@@ -420,7 +420,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                   value={addrState}
                   onChange={(e) => setAddrState(e.target.value)}
                   placeholder="State"
-                  className="px-3.5 py-2.5 rounded-xl bg-[#0D0914] border border-white/10 text-xs text-[#F5F2FA]"
+                  className="px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted"
                 />
                 <input
                   type="text"
@@ -428,12 +428,12 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                   value={addrPin}
                   onChange={(e) => setAddrPin(e.target.value)}
                   placeholder="Pincode / ZIP"
-                  className="px-3.5 py-2.5 rounded-xl bg-[#0D0914] border border-white/10 text-xs text-[#F5F2FA]"
+                  className="px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted"
                 />
               </div>
               <button
                 type="submit"
-                className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-[#8B5CF6] text-white text-xs font-semibold"
+                className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold transition-colors"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>Save Address</span>
@@ -444,11 +444,11 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
 
         {activeTab === 'reviews' && (
           <div className="space-y-4">
-            <h2 className="font-serif-display text-2xl font-semibold text-[#F5F2FA]">
+            <h2 className="font-serif-display text-2xl font-semibold text-text">
               My Culinary Reviews ({myReviews.length})
             </h2>
             {myReviews.length === 0 ? (
-              <div className="nocturne-surface rounded-2xl p-8 text-center text-xs text-[#B8AFC9]">
+              <div className="nocturne-surface rounded-2xl p-8 text-center text-xs text-text-soft">
                 You haven’t written any reviews yet. Open any dish page to share your thoughts.
               </div>
             ) : (
@@ -457,15 +457,15 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                   <div className="flex items-center justify-between">
                     <Link
                       to={`/menu/${rev.foodId}`}
-                      className="font-serif-display text-lg font-semibold text-[#F5F2FA] hover:text-[#8B5CF6]"
+                      className="font-serif-display text-lg font-semibold text-text hover:text-yellow transition-colors"
                     >
                       {rev.foodName}
                     </Link>
-                    <span className="font-mono-tabular text-xs font-bold text-[#F59E0B]">
+                    <span className="font-mono-tabular text-xs font-bold text-yellow">
                       {'★'.repeat(rev.rating)} ({rev.rating}.0)
                     </span>
                   </div>
-                  <p className="text-xs text-[#B8AFC9] leading-relaxed">{rev.comment}</p>
+                  <p className="text-xs text-text-soft leading-relaxed">{rev.comment}</p>
                 </div>
               ))
             )}

@@ -141,25 +141,25 @@ export const CartAndCheckoutPage: React.FC = () => {
   return (
     <div className="max-w-[1280px] mx-auto px-4 sm:px-6 py-10 space-y-10">
       {/* Header & Step Switcher */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-white/10 pb-6">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-border pb-6">
         <div>
-          <p className="text-xs text-[#8B5CF6] font-medium">
+          <p className="text-xs text-yellow font-medium">
             VELORA · Culinary Bag &amp; Dispatch
           </p>
-          <h1 className="font-serif-display text-4xl font-semibold text-[#F5F2FA] mt-1">
+          <h1 className="font-serif-display text-4xl font-semibold text-text mt-1">
             {step === 'cart' ? 'Your Tasting Cart' : 'Complete Your Order'}
           </h1>
         </div>
 
         {activeCartItems.length > 0 && (
-          <div className="flex items-center gap-2 p-1 rounded-xl bg-[#150F20] border border-white/10 self-start sm:self-auto">
+          <div className="flex items-center gap-2 p-1 rounded-xl bg-surface border border-border self-start sm:self-auto">
             <button
               type="button"
               onClick={() => setStep('cart')}
               className={`px-4 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                 step === 'cart'
-                  ? 'bg-[#8B5CF6] text-white'
-                  : 'text-[#B8AFC9] hover:text-white'
+                  ? 'bg-yellow text-black'
+                  : 'text-text-soft hover:text-text'
               }`}
             >
               1. Review Cart ({activeCartItems.length})
@@ -169,8 +169,8 @@ export const CartAndCheckoutPage: React.FC = () => {
               onClick={() => setStep('checkout')}
               className={`px-4 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                 step === 'checkout'
-                  ? 'bg-[#10B981] text-[#081C15]'
-                  : 'text-[#B8AFC9] hover:text-white'
+                  ? 'bg-green-light text-black'
+                  : 'text-text-soft hover:text-text'
               }`}
             >
               2. Checkout &amp; Dispatch
@@ -182,20 +182,20 @@ export const CartAndCheckoutPage: React.FC = () => {
       {/* Empty Cart State */}
       {activeCartItems.length === 0 && savedCartItems.length === 0 ? (
         <div className="nocturne-surface rounded-2xl py-20 px-4 text-center space-y-4">
-          <p className="font-serif-display text-3xl text-[#F5F2FA]">Your cart is currently empty</p>
-          <p className="text-xs sm:text-sm text-[#B8AFC9] max-w-md mx-auto">
+          <p className="font-serif-display text-3xl text-text">Your cart is currently empty</p>
+          <p className="text-xs sm:text-sm text-text-soft max-w-md mx-auto">
             Explore our wood-fired sourdough pizzas, A5 Wagyu medallions, royal saffron biryanis, and artisanal desserts.
           </p>
           <div className="pt-2 flex items-center justify-center gap-4">
             <Link
               to="/menu"
-              className="px-6 py-3 rounded-xl bg-[#10B981] hover:bg-[#059669] text-[#081C15] text-xs font-semibold transition-colors"
+              className="px-6 py-3 rounded-xl bg-green-light hover:bg-green-mid text-black text-xs font-semibold transition-colors"
             >
               Explore Artisanal Menu
             </Link>
             <Link
               to="/track/10482"
-              className="px-6 py-3 rounded-xl border border-white/15 text-xs font-semibold text-[#F5F2FA] hover:bg-white/5"
+              className="px-6 py-3 rounded-xl border border-border text-xs font-semibold text-text hover:bg-elevated transition-colors"
             >
               Track Active Order #10482
             </Link>

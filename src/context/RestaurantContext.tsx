@@ -475,10 +475,10 @@ export const RestaurantProvider: React.FC<{ children: React.ReactNode }> = ({ ch
             onClick={() => dismissToast(t.id)}
             className={`pointer-events-auto cursor-pointer flex items-center justify-between gap-3 px-4 py-3 rounded-xl border shadow-xl transition-all duration-150 ${
               t.type === 'error'
-                ? 'bg-[#23111E] border-[#F43F5E]/50 text-[#FFE4E8]'
+                ? 'bg-danger/15 border-danger/40 text-danger'
                 : t.type === 'info'
-                ? 'bg-[#181126] border-[#8B5CF6]/40 text-[#F5F2FA]'
-                : 'bg-[#11221F] border-[#10B981]/50 text-[#ECFDF5]'
+                ? 'bg-yellow/15 border-yellow/40 text-yellow'
+                : 'bg-green-deep border-green-mid/50 text-green-light'
             }`}
           >
             <span className="text-sm font-medium">{t.text}</span>

@@ -17,7 +17,7 @@ export const AdminNotificationsTab: React.FC<AdminNotificationsTabProps> = ({
         <button
           type="button"
           onClick={onMarkAllRead}
-          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#8B5CF6] text-white text-xs font-semibold"
+          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold transition-colors"
         >
           <Check className="w-3.5 h-3.5" />
           <span>Mark All Read</span>
@@ -27,14 +27,14 @@ export const AdminNotificationsTab: React.FC<AdminNotificationsTabProps> = ({
         <div
           key={n.id}
           className={`nocturne-surface rounded-xl p-5 flex items-center justify-between gap-4 ${
-            !n.read ? 'border-[#8B5CF6]/50' : ''
+            !n.read ? 'border-yellow/50' : ''
           }`}
         >
           <div>
-            <p className="text-sm font-semibold text-[#F5F2FA]">{n.title}</p>
-            <p className="text-xs text-[#B8AFC9] mt-1">{n.message}</p>
+            <p className="text-sm font-semibold text-text">{n.title}</p>
+            <p className="text-xs text-text-soft mt-1">{n.message}</p>
           </div>
-          <span className="text-[11px] font-mono-tabular text-[#7E7394]">
+          <span className="text-[11px] font-mono-tabular text-text-muted">
             {new Date(n.createdAt).toLocaleTimeString([], {
               hour: '2-digit',
               minute: '2-digit',

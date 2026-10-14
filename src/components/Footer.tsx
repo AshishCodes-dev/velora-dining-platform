@@ -17,60 +17,60 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="bg-[#09060E] border-t border-white/10 mt-20">
+    <footer className="bg-surface border-t border-border mt-20">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Column 1: Brand & Story */}
           <div className="space-y-3">
             <Link
               to="/"
-              className="font-serif-display text-2xl font-bold tracking-[0.14em] text-[#F5F2FA] block"
+              className="font-serif-display text-2xl font-bold tracking-[0.14em] text-text block"
             >
               {settings?.name || 'VELORA'}
             </Link>
-            <p className="text-xs font-medium text-[#F59E0B] tracking-wide">
+            <p className="text-xs font-medium text-yellow tracking-wide">
               {settings?.tagline || 'Modern Dining. Crafted to Remember.'}
             </p>
-            <p className="text-xs text-[#B8AFC9] leading-relaxed">
+            <p className="text-xs text-text-soft leading-relaxed">
               Nocturnal hearth gastronomy &amp; botanical mixology crafted with seasonal wood-fired precision.
             </p>
-            <p className="text-xs text-[#7E7394] pt-1">
+            <p className="text-xs text-text-muted pt-1">
               {settings?.address ||
                 '428 Velvet Obsidian Way, Suite 100, Nob Hill, San Francisco, CA 94108'}
             </p>
-            <p className="text-xs font-mono-tabular text-[#B8AFC9]">
+            <p className="text-xs font-mono-tabular text-text-soft">
               {settings?.phone || '+1 (415) 890-4420'} · {settings?.email || 'concierge@velora.com'}
             </p>
           </div>
 
           {/* Column 2: Dining & Ordering */}
           <div className="space-y-3">
-            <h4 className="font-serif-display text-lg font-semibold text-[#F5F2FA]">
+            <h4 className="font-serif-display text-lg font-semibold text-text">
               Culinary Experience
             </h4>
-            <ul className="space-y-2 text-xs text-[#B8AFC9]">
+            <ul className="space-y-2 text-xs text-text-soft">
               <li>
-                <Link to="/menu" className="hover:text-[#F5F2FA] transition-colors">
+                <Link to="/menu" className="hover:text-text transition-colors">
                   Full Artisanal Menu
                 </Link>
               </li>
               <li>
-                <Link to="/reservations" className="hover:text-[#F5F2FA] transition-colors">
+                <Link to="/reservations" className="hover:text-text transition-colors">
                   Table & Vault Reservations
                 </Link>
               </li>
               <li>
-                <Link to="/offers" className="hover:text-[#F5F2FA] transition-colors">
+                <Link to="/offers" className="hover:text-text transition-colors">
                   Seasonal Offers & Privileges
                 </Link>
               </li>
               <li>
-                <Link to="/track/10482" className="hover:text-[#F5F2FA] transition-colors">
+                <Link to="/track/10482" className="hover:text-text transition-colors">
                   Live Order Tracking (#10482)
                 </Link>
               </li>
               <li>
-                <Link to="/admin" className="hover:text-[#8B5CF6] transition-colors">
+                <Link to="/admin" className="hover:text-yellow transition-colors">
                   Executive Admin Console
                 </Link>
               </li>
@@ -79,27 +79,27 @@ export const Footer: React.FC = () => {
 
           {/* Column 3: Service Hours */}
           <div className="space-y-3">
-            <h4 className="font-serif-display text-lg font-semibold text-[#F5F2FA]">
+            <h4 className="font-serif-display text-lg font-semibold text-text">
               Service Hours
             </h4>
-            <div className="space-y-2 text-xs text-[#B8AFC9] font-mono-tabular">
+            <div className="space-y-2 text-xs text-text-soft font-mono-tabular">
               <p>{settings?.openingHours.weekdays || 'Mon – Thu: 17:00 – 23:30'}</p>
               <p>{settings?.openingHours.weekends || 'Fri – Sun: 12:00 – 01:00'}</p>
-              <p className="text-[#F59E0B]">
+              <p className="text-yellow">
                 {settings?.openingHours.lateNight || 'Nocturne Tasting: 22:00 – 01:00'}
               </p>
             </div>
-            <p className="text-xs text-[#10B981] pt-1">
+            <p className="text-xs text-green-light pt-1">
               Complimentary Obsidian Delivery on orders over ${settings?.freeDeliveryThreshold ?? 65}
             </p>
           </div>
 
           {/* Column 4: Private Tasting Dispatches */}
           <div className="space-y-3">
-            <h4 className="font-serif-display text-lg font-semibold text-[#F5F2FA]">
+            <h4 className="font-serif-display text-lg font-semibold text-text">
               Private Sommelier Dispatch
             </h4>
-            <p className="text-xs text-[#B8AFC9] leading-relaxed">
+            <p className="text-xs text-text-soft leading-relaxed">
               Receive invitations to seasonal truffle harvests, chef counter seatings, and private privileges.
             </p>
             <form onSubmit={handleNewsletter} className="flex items-center gap-2 pt-1">
@@ -112,11 +112,11 @@ export const Footer: React.FC = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="guest@domain.com"
-                className="flex-1 min-w-0 px-3 py-2 rounded-lg bg-[#150F20] border border-white/10 text-xs text-[#F5F2FA] placeholder-[#7E7394] focus:outline-none focus:border-[#8B5CF6]"
+                className="flex-1 min-w-0 px-3 py-2 rounded-lg bg-elevated border border-border text-xs text-text placeholder-text-muted focus:outline-none focus:border-yellow"
               />
               <button
                 type="submit"
-                className="px-4 py-2 rounded-lg bg-[#8B5CF6] hover:bg-[#7C3AED] text-white text-xs font-semibold whitespace-nowrap transition-colors"
+                className="px-4 py-2 rounded-lg bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold whitespace-nowrap transition-colors"
               >
                 Join List
               </button>
@@ -124,18 +124,18 @@ export const Footer: React.FC = () => {
           </div>
         </div>
 
-        <div className="mt-12 pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#7E7394]">
+        <div className="mt-12 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-text-muted">
           <p>© {new Date().getFullYear()} VELORA — Premium Restaurant &amp; Dining Platform. All rights reserved.</p>
           <div className="flex items-center gap-4">
-            <Link to="/menu" className="hover:text-[#B8AFC9]">
+            <Link to="/menu" className="hover:text-text-soft">
               Dietary & Allergen Guide
             </Link>
             <span>·</span>
-            <Link to="/reservations" className="hover:text-[#B8AFC9]">
+            <Link to="/reservations" className="hover:text-text-soft">
               Private Dining Policy
             </Link>
             <span>·</span>
-            <Link to="/profile" className="hover:text-[#B8AFC9]">
+            <Link to="/profile" className="hover:text-text-soft">
               Guest Concierge
             </Link>
           </div>

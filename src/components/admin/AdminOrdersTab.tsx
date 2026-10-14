@@ -42,8 +42,8 @@ export const AdminOrdersTab: React.FC<AdminOrdersTabProps> = ({
             onClick={() => setOrderStatusFilter(st)}
             className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
               orderStatusFilter === st
-                ? 'bg-[#8B5CF6] text-white'
-                : 'bg-[#150F20] text-[#B8AFC9] border border-white/10'
+                ? 'bg-yellow text-black'
+                : 'bg-surface text-text-soft border border-border hover:text-text'
             }`}
           >
             {st}
@@ -59,28 +59,48 @@ export const AdminOrdersTab: React.FC<AdminOrdersTabProps> = ({
           >
             <div className="space-y-1.5">
               <div className="flex flex-wrap items-center gap-2 font-mono-tabular text-xs">
-                <span className="text-sm font-bold text-[#F59E0B]">
+                <span className="text-sm font-bold text-yellow">
                   ORDER #{ord.orderNumber}
                 </span>
-                <span>·</span>
-                <span className="text-[#10B981] font-semibold">{ord.status}</span>
-                <span>·</span>
-                <span className="text-[#8B5CF6]">{ord.paymentStatus}</span>
-                <span>·</span>
-                <span className="text-[#7E7394]">
+                <span className="text-text-muted">·</span>
+                <span
+                  className={`font-semibold ${
+                    ord.status === 'Cancelled'
+                      ? 'text-danger'
+                      : ord.status === 'Delivered' ||
+                        ord.status === 'Confirmed' ||
+                        ord.status === 'Ready'
+                      ? 'text-green-light'
+                      : 'text-yellow'
+                  }`}
+                >
+                  {ord.status}
+                </span>
+                <span className="text-text-muted">·</span>
+                <span
+                  className={
+                    ord.paymentStatus === 'PAID'
+                      ? 'text-green-light'
+                      : 'text-yellow'
+                  }
+                >
+                  {ord.paymentStatus}
+                </span>
+                <span className="text-text-muted">·</span>
+                <span className="text-text-muted">
                   {new Date(ord.createdAt).toLocaleString()}
                 </span>
               </div>
-              <p className="text-sm font-semibold text-[#F5F2FA]">
+              <p className="text-sm font-semibold text-text">
                 Guest: {ord.customerName} ({ord.customerPhone}) · {ord.orderType}
               </p>
-              <p className="text-xs text-[#B8AFC9]">
+              <p className="text-xs text-text-soft">
                 Items: {ord.items.map((i) => `${i.quantity}x ${i.foodName} (${i.selectedSize})`).join(' | ')}
               </p>
             </div>
 
             <div className="flex flex-wrap items-center gap-3">
-              <span className="font-mono-tabular text-base font-bold text-[#F59E0B] mr-2">
+              <span className="font-mono-tabular text-base font-bold text-yellow mr-2">
                 ${ord.grandTotal.toFixed(2)}
               </span>
 
@@ -90,7 +110,7 @@ export const AdminOrdersTab: React.FC<AdminOrdersTabProps> = ({
                 onChange={(e) =>
                   onStatusUpdate(ord.orderNumber, e.target.value as OrderStatus)
                 }
-                className="px-3 py-2 rounded-xl bg-[#0D0914] border border-white/15 text-xs text-[#F5F2FA]"
+                className="px-3 py-2 rounded-xl bg-canvas border border-border text-xs text-text focus:border-yellow"
               >
                 <option value="Order Placed">Order Placed</option>
                 <option value="Confirmed">Accept / Confirmed</option>
@@ -104,7 +124,7 @@ export const AdminOrdersTab: React.FC<AdminOrdersTabProps> = ({
               <button
                 type="button"
                 onClick={() => navigate(`/track/${ord.orderNumber}`)}
-                className="px-3.5 py-2 rounded-xl bg-[#1D152C] hover:bg-[#8B5CF6] text-xs font-semibold text-white transition-colors"
+                className="px-3.5 py-2 rounded-xl bg-elevated hover:bg-yellow hover:text-black text-xs font-semibold text-text border border-border transition-colors"
               >
                 View Live Tracker
               </button>

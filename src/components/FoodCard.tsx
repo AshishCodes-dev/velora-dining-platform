@@ -52,11 +52,11 @@ export const FoodCard: React.FC<FoodCardProps> = ({ food }) => {
             type="button"
             onClick={() => toggleFavorite(food.id)}
             aria-label={fav ? `Remove ${food.name} from favorites` : `Save ${food.name} to favorites`}
-            className="absolute top-3 right-3 w-9 h-9 rounded-full bg-[#0D0914]/80 hover:bg-[#0D0914] flex items-center justify-center text-white transition-colors"
+            className="absolute top-3 right-3 w-9 h-9 rounded-full bg-canvas/80 hover:bg-canvas flex items-center justify-center text-text transition-colors"
           >
             <Heart
               className={`w-4 h-4 ${
-                fav ? 'fill-[#EC4899] text-[#EC4899]' : 'text-[#F5F2FA]'
+                fav ? 'fill-green-light text-green-light' : 'text-text'
               }`}
             />
           </button>
@@ -65,45 +65,45 @@ export const FoodCard: React.FC<FoodCardProps> = ({ food }) => {
         {/* Content Body */}
         <div className="p-5">
           {/* Unboxed Metadata Line with Typographic Separators (Zero-Pill Rule) */}
-          <div className="flex flex-wrap items-center gap-1.5 text-xs text-[#B8AFC9]">
-            <span className="text-[#8B5CF6] font-medium">{food.categoryName}</span>
+          <div className="flex flex-wrap items-center gap-1.5 text-xs text-text-soft">
+            <span className="text-yellow font-medium">{food.categoryName}</span>
             <span aria-hidden="true">·</span>
-            <span className={food.isVeg ? 'text-[#10B981]' : 'text-[#F59E0B]'}>
+            <span className={food.isVeg ? 'text-green-light' : 'text-danger'}>
               {food.isVeg ? 'Vegetarian' : 'Chef Cut'}
             </span>
             <span aria-hidden="true">·</span>
-            <span className="font-mono-tabular text-[#F59E0B]">
+            <span className="font-mono-tabular text-yellow">
               ★ {food.rating.toFixed(1)} ({food.reviewCount})
             </span>
             {statusKicker && (
               <>
                 <span aria-hidden="true">·</span>
-                <span className="text-[#EC4899] font-medium">{statusKicker}</span>
+                <span className="text-green-light font-medium">{statusKicker}</span>
               </>
             )}
           </div>
 
           {/* Dish Name */}
           <Link to={`/menu/${food.id}`} className="block mt-2">
-            <h3 className="font-serif-display text-xl font-semibold text-[#F5F2FA] group-hover:text-[#A855F7] transition-colors line-clamp-1">
+            <h3 className="font-serif-display text-xl font-semibold text-text group-hover:text-yellow transition-colors line-clamp-1">
               {food.name}
             </h3>
           </Link>
 
           {/* Description */}
-          <p className="text-xs text-[#B8AFC9] mt-1.5 line-clamp-2 leading-relaxed">
+          <p className="text-xs text-text-soft mt-1.5 line-clamp-2 leading-relaxed">
             {food.description}
           </p>
 
           {/* Secondary Unboxed Dietary & Prep Metadata */}
-          <div className="mt-3 flex flex-wrap items-center gap-1.5 text-[11px] text-[#7E7394] font-mono-tabular">
+          <div className="mt-3 flex flex-wrap items-center gap-1.5 text-[11px] text-text-muted font-mono-tabular">
             <span>{food.prepTimeMinutes} min</span>
             <span aria-hidden="true">·</span>
             <span>{food.calories} kcal</span>
             {spicyLabel && (
               <>
                 <span aria-hidden="true">·</span>
-                <span className="text-[#EC4899]">{spicyLabel}</span>
+                <span className="text-yellow">{spicyLabel}</span>
               </>
             )}
             {food.dietaryTags[0] && (
@@ -117,13 +117,13 @@ export const FoodCard: React.FC<FoodCardProps> = ({ food }) => {
       </div>
 
       {/* Footer Price & Action */}
-      <div className="px-5 pb-5 pt-3 border-t border-white/5 flex items-center justify-between gap-3">
+      <div className="px-5 pb-5 pt-3 border-t border-border flex items-center justify-between gap-3">
         <div className="flex items-baseline gap-2 font-mono-tabular">
-          <span className="text-lg font-semibold text-[#F5F2FA]">
+          <span className="text-lg font-semibold text-yellow">
             ${discountedPrice.toFixed(2)}
           </span>
           {food.discountPercent > 0 && (
-            <span className="text-xs text-[#7E7394] line-through">
+            <span className="text-xs text-text-muted line-through">
               ${food.price.toFixed(2)}
             </span>
           )}
@@ -132,14 +132,14 @@ export const FoodCard: React.FC<FoodCardProps> = ({ food }) => {
         <div className="flex items-center gap-2">
           <Link
             to={`/menu/${food.id}`}
-            className="px-3 py-2 rounded-lg text-xs font-medium text-[#B8AFC9] hover:text-[#F5F2FA] hover:bg-white/5 transition-colors whitespace-nowrap"
+            className="px-3 py-2 rounded-lg text-xs font-medium text-text-soft hover:text-text hover:bg-white/5 transition-colors whitespace-nowrap"
           >
             Customize
           </Link>
           <button
             type="button"
             onClick={() => addToCart({ foodId: food.id, quantity: 1 })}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#10B981] hover:bg-[#059669] text-[#081C15] text-xs font-semibold transition-colors whitespace-nowrap shrink-0"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-green-light hover:bg-green-mid text-black text-xs font-semibold transition-colors whitespace-nowrap shrink-0"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>Add to Cart</span>

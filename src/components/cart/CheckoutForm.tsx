@@ -63,7 +63,7 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({
     <form id="checkout-form" onSubmit={onSubmit} className="space-y-6">
       {/* 1. Order Type Selection */}
       <div className="nocturne-surface rounded-2xl p-6 space-y-4">
-        <h2 className="font-serif-display text-2xl font-semibold text-[#F5F2FA]">
+        <h2 className="font-serif-display text-2xl font-semibold text-text">
           1. Select Dining &amp; Dispatch Mode
         </h2>
         <div className="grid grid-cols-3 gap-3">
@@ -74,12 +74,12 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({
               onClick={() => setOrderType(type)}
               className={`p-3.5 rounded-xl border text-center transition-all ${
                 orderType === type
-                  ? 'bg-[#8B5CF6]/20 border-[#8B5CF6] text-[#F5F2FA] font-semibold'
-                  : 'bg-[#0D0914] border-white/10 text-[#B8AFC9] hover:border-white/25'
+                  ? 'bg-yellow/15 border-yellow text-text font-semibold'
+                  : 'bg-canvas border-border text-text-soft hover:border-border-accent'
               }`}
             >
               <span className="text-xs sm:text-sm block">{type}</span>
-              <span className="text-[11px] text-[#7E7394] block mt-0.5">
+              <span className="text-[11px] text-text-muted block mt-0.5">
                 {type === 'Delivery'
                   ? '30–40 mins'
                   : type === 'Pickup'
@@ -93,38 +93,38 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({
 
       {/* 2. Customer Information */}
       <div className="nocturne-surface rounded-2xl p-6 space-y-4">
-        <h2 className="font-serif-display text-2xl font-semibold text-[#F5F2FA]">
+        <h2 className="font-serif-display text-2xl font-semibold text-text">
           2. Guest Contact Information
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
-            <label className="block text-xs text-[#B8AFC9] mb-1">Full Name</label>
+            <label className="block text-xs text-text-soft mb-1">Full Name</label>
             <input
               type="text"
               required
               value={customerName}
               onChange={(e) => setCustomerName(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-[#0D0914] border border-white/10 text-xs text-[#F5F2FA]"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text"
             />
           </div>
           <div>
-            <label className="block text-xs text-[#B8AFC9] mb-1">Phone Number</label>
+            <label className="block text-xs text-text-soft mb-1">Phone Number</label>
             <input
               type="tel"
               required
               value={customerPhone}
               onChange={(e) => setCustomerPhone(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-[#0D0914] border border-white/10 text-xs text-[#F5F2FA]"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text"
             />
           </div>
           <div>
-            <label className="block text-xs text-[#B8AFC9] mb-1">Email Address</label>
+            <label className="block text-xs text-text-soft mb-1">Email Address</label>
             <input
               type="email"
               required
               value={customerEmail}
               onChange={(e) => setCustomerEmail(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl bg-[#0D0914] border border-white/10 text-xs text-[#F5F2FA]"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text"
             />
           </div>
         </div>
@@ -134,7 +134,7 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({
       {orderType === 'Delivery' && (
         <div className="nocturne-surface rounded-2xl p-6 space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="font-serif-display text-2xl font-semibold text-[#F5F2FA]">
+            <h2 className="font-serif-display text-2xl font-semibold text-text">
               3. Delivery Address
             </h2>
             {user && user.addresses.length > 0 && (
@@ -151,7 +151,7 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({
                       setState(addr.state);
                       setPincode(addr.pincode);
                     }}
-                    className="px-2.5 py-1 rounded-md bg-white/5 hover:bg-white/10 text-[11px] text-[#8B5CF6]"
+                    className="px-2.5 py-1 rounded-md bg-elevated hover:bg-surface border border-border text-[11px] text-yellow transition-colors"
                   >
                     Use {addr.label}
                   </button>
@@ -162,7 +162,7 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs text-[#B8AFC9] mb-1">
+              <label className="block text-xs text-text-soft mb-1">
                 House / Flat / Suite
               </label>
               <input
@@ -170,58 +170,58 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({
                 required
                 value={houseFlat}
                 onChange={(e) => setHouseFlat(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-[#0D0914] border border-white/10 text-xs text-[#F5F2FA]"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text"
               />
             </div>
             <div>
-              <label className="block text-xs text-[#B8AFC9] mb-1">Street</label>
+              <label className="block text-xs text-text-soft mb-1">Street</label>
               <input
                 type="text"
                 required
                 value={street}
                 onChange={(e) => setStreet(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-[#0D0914] border border-white/10 text-xs text-[#F5F2FA]"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text"
               />
             </div>
             <div>
-              <label className="block text-xs text-[#B8AFC9] mb-1">Area / District</label>
+              <label className="block text-xs text-text-soft mb-1">Area / District</label>
               <input
                 type="text"
                 required
                 value={area}
                 onChange={(e) => setArea(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-[#0D0914] border border-white/10 text-xs text-[#F5F2FA]"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text"
               />
             </div>
             <div className="grid grid-cols-3 gap-2">
               <div>
-                <label className="block text-xs text-[#B8AFC9] mb-1">City</label>
+                <label className="block text-xs text-text-soft mb-1">City</label>
                 <input
                   type="text"
                   required
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
-                  className="w-full px-2.5 py-2.5 rounded-xl bg-[#0D0914] border border-white/10 text-xs text-[#F5F2FA]"
+                  className="w-full px-2.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text"
                 />
               </div>
               <div>
-                <label className="block text-xs text-[#B8AFC9] mb-1">State</label>
+                <label className="block text-xs text-text-soft mb-1">State</label>
                 <input
                   type="text"
                   required
                   value={state}
                   onChange={(e) => setState(e.target.value)}
-                  className="w-full px-2.5 py-2.5 rounded-xl bg-[#0D0914] border border-white/10 text-xs text-[#F5F2FA]"
+                  className="w-full px-2.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text"
                 />
               </div>
               <div>
-                <label className="block text-xs text-[#B8AFC9] mb-1">Pincode</label>
+                <label className="block text-xs text-text-soft mb-1">Pincode</label>
                 <input
                   type="text"
                   required
                   value={pincode}
                   onChange={(e) => setPincode(e.target.value)}
-                  className="w-full px-2.5 py-2.5 rounded-xl bg-[#0D0914] border border-white/10 text-xs text-[#F5F2FA]"
+                  className="w-full px-2.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text"
                 />
               </div>
             </div>
@@ -231,13 +231,13 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({
 
       {orderType === 'Dine-in' && (
         <div className="nocturne-surface rounded-2xl p-6 space-y-3">
-          <h2 className="font-serif-display text-2xl font-semibold text-[#F5F2FA]">
+          <h2 className="font-serif-display text-2xl font-semibold text-text">
             3. Select Dining Room Table
           </h2>
           <select
             value={tableNumber}
             onChange={(e) => setTableNumber(e.target.value)}
-            className="w-full px-3.5 py-2.5 rounded-xl bg-[#0D0914] border border-white/10 text-xs text-[#F5F2FA]"
+            className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text"
           >
             <option>Table 04 — Velvet Chef Counter</option>
             <option>Table 11 — Main Dining Room</option>
@@ -250,15 +250,15 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({
       {/* 4. Safe Test / Mock Payment Flow */}
       <div className="nocturne-surface rounded-2xl p-6 space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="font-serif-display text-2xl font-semibold text-[#F5F2FA]">
+          <h2 className="font-serif-display text-2xl font-semibold text-text">
             4. Payment Method (Safe Sandbox Mode)
           </h2>
-          <span className="inline-flex items-center gap-1 text-xs text-[#10B981]">
+          <span className="inline-flex items-center gap-1 text-xs text-green-light">
             <ShieldCheck className="w-4 h-4" />
             <span>Test Mode</span>
           </span>
         </div>
-        <p className="text-xs text-[#7E7394]">
+        <p className="text-xs text-text-muted">
           No real card credentials are required. Select a sandbox payment method to simulate checkout and generate your live order tracking receipt.
         </p>
         <div className="space-y-2.5">
@@ -275,13 +275,13 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({
               onClick={() => setPaymentMethod(method)}
               className={`w-full flex items-center justify-between px-4 py-3 rounded-xl border text-xs transition-colors ${
                 paymentMethod === method
-                  ? 'bg-[#10B981]/15 border-[#10B981] text-[#F5F2FA] font-semibold'
-                  : 'bg-[#0D0914] border-white/10 text-[#B8AFC9]'
+                  ? 'bg-green-light/15 border-green-light text-text font-semibold'
+                  : 'bg-canvas border-border text-text-soft'
               }`}
             >
               <span>{method}</span>
               {paymentMethod === method && (
-                <CheckCircle2 className="w-4 h-4 text-[#10B981]" />
+                <CheckCircle2 className="w-4 h-4 text-green-light" />
               )}
             </button>
           ))}

@@ -21,8 +21,8 @@ const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then((m) => ({ de
 function PageLoadingFallback() {
   return (
     <div className="min-h-[50vh] flex flex-col items-center justify-center space-y-4 px-4 py-20">
-      <div className="w-10 h-10 border-2 border-[#8B5CF6]/30 border-t-[#8B5CF6] rounded-full animate-spin" />
-      <p className="font-serif-display text-sm tracking-widest text-[#B8AFC9] uppercase">
+      <div className="w-10 h-10 border-2 border-yellow/30 border-t-yellow rounded-full animate-spin" />
+      <p className="font-serif-display text-sm tracking-widest text-text-soft uppercase">
         Preparing Culinary Course...
       </p>
     </div>
@@ -48,7 +48,7 @@ export function App() {
     <BrowserRouter>
       <RestaurantProvider>
         <ErrorBoundary>
-          <div className="min-h-screen flex flex-col bg-[#0D0914] text-[#F5F2FA]">
+          <div className="min-h-screen flex flex-col bg-canvas text-text">
             <Navbar onOpenSearch={() => setSearchOpen(true)} />
             <GlobalSearchModal
               isOpen={searchOpen}

@@ -12,11 +12,13 @@ describe('Reservation Cancellation & Status Permissions', () => {
 
   beforeAll(async () => {
     // 1. Primary customer (fresh user to avoid conflict with existing reservations)
+    const id = Date.now().toString().slice(-4);
     const uniqueEmail = `cust_resv_${Date.now()}@example.com`;
+    const uniquePhone = `+1 (415) 555-${id.padStart(4, '0')}`;
     const custRes = await request(app).post('/api/auth/register').send({
       name: 'Reservation Owner',
       email: uniqueEmail,
-      phone: '+1 (415) 555-0822',
+      phone: uniquePhone,
       password: 'Password123!',
     });
     customerToken = custRes.body.token;
@@ -25,7 +27,7 @@ describe('Reservation Cancellation & Status Permissions', () => {
     const otherRes = await request(app).post('/api/auth/register').send({
       name: 'Reservation Test User',
       email: `resv_other_${Date.now()}@example.com`,
-      phone: '+1 (415) 555-0999',
+      phone: `+1 (415) 556-${id.padStart(4, '0')}`,
       password: 'Password123!',
     });
     otherCustomerToken = otherRes.body.token;
@@ -42,12 +44,12 @@ describe('Reservation Cancellation & Status Permissions', () => {
       .post('/api/reservations')
       .set('Authorization', `Bearer ${customerToken}`)
       .send({
-        date: '2026-11-20',
+        date: '2028-08-18',
         time: '19:30',
         guests: 2,
         tableArea: 'Velvet Chef Counter',
         name: 'Reservation Owner',
-        phone: '+1 (415) 555-0822',
+        phone: uniquePhone,
         email: uniqueEmail,
         specialRequest: 'Window seating please',
       });

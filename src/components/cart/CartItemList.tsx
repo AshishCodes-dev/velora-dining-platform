@@ -23,15 +23,15 @@ export const CartItemList: React.FC<CartItemListProps> = ({
     <>
       {/* Free Delivery Progress Notice */}
       <div className="nocturne-surface rounded-xl p-4 flex items-center justify-between gap-4">
-        <p className="text-xs text-[#B8AFC9]">
+        <p className="text-xs text-text-soft">
           {amountToFreeDelivery === 0 ? (
-            <span className="text-[#10B981] font-semibold">
+            <span className="text-green-light font-semibold">
               ✓ You have unlocked Complimentary Heated Obsidian Delivery!
             </span>
           ) : (
             <>
               Add{' '}
-              <span className="font-mono-tabular font-semibold text-[#F59E0B]">
+              <span className="font-mono-tabular font-semibold text-yellow">
                 ${amountToFreeDelivery.toFixed(2)}
               </span>{' '}
               more for complimentary heated delivery.
@@ -40,7 +40,7 @@ export const CartItemList: React.FC<CartItemListProps> = ({
         </p>
         <Link
           to="/menu"
-          className="text-xs font-semibold text-[#8B5CF6] hover:underline whitespace-nowrap"
+          className="text-xs font-semibold text-yellow hover:underline whitespace-nowrap"
         >
           + Add Dishes
         </Link>
@@ -49,7 +49,7 @@ export const CartItemList: React.FC<CartItemListProps> = ({
       {/* Active Cart Items */}
       {activeCartItems.length === 0 ? (
         <div className="nocturne-surface rounded-2xl p-8 text-center">
-          <p className="text-sm text-[#B8AFC9]">
+          <p className="text-sm text-text-soft">
             No active items in cart. Move items from "Saved for Later" below or browse the menu.
           </p>
         </div>
@@ -76,32 +76,32 @@ export const CartItemList: React.FC<CartItemListProps> = ({
                 <div className="space-y-1 min-w-0 flex-1">
                   <Link
                     to={`/menu/${item.foodId}`}
-                    className="font-serif-display text-lg font-semibold text-[#F5F2FA] hover:text-[#8B5CF6] block truncate"
+                    className="font-serif-display text-lg font-semibold text-text hover:text-yellow block truncate"
                   >
                     {item.foodName}
                   </Link>
-                  <p className="text-xs text-[#B8AFC9]">
-                    Size: <span className="text-[#F5F2FA]">{item.selectedSize}</span>
+                  <p className="text-xs text-text-soft">
+                    Size: <span className="text-text">{item.selectedSize}</span>
                     {item.selectedAddons.length > 0 && (
                       <>
                         {' '}
                         · Add-ons:{' '}
-                        <span className="text-[#10B981]">
+                        <span className="text-green-light">
                           {item.selectedAddons.map((a) => a.name).join(', ')}
                         </span>
                       </>
                     )}
                   </p>
                   {item.specialInstructions && (
-                    <p className="text-[11px] text-[#F59E0B]">
+                    <p className="text-[11px] text-yellow">
                       Note: "{item.specialInstructions}"
                     </p>
                   )}
-                  <div className="pt-1 flex items-center gap-4 text-xs text-[#7E7394]">
+                  <div className="pt-1 flex items-center gap-4 text-xs text-text-muted">
                     <button
                       type="button"
                       onClick={() => onUpdateCartItem(item.id, { savedForLater: true })}
-                      className="inline-flex items-center gap-1 hover:text-[#F5F2FA] transition-colors"
+                      className="inline-flex items-center gap-1 hover:text-text transition-colors"
                     >
                       <Bookmark className="w-3.5 h-3.5" />
                       <span>Save for later</span>
@@ -109,7 +109,7 @@ export const CartItemList: React.FC<CartItemListProps> = ({
                     <button
                       type="button"
                       onClick={() => onRemoveCartItem(item.id)}
-                      className="inline-flex items-center gap-1 text-[#F43F5E] hover:underline"
+                      className="inline-flex items-center gap-1 text-danger hover:underline"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                       <span>Remove</span>
@@ -120,21 +120,21 @@ export const CartItemList: React.FC<CartItemListProps> = ({
 
               {/* Quantity & Line Total */}
               <div className="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-3">
-                <span className="font-mono-tabular text-base font-semibold text-[#F59E0B]">
+                <span className="font-mono-tabular text-base font-semibold text-yellow">
                   ${(item.unitFinalPrice * item.quantity).toFixed(2)}
                 </span>
-                <div className="flex items-center gap-2.5 px-2.5 py-1 rounded-lg bg-[#0D0914] border border-white/10">
+                <div className="flex items-center gap-2.5 px-2.5 py-1 rounded-lg bg-canvas border border-border">
                   <button
                     type="button"
                     onClick={() =>
                       onUpdateCartItem(item.id, { quantity: item.quantity - 1 })
                     }
                     aria-label="Decrease quantity"
-                    className="p-1 text-[#B8AFC9] hover:text-white"
+                    className="p-1 text-text-soft hover:text-text"
                   >
                     <Minus className="w-3.5 h-3.5" />
                   </button>
-                  <span className="font-mono-tabular text-xs font-semibold text-[#F5F2FA] w-5 text-center">
+                  <span className="font-mono-tabular text-xs font-semibold text-text w-5 text-center">
                     {item.quantity}
                   </span>
                   <button
@@ -143,7 +143,7 @@ export const CartItemList: React.FC<CartItemListProps> = ({
                       onUpdateCartItem(item.id, { quantity: item.quantity + 1 })
                     }
                     aria-label="Increase quantity"
-                    className="p-1 text-[#B8AFC9] hover:text-white"
+                    className="p-1 text-text-soft hover:text-text"
                   >
                     <Plus className="w-3.5 h-3.5" />
                   </button>
@@ -157,7 +157,7 @@ export const CartItemList: React.FC<CartItemListProps> = ({
       {/* Saved For Later Section */}
       {savedCartItems.length > 0 && (
         <div className="pt-6 space-y-4">
-          <h2 className="font-serif-display text-2xl font-semibold text-[#F5F2FA]">
+          <h2 className="font-serif-display text-2xl font-semibold text-text">
             Saved for Later ({savedCartItems.length})
           </h2>
           <div className="space-y-3">
@@ -167,8 +167,8 @@ export const CartItemList: React.FC<CartItemListProps> = ({
                 className="nocturne-surface rounded-xl p-4 flex items-center justify-between gap-4 opacity-90"
               >
                 <div>
-                  <p className="text-sm font-semibold text-[#F5F2FA]">{item.foodName}</p>
-                  <p className="text-xs text-[#7E7394] font-mono-tabular">
+                  <p className="text-sm font-semibold text-text">{item.foodName}</p>
+                  <p className="text-xs text-text-muted font-mono-tabular">
                     {item.selectedSize} · ${item.unitFinalPrice.toFixed(2)}
                   </p>
                 </div>
@@ -176,14 +176,14 @@ export const CartItemList: React.FC<CartItemListProps> = ({
                   <button
                     type="button"
                     onClick={() => onUpdateCartItem(item.id, { savedForLater: false })}
-                    className="px-3 py-1.5 rounded-lg bg-[#8B5CF6] text-white text-xs font-semibold"
+                    className="px-3 py-1.5 rounded-lg bg-yellow text-black hover:bg-yellow-hover text-xs font-semibold transition-colors"
                   >
                     Move to Cart
                   </button>
                   <button
                     type="button"
                     onClick={() => onRemoveCartItem(item.id)}
-                    className="p-1.5 text-[#F43F5E] hover:bg-white/5 rounded-lg"
+                    className="p-1.5 text-danger hover:bg-elevated rounded-lg transition-colors"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>

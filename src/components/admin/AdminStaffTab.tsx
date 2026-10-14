@@ -45,7 +45,7 @@ export const AdminStaffTab: React.FC<AdminStaffTabProps> = ({
         onSubmit={handleSubmit}
         className="lg:col-span-4 nocturne-surface rounded-2xl p-6 space-y-4 h-fit"
       >
-        <h2 className="font-serif-display text-xl font-semibold text-[#F5F2FA]">
+        <h2 className="font-serif-display text-xl font-semibold text-text">
           Add Culinary / Hospitality Staff
         </h2>
         <input
@@ -54,7 +54,7 @@ export const AdminStaffTab: React.FC<AdminStaffTabProps> = ({
           value={staffName}
           onChange={(e) => setStaffName(e.target.value)}
           placeholder="Full Name"
-          className="w-full px-3.5 py-2 rounded-xl bg-[#0D0914] border border-white/10 text-xs text-[#F5F2FA]"
+          className="w-full px-3.5 py-2 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted focus:border-yellow"
         />
         <input
           type="text"
@@ -62,12 +62,12 @@ export const AdminStaffTab: React.FC<AdminStaffTabProps> = ({
           value={staffRole}
           onChange={(e) => setStaffRole(e.target.value)}
           placeholder="Role Title (e.g. Sous Chef)"
-          className="w-full px-3.5 py-2 rounded-xl bg-[#0D0914] border border-white/10 text-xs text-[#F5F2FA]"
+          className="w-full px-3.5 py-2 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted focus:border-yellow"
         />
         <select
           value={staffDept}
           onChange={(e) => setStaffDept(e.target.value as StaffMember['department'])}
-          className="w-full px-3.5 py-2 rounded-xl bg-[#0D0914] border border-white/10 text-xs text-[#F5F2FA]"
+          className="w-full px-3.5 py-2 rounded-xl bg-canvas border border-border text-xs text-text focus:border-yellow"
         >
           <option value="Culinary">Culinary</option>
           <option value="Sommelier & Bar">Sommelier &amp; Bar</option>
@@ -76,7 +76,7 @@ export const AdminStaffTab: React.FC<AdminStaffTabProps> = ({
         </select>
         <button
           type="submit"
-          className="w-full py-2.5 rounded-xl bg-[#8B5CF6] text-white text-xs font-semibold"
+          className="w-full py-2.5 rounded-xl bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold transition-colors"
         >
           Add Staff Member
         </button>
@@ -89,10 +89,10 @@ export const AdminStaffTab: React.FC<AdminStaffTabProps> = ({
             className="nocturne-surface rounded-xl p-5 flex items-center justify-between gap-4"
           >
             <div>
-              <p className="text-sm font-semibold text-[#F5F2FA]">
-                {s.name} · <span className="text-[#8B5CF6]">{s.roleTitle}</span>
+              <p className="text-sm font-semibold text-text">
+                {s.name} · <span className="text-yellow">{s.roleTitle}</span>
               </p>
-              <p className="text-xs text-[#B8AFC9] mt-0.5">
+              <p className="text-xs text-text-soft mt-0.5">
                 {s.department} · {s.shift}
               </p>
             </div>
@@ -100,10 +100,10 @@ export const AdminStaffTab: React.FC<AdminStaffTabProps> = ({
               <button
                 type="button"
                 onClick={() => onToggleStatus(s.id)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                   s.status === 'ON_DUTY'
-                    ? 'bg-[#10B981]/20 text-[#10B981]'
-                    : 'bg-white/5 text-[#7E7394]'
+                    ? 'bg-green-light/15 text-green-light'
+                    : 'bg-white/5 text-text-muted'
                 }`}
               >
                 {s.status === 'ON_DUTY' ? 'On Duty' : 'Off Duty'}

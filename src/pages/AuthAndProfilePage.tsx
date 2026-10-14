@@ -144,19 +144,19 @@ export const AuthAndProfilePage: React.FC = () => {
     <div className="max-w-[1280px] mx-auto px-4 sm:px-6 py-10 space-y-10">
       {/* Demo Accounts Bar (Controlled by VITE_DEMO_MODE=true) */}
       {isDemoMode && (
-        <div className="nocturne-surface rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-[#8B5CF6]/30">
+        <div className="nocturne-surface rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-yellow/30">
           <div className="flex items-center gap-3">
-            <Shield className="w-5 h-5 text-[#8B5CF6] shrink-0" />
+            <Shield className="w-5 h-5 text-yellow shrink-0" />
             <div>
               <div className="flex items-center gap-2">
-                <p className="text-xs font-semibold text-[#F5F2FA]">
+                <p className="text-xs font-semibold text-text">
                   Demo Accounts
                 </p>
-                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#8B5CF6]/20 text-[#A78BFA] border border-[#8B5CF6]/30">
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-green-deep text-green-light border border-green-mid">
                   DEMO MODE
                 </span>
               </div>
-              <p className="text-[11px] text-[#B8AFC9]">
+              <p className="text-[11px] text-text-soft">
                 One-click access to pre-configured Customer, Staff, and Admin test accounts.
               </p>
             </div>
@@ -165,7 +165,7 @@ export const AuthAndProfilePage: React.FC = () => {
             <button
               type="button"
               onClick={() => setShowDemoAccounts((prev) => !prev)}
-              className="px-3.5 py-2 rounded-xl text-xs font-semibold bg-[#8B5CF6]/20 text-[#C4B5FD] hover:bg-[#8B5CF6]/30 border border-[#8B5CF6]/40 transition-colors"
+              className="px-3.5 py-2 rounded-xl text-xs font-semibold bg-green-deep border border-green-mid text-green-light hover:bg-green-mid/30 transition-colors"
             >
               {showDemoAccounts ? 'Hide Demo Accounts ▲' : 'Demo Accounts ▼'}
             </button>
@@ -176,8 +176,8 @@ export const AuthAndProfilePage: React.FC = () => {
                   onClick={() => demoLogin('CUSTOMER')}
                   className={`px-3.5 py-2 rounded-xl text-xs font-semibold transition-colors ${
                     user?.role === 'CUSTOMER'
-                      ? 'bg-[#10B981] text-[#081C15]'
-                      : 'bg-[#0D0914] text-[#B8AFC9] hover:text-white border border-white/10'
+                      ? 'bg-green-light text-black'
+                      : 'bg-canvas text-text-soft hover:text-text border border-border'
                   }`}
                 >
                   Customer (Elena)
@@ -187,8 +187,8 @@ export const AuthAndProfilePage: React.FC = () => {
                   onClick={() => demoLogin('STAFF')}
                   className={`px-3.5 py-2 rounded-xl text-xs font-semibold transition-colors ${
                     user?.role === 'STAFF'
-                      ? 'bg-[#F59E0B] text-[#0D0914]'
-                      : 'bg-[#0D0914] text-[#B8AFC9] hover:text-white border border-white/10'
+                      ? 'bg-yellow text-black'
+                      : 'bg-canvas text-text-soft hover:text-text border border-border'
                   }`}
                 >
                   Staff (Maître D’)
@@ -200,8 +200,8 @@ export const AuthAndProfilePage: React.FC = () => {
                   }}
                   className={`px-3.5 py-2 rounded-xl text-xs font-semibold transition-colors ${
                     user?.role === 'ADMIN'
-                      ? 'bg-[#8B5CF6] text-white'
-                      : 'bg-[#0D0914] text-[#B8AFC9] hover:text-white border border-white/10'
+                      ? 'bg-yellow text-black'
+                      : 'bg-canvas text-text-soft hover:text-text border border-border'
                   }`}
                 >
                   Admin (Chef Julian)
@@ -212,7 +212,7 @@ export const AuthAndProfilePage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => navigate('/admin')}
-                className="px-3.5 py-2 rounded-xl bg-[#EC4899] text-white text-xs font-semibold"
+                className="px-3.5 py-2 rounded-xl bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold transition-colors"
               >
                 Open Admin Console →
               </button>

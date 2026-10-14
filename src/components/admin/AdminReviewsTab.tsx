@@ -21,11 +21,11 @@ export const AdminReviewsTab: React.FC<AdminReviewsTabProps> = ({
           className="nocturne-surface rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
         >
           <div className="space-y-1">
-            <p className="text-xs text-[#8B5CF6] font-semibold">
+            <p className="text-xs text-yellow font-semibold">
               {rev.foodName} · ★ {rev.rating}.0 by {rev.userName}
             </p>
-            <p className="text-xs sm:text-sm text-[#F5F2FA]">{rev.comment}</p>
-            <p className="text-[11px] font-mono-tabular text-[#7E7394]">
+            <p className="text-xs sm:text-sm text-text">{rev.comment}</p>
+            <p className="text-[11px] font-mono-tabular text-text-muted">
               Status: {rev.status} · {new Date(rev.createdAt).toLocaleDateString()}
             </p>
           </div>
@@ -33,7 +33,7 @@ export const AdminReviewsTab: React.FC<AdminReviewsTabProps> = ({
             <button
               type="button"
               onClick={() => onToggleVisibility(rev)}
-              className="px-3 py-1.5 rounded-lg border border-white/15 text-xs text-[#F5F2FA]"
+              className="px-3 py-1.5 rounded-lg border border-border hover:border-yellow text-xs text-text transition-colors"
             >
               {rev.status === 'PUBLISHED' ? 'Hide' : 'Publish'}
             </button>
@@ -41,7 +41,7 @@ export const AdminReviewsTab: React.FC<AdminReviewsTabProps> = ({
               type="button"
               onClick={() => onDeleteReview(rev.id)}
               aria-label={`Delete review by ${rev.userName}`}
-              className="p-2 text-[#F43F5E] hover:bg-white/5 rounded-lg"
+              className="p-2 text-danger hover:bg-white/5 rounded-lg transition-colors"
             >
               <Trash2 className="w-4 h-4" />
             </button>

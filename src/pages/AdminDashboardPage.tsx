@@ -342,26 +342,26 @@ export const AdminDashboardPage: React.FC = () => {
   if (!isAuthorized) {
     return (
       <div className="max-w-xl mx-auto px-4 py-20">
-        <div className="nocturne-surface rounded-2xl p-8 text-center space-y-5 border border-[#8B5CF6]/40">
-          <ShieldAlert className="w-10 h-10 text-[#8B5CF6] mx-auto" />
-          <h1 className="font-serif-display text-3xl font-semibold text-[#F5F2FA]">
+        <div className="nocturne-surface rounded-2xl p-8 text-center space-y-5 border border-yellow/40">
+          <ShieldAlert className="w-10 h-10 text-yellow mx-auto" />
+          <h1 className="font-serif-display text-3xl font-semibold text-text">
             Executive Restaurant Admin Console
           </h1>
-          <p className="text-xs sm:text-sm text-[#B8AFC9] leading-relaxed">
+          <p className="text-xs sm:text-sm text-text-soft leading-relaxed">
             This workspace is protected by Role-Based Access Control (ADMIN / STAFF). Click below to sign in instantly as Executive Chef Julian Vance (Admin) or Maître D’ Sora Takahashi (Staff).
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
             <button
               type="button"
               onClick={() => demoLogin('ADMIN')}
-              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[#8B5CF6] hover:bg-[#7C3AED] text-white text-xs font-semibold transition-colors"
+              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold transition-colors"
             >
               Sign In as Executive Admin
             </button>
             <button
               type="button"
               onClick={() => demoLogin('STAFF')}
-              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[#10B981] hover:bg-[#059669] text-[#081C15] text-xs font-semibold transition-colors"
+              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-green-light hover:bg-green-mid text-black text-xs font-semibold transition-colors"
             >
               Sign In as Staff Member
             </button>
@@ -392,17 +392,17 @@ export const AdminDashboardPage: React.FC = () => {
     <div className="min-h-[calc(100vh-4rem)] flex flex-col md:flex-row">
       {/* SIDEBAR NAVIGATION */}
       <aside
-        className={`bg-[#0D0914] border-r border-white/10 p-4 transition-all duration-200 shrink-0 ${
+        className={`bg-canvas border-r border-border p-4 transition-all duration-200 shrink-0 ${
           sidebarCollapsed ? 'w-full md:w-20' : 'w-full md:w-64'
         }`}
       >
-        <div className="flex items-center justify-between pb-4 mb-4 border-b border-white/10">
+        <div className="flex items-center justify-between pb-4 mb-4 border-b border-border">
           {!sidebarCollapsed && (
             <div className="min-w-0">
-              <p className="font-serif-display font-bold text-sm tracking-wider text-[#F5F2FA] truncate">
+              <p className="font-serif-display font-bold text-sm tracking-wider text-text truncate">
                 VELORA OPS
               </p>
-              <p className="text-[11px] text-[#7E7394] truncate">
+              <p className="text-[11px] text-text-muted truncate">
                 Role: {user?.role} · {user?.name.split(' ')[0]}
               </p>
             </div>
@@ -411,7 +411,7 @@ export const AdminDashboardPage: React.FC = () => {
             type="button"
             onClick={() => setSidebarCollapsed((prev) => !prev)}
             aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-            className="p-1.5 rounded-lg text-[#7E7394] hover:text-white hover:bg-white/5 hidden md:block shrink-0"
+            className="p-1.5 rounded-lg text-text-muted hover:text-text hover:bg-white/5 hidden md:block shrink-0"
           >
             {sidebarCollapsed ? (
               <ChevronRight className="w-4 h-4" />
@@ -432,8 +432,8 @@ export const AdminDashboardPage: React.FC = () => {
                 onClick={() => selectTab(item.id)}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs transition-colors whitespace-nowrap shrink-0 ${
                   active
-                    ? 'bg-[#8B5CF6] text-white font-semibold'
-                    : 'text-[#B8AFC9] hover:text-white hover:bg-white/5'
+                    ? 'bg-yellow text-black font-semibold'
+                    : 'text-text-soft hover:text-text hover:bg-white/5'
                 }`}
               >
                 <Icon className="w-4 h-4 shrink-0" />
@@ -445,7 +445,7 @@ export const AdminDashboardPage: React.FC = () => {
           <button
             type="button"
             onClick={() => navigate('/profile')}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-[#B8AFC9] hover:text-white hover:bg-white/5 whitespace-nowrap shrink-0"
+            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-text-soft hover:text-text hover:bg-white/5 whitespace-nowrap shrink-0"
           >
             <Users className="w-4 h-4 shrink-0" />
             {!sidebarCollapsed && <span>Profile</span>}
@@ -457,7 +457,7 @@ export const AdminDashboardPage: React.FC = () => {
               logout();
               navigate('/');
             }}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-[#F43F5E] hover:bg-white/5 whitespace-nowrap shrink-0"
+            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-danger hover:bg-white/5 whitespace-nowrap shrink-0"
           >
             <LogOut className="w-4 h-4 shrink-0" />
             {!sidebarCollapsed && <span>Logout</span>}
@@ -468,12 +468,12 @@ export const AdminDashboardPage: React.FC = () => {
       {/* MAIN ADMIN CONTENT VIEWPORT */}
       <main className="flex-1 p-4 sm:p-8 max-w-[1400px] w-full mx-auto space-y-8 overflow-x-hidden">
         {/* Top Bar Breadcrumb */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-5">
           <div>
-            <p className="text-xs text-[#7E7394] font-mono-tabular">
+            <p className="text-xs text-text-muted font-mono-tabular">
               Admin Console / {activeTab.toUpperCase()}
             </p>
-            <h1 className="font-serif-display text-3xl font-semibold text-[#F5F2FA] mt-0.5 capitalize">
+            <h1 className="font-serif-display text-3xl font-semibold text-text mt-0.5 capitalize">
               {sidebarItems.find((i) => i.id === activeTab)?.label || 'Dashboard'}
             </h1>
           </div>
@@ -481,7 +481,7 @@ export const AdminDashboardPage: React.FC = () => {
             <button
               type="button"
               onClick={fetchAllAdminData}
-              className="px-3.5 py-2 rounded-xl border border-white/15 hover:border-[#8B5CF6] text-xs font-medium text-[#F5F2FA]"
+              className="px-3.5 py-2 rounded-xl border border-border hover:border-yellow text-xs font-medium text-text transition-colors"
             >
               {loadingAdmin ? 'Syncing...' : 'Refresh Telemetry'}
             </button>
@@ -492,7 +492,7 @@ export const AdminDashboardPage: React.FC = () => {
                 setShowDishForm(true);
                 selectTab('menu');
               }}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#10B981] text-[#081C15] text-xs font-semibold"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-yellow text-black hover:bg-yellow-hover text-xs font-semibold transition-colors"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Add Dish</span>

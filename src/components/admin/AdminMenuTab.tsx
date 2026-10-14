@@ -77,10 +77,10 @@ export const AdminMenuTab: React.FC<AdminMenuTabProps> = ({
       {showDishForm && (
         <form
           onSubmit={handleSubmit}
-          className="nocturne-surface rounded-2xl p-6 space-y-4 border border-[#8B5CF6]/40"
+          className="nocturne-surface rounded-2xl p-6 space-y-4 border border-yellow/40"
         >
           <div className="flex items-center justify-between">
-            <h2 className="font-serif-display text-2xl font-semibold text-[#F5F2FA]">
+            <h2 className="font-serif-display text-2xl font-semibold text-text">
               {editingFood ? `Edit Dish: ${editingFood.name}` : 'Create New Culinary Dish'}
             </h2>
             <button
@@ -89,7 +89,7 @@ export const AdminMenuTab: React.FC<AdminMenuTabProps> = ({
                 setShowDishForm(false);
                 setEditingFood(null);
               }}
-              className="p-1.5 text-[#7E7394] hover:text-white"
+              className="p-1.5 text-text-muted hover:text-text transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
@@ -97,21 +97,21 @@ export const AdminMenuTab: React.FC<AdminMenuTabProps> = ({
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs text-[#B8AFC9] mb-1">Dish Name</label>
+              <label className="block text-xs text-text-soft mb-1">Dish Name</label>
               <input
                 type="text"
                 required
                 value={dishName}
                 onChange={(e) => setDishName(e.target.value)}
-                className="w-full px-3.5 py-2 rounded-xl bg-[#0D0914] border border-white/10 text-xs text-[#F5F2FA]"
+                className="w-full px-3.5 py-2 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted focus:border-yellow"
               />
             </div>
             <div>
-              <label className="block text-xs text-[#B8AFC9] mb-1">Category</label>
+              <label className="block text-xs text-text-soft mb-1">Category</label>
               <select
                 value={dishCat}
                 onChange={(e) => setDishCat(e.target.value)}
-                className="w-full px-3.5 py-2 rounded-xl bg-[#0D0914] border border-white/10 text-xs text-[#F5F2FA]"
+                className="w-full px-3.5 py-2 rounded-xl bg-canvas border border-border text-xs text-text focus:border-yellow"
               >
                 {categories.map((c) => (
                   <option key={c.id} value={c.name}>
@@ -122,22 +122,22 @@ export const AdminMenuTab: React.FC<AdminMenuTabProps> = ({
             </div>
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className="block text-xs text-[#B8AFC9] mb-1">Price ($)</label>
+                <label className="block text-xs text-text-soft mb-1">Price ($)</label>
                 <input
                   type="number"
                   required
                   value={dishPrice}
                   onChange={(e) => setDishPrice(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-[#0D0914] border border-white/10 text-xs font-mono-tabular text-[#F5F2FA]"
+                  className="w-full px-3 py-2 rounded-xl bg-canvas border border-border text-xs font-mono-tabular text-text focus:border-yellow"
                 />
               </div>
               <div>
-                <label className="block text-xs text-[#B8AFC9] mb-1">Discount (%)</label>
+                <label className="block text-xs text-text-soft mb-1">Discount (%)</label>
                 <input
                   type="number"
                   value={dishDiscount}
                   onChange={(e) => setDishDiscount(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-[#0D0914] border border-white/10 text-xs font-mono-tabular text-[#F5F2FA]"
+                  className="w-full px-3 py-2 rounded-xl bg-canvas border border-border text-xs font-mono-tabular text-text focus:border-yellow"
                 />
               </div>
             </div>
@@ -145,40 +145,40 @@ export const AdminMenuTab: React.FC<AdminMenuTabProps> = ({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs text-[#B8AFC9] mb-1">
+              <label className="block text-xs text-text-soft mb-1">
                 Ingredients (comma separated)
               </label>
               <input
                 type="text"
                 value={dishIngredients}
                 onChange={(e) => setDishIngredients(e.target.value)}
-                className="w-full px-3.5 py-2 rounded-xl bg-[#0D0914] border border-white/10 text-xs text-[#F5F2FA]"
+                className="w-full px-3.5 py-2 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted focus:border-yellow"
               />
             </div>
             <div>
-              <label className="block text-xs text-[#B8AFC9] mb-1">
+              <label className="block text-xs text-text-soft mb-1">
                 Dietary Tags (comma separated)
               </label>
               <input
                 type="text"
                 value={dishTags}
                 onChange={(e) => setDishTags(e.target.value)}
-                className="w-full px-3.5 py-2 rounded-xl bg-[#0D0914] border border-white/10 text-xs text-[#F5F2FA]"
+                className="w-full px-3.5 py-2 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted focus:border-yellow"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs text-[#B8AFC9] mb-1">Description</label>
+            <label className="block text-xs text-text-soft mb-1">Description</label>
             <textarea
               rows={2}
               value={dishDesc}
               onChange={(e) => setDishDesc(e.target.value)}
-              className="w-full px-3.5 py-2 rounded-xl bg-[#0D0914] border border-white/10 text-xs text-[#F5F2FA]"
+              className="w-full px-3.5 py-2 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted focus:border-yellow"
             />
           </div>
 
-          <div className="flex flex-wrap items-center gap-6 text-xs text-[#F5F2FA]">
+          <div className="flex flex-wrap items-center gap-6 text-xs text-text">
             <label className="flex items-center gap-2 cursor-pointer">
               <input
                 type="checkbox"
@@ -208,7 +208,7 @@ export const AdminMenuTab: React.FC<AdminMenuTabProps> = ({
           <div className="flex items-center gap-3 pt-2">
             <button
               type="submit"
-              className="px-5 py-2.5 rounded-xl bg-[#10B981] text-[#081C15] text-xs font-semibold"
+              className="px-5 py-2.5 rounded-xl bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold transition-colors"
             >
               {editingFood ? 'Update Dish' : 'Save New Dish'}
             </button>
@@ -218,7 +218,7 @@ export const AdminMenuTab: React.FC<AdminMenuTabProps> = ({
                 setShowDishForm(false);
                 setEditingFood(null);
               }}
-              className="px-4 py-2.5 rounded-xl border border-white/15 text-xs text-[#B8AFC9]"
+              className="px-4 py-2.5 rounded-xl border border-border hover:border-yellow text-xs text-text-soft hover:text-text transition-colors"
             >
               Cancel
             </button>
@@ -228,7 +228,7 @@ export const AdminMenuTab: React.FC<AdminMenuTabProps> = ({
 
       <div className="nocturne-surface rounded-2xl overflow-x-auto">
         <table className="w-full text-left text-xs">
-          <thead className="text-[#7E7394] border-b border-white/10">
+          <thead className="text-text-muted border-b border-border">
             <tr>
               <th className="p-4">Dish</th>
               <th className="p-4">Category</th>
@@ -238,27 +238,27 @@ export const AdminMenuTab: React.FC<AdminMenuTabProps> = ({
               <th className="p-4 text-right">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-white/5 font-mono-tabular">
+          <tbody className="divide-y divide-border font-mono-tabular">
             {foods.map((food) => (
               <tr key={food.id} className="hover:bg-white/5">
                 <td className="p-4 font-sans">
-                  <p className="font-semibold text-[#F5F2FA]">{food.name}</p>
-                  <p className="text-[11px] text-[#7E7394]">
+                  <p className="font-semibold text-text">{food.name}</p>
+                  <p className="text-[11px] text-text-muted">
                     {food.isVeg ? 'Vegetarian' : 'Non-Veg'} · {food.prepTimeMinutes}m ·{' '}
                     {food.calories} kcal
                   </p>
                 </td>
-                <td className="p-4 font-sans text-[#B8AFC9]">{food.categoryName}</td>
-                <td className="p-4 text-right text-[#F59E0B]">${food.price.toFixed(2)}</td>
-                <td className="p-4 text-right text-[#EC4899]">{food.discountPercent}%</td>
+                <td className="p-4 font-sans text-text-soft">{food.categoryName}</td>
+                <td className="p-4 text-right text-yellow">${food.price.toFixed(2)}</td>
+                <td className="p-4 text-right text-yellow">{food.discountPercent}%</td>
                 <td className="p-4 font-sans">
                   <button
                     type="button"
                     onClick={() => onToggleDishAvailability(food)}
-                    className={`px-2.5 py-1 rounded-md text-[11px] font-semibold ${
+                    className={`px-2.5 py-1 rounded-md text-[11px] font-semibold transition-colors ${
                       food.isAvailable
-                        ? 'bg-[#10B981]/20 text-[#10B981]'
-                        : 'bg-white/5 text-[#7E7394]'
+                        ? 'bg-green-light/15 text-green-light'
+                        : 'bg-white/5 text-text-muted'
                     }`}
                   >
                     {food.isAvailable ? 'Available' : 'Disabled'}
@@ -270,7 +270,7 @@ export const AdminMenuTab: React.FC<AdminMenuTabProps> = ({
                       type="button"
                       onClick={() => openEdit(food)}
                       aria-label={`Edit ${food.name}`}
-                      className="p-1.5 rounded-lg text-[#B8AFC9] hover:text-white hover:bg-white/10"
+                      className="p-1.5 rounded-lg text-text-soft hover:text-text hover:bg-white/10 transition-colors"
                     >
                       <Edit3 className="w-4 h-4" />
                     </button>
@@ -278,7 +278,7 @@ export const AdminMenuTab: React.FC<AdminMenuTabProps> = ({
                       type="button"
                       onClick={() => onDeleteDish(food.id)}
                       aria-label={`Delete ${food.name}`}
-                      className="p-1.5 rounded-lg text-[#F43F5E] hover:bg-white/10"
+                      className="p-1.5 rounded-lg text-danger hover:bg-white/10 transition-colors"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>

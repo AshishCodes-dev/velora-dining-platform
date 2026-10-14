@@ -115,12 +115,12 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
       onClick={onClose}
     >
       <div
-        className="w-full max-w-2xl rounded-2xl bg-[#150F20] border border-white/10 shadow-2xl overflow-hidden"
+        className="w-full max-w-2xl rounded-2xl bg-elevated border border-border shadow-2xl overflow-hidden focus-within:ring-2 focus-within:ring-yellow/40 focus-within:border-yellow"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Search Input Header */}
-        <div className="flex items-center gap-3 px-5 py-4 border-b border-white/10">
-          <Search className="w-5 h-5 text-[#8B5CF6] shrink-0" />
+        <div className="flex items-center gap-3 px-5 py-4 border-b border-border">
+          <Search className="w-5 h-5 text-yellow shrink-0" />
           <input
             ref={inputRef}
             type="text"
@@ -128,13 +128,13 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search by dish name, category, ingredient (e.g. Truffle, Yuzu)..."
             aria-label="Search dishes and ingredients"
-            className="w-full bg-transparent text-sm sm:text-base text-[#F5F2FA] placeholder-[#7E7394] focus:outline-none"
+            className="w-full bg-transparent text-sm sm:text-base text-text placeholder-text-muted focus:outline-none"
           />
           {query && (
             <button
               type="button"
               onClick={() => setQuery('')}
-              className="text-xs text-[#7E7394] hover:text-[#F5F2FA]"
+              className="text-xs text-text-muted hover:text-text"
             >
               Clear
             </button>
@@ -143,15 +143,15 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
             type="button"
             onClick={onClose}
             aria-label="Close search"
-            className="p-1.5 rounded-lg text-[#B8AFC9] hover:text-white hover:bg-white/5"
+            className="p-1.5 rounded-lg text-text-soft hover:text-text hover:bg-white/5"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Suggestions & Recent Searches */}
-        <div className="px-5 py-3 bg-[#110B1A] border-b border-white/5 flex flex-wrap items-center gap-2">
-          <span className="text-xs text-[#7E7394] mr-1">Suggestions:</span>
+        <div className="px-5 py-3 bg-surface border-b border-border flex flex-wrap items-center gap-2">
+          <span className="text-xs text-text-muted mr-1">Suggestions:</span>
           {SUGGESTED_TERMS.map((term) => (
             <button
               key={term}
@@ -162,8 +162,8 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
               }}
               className={`px-2.5 py-1 rounded-md text-xs font-medium transition-colors ${
                 query.toLowerCase() === term.toLowerCase()
-                  ? 'bg-[#8B5CF6] text-white'
-                  : 'bg-white/5 text-[#B8AFC9] hover:text-white hover:bg-white/10'
+                  ? 'bg-yellow text-black'
+                  : 'bg-white/5 text-text-soft hover:text-text hover:bg-white/10'
               }`}
             >
               {term}
@@ -173,7 +173,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
 
         {/* Search Results List */}
         <div className="max-h-[60vh] overflow-y-auto p-5 space-y-3" role="listbox">
-          <div className="flex items-center justify-between text-xs text-[#7E7394] pb-1">
+          <div className="flex items-center justify-between text-xs text-text-muted pb-1">
             <span>
               {query.trim()
                 ? `${results.length} matching culinary creations`
@@ -186,14 +186,14 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
 
           {results.length === 0 ? (
             <div className="py-12 text-center space-y-3">
-              <p className="font-serif-display text-2xl text-[#F5F2FA]">No dishes found</p>
-              <p className="text-xs text-[#7E7394] max-w-md mx-auto">
+              <p className="font-serif-display text-2xl text-text">No dishes found</p>
+              <p className="text-xs text-text-muted max-w-md mx-auto">
                 We couldn’t find any dishes matching "{query}". Try searching for Wagyu, Burrata, Saffron, Pasta, or Desserts.
               </p>
               <button
                 type="button"
                 onClick={() => setQuery('')}
-                className="px-4 py-2 rounded-lg bg-[#8B5CF6] text-white text-xs font-semibold"
+                className="px-4 py-2 rounded-lg bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold"
               >
                 Reset Search
               </button>
@@ -209,8 +209,8 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
                   aria-selected={isSelected}
                   className={`flex items-center justify-between gap-4 p-3 rounded-xl transition-all ${
                     isSelected
-                      ? 'bg-[#2D1F47] border border-[#8B5CF6]'
-                      : 'bg-[#1B132A] hover:bg-[#221835] border border-transparent'
+                      ? 'bg-green-deep border border-yellow'
+                      : 'bg-surface hover:bg-green-deep/30 border border-transparent'
                   }`}
                 >
                   <div
@@ -226,24 +226,32 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
                       />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-sm font-semibold text-[#F5F2FA] truncate">{dish.name}</p>
-                      <p className="text-xs text-[#7E7394] truncate mt-0.5">
-                        {dish.categoryName} · {dish.isVeg ? 'Vegetarian' : 'Non-Veg'} · {dish.prepTimeMinutes} min · ★ {dish.rating.toFixed(1)}
+                      <p className="text-sm font-semibold text-text truncate">{dish.name}</p>
+                      <p className="text-xs text-text-muted truncate mt-0.5">
+                        <span>{dish.categoryName}</span>
+                        <span aria-hidden="true"> · </span>
+                        <span className={dish.isVeg ? 'text-green-light' : 'text-danger'}>
+                          {dish.isVeg ? 'Vegetarian' : 'Non-Veg'}
+                        </span>
+                        <span aria-hidden="true"> · </span>
+                        <span>{dish.prepTimeMinutes} min</span>
+                        <span aria-hidden="true"> · </span>
+                        <span className="text-yellow">★ {dish.rating.toFixed(1)}</span>
                       </p>
-                      <p className="text-[11px] text-[#B8AFC9] truncate mt-0.5">
+                      <p className="text-[11px] text-text-soft truncate mt-0.5">
                         Ingredients: {dish.ingredients.slice(0, 4).join(', ')}
                       </p>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-3 shrink-0">
-                    <span className="font-mono-tabular text-sm font-semibold text-[#F59E0B]">
+                    <span className="font-mono-tabular text-sm font-semibold text-yellow">
                       ${finalPrice.toFixed(2)}
                     </span>
                     <button
                       type="button"
                       onClick={() => addToCart({ foodId: dish.id, quantity: 1 })}
-                      className="px-3 py-1.5 rounded-lg bg-[#10B981] hover:bg-[#059669] text-[#081C15] text-xs font-semibold whitespace-nowrap"
+                      className="px-3 py-1.5 rounded-lg bg-green-light hover:bg-green-mid text-black text-xs font-semibold whitespace-nowrap"
                     >
                       + Add
                     </button>
@@ -255,12 +263,12 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
         </div>
 
         {/* Footer link & keyboard shortcuts */}
-        <div className="px-5 py-3 bg-[#110B1A] border-t border-white/10 flex items-center justify-between">
-          <span className="text-[11px] text-[#7E7394]">
-            <kbd className="px-1.5 py-0.5 rounded bg-white/10 text-[#F5F2FA]">↑</kbd>{' '}
-            <kbd className="px-1.5 py-0.5 rounded bg-white/10 text-[#F5F2FA]">↓</kbd> navigate ·{' '}
-            <kbd className="px-1.5 py-0.5 rounded bg-white/10 text-[#F5F2FA]">Enter</kbd> select ·{' '}
-            <kbd className="px-1.5 py-0.5 rounded bg-white/10 text-[#F5F2FA]">Esc</kbd> close
+        <div className="px-5 py-3 bg-surface border-t border-border flex items-center justify-between">
+          <span className="text-[11px] text-text-muted">
+            <kbd className="px-1.5 py-0.5 rounded bg-green-deep text-text">↑</kbd>{' '}
+            <kbd className="px-1.5 py-0.5 rounded bg-green-deep text-text">↓</kbd> navigate ·{' '}
+            <kbd className="px-1.5 py-0.5 rounded bg-green-deep text-text">Enter</kbd> select ·{' '}
+            <kbd className="px-1.5 py-0.5 rounded bg-green-deep text-text">Esc</kbd> close
           </span>
           <button
             type="button"
@@ -268,7 +276,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
               onClose();
               navigate(`/menu${query ? `?search=${encodeURIComponent(query)}` : ''}`);
             }}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#8B5CF6] hover:text-[#A855F7]"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-yellow hover:text-yellow-hover"
           >
             <span>Explore Full Menu</span>
             <ArrowRight className="w-3.5 h-3.5" />
