@@ -1,17 +1,24 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Utensils, Home, Compass } from 'lucide-react';
+import { motion } from 'motion/react';
+import { Button } from '../components/ui/Button';
+import { pageTransitionVariants } from '../lib/motion';
 
 export const NotFoundPage: React.FC = () => {
   return (
-    <div className="min-h-[70vh] flex items-center justify-center px-4 py-16">
+    <motion.div
+      variants={pageTransitionVariants}
+      initial="initial"
+      animate="animate"
+      className="min-h-[70vh] flex items-center justify-center px-4 py-16"
+    >
       <div className="max-w-md w-full text-center space-y-6">
         <div className="relative inline-block">
           <p className="font-serif-display text-8xl sm:text-9xl font-bold tracking-tight text-yellow/20 select-none">
             404
           </p>
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-16 h-16 rounded-2xl bg-yellow/15 border border-yellow/30 flex items-center justify-center text-yellow">
+            <div className="w-16 h-16 rounded-2xl bg-yellow/15 border border-yellow/30 flex items-center justify-center text-yellow shadow-inner">
               <Utensils className="w-8 h-8" />
             </div>
           </div>
@@ -27,22 +34,24 @@ export const NotFoundPage: React.FC = () => {
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-          <Link
+          <Button
+            variant="primary"
+            size="md"
             to="/"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold shadow-lg shadow-yellow/20 transition-all"
+            leftIcon={<Home className="w-3.5 h-3.5" />}
           >
-            <Home className="w-3.5 h-3.5" />
-            <span>Return to Dining Room</span>
-          </Link>
-          <Link
+            Return to Dining Room
+          </Button>
+          <Button
+            variant="outline"
+            size="md"
             to="/menu"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-border hover:border-yellow text-text text-xs font-semibold transition-colors"
+            leftIcon={<Compass className="w-3.5 h-3.5" />}
           >
-            <Compass className="w-3.5 h-3.5" />
-            <span>Explore Menu</span>
-          </Link>
+            Explore Menu
+          </Button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };

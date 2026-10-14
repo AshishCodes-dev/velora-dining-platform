@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { Order, OrderStatus } from '../../types/restaurant';
+import { Button } from '../ui/Button';
 
 interface AdminOrdersTabProps {
   orders: Order[];
@@ -40,7 +41,7 @@ export const AdminOrdersTab: React.FC<AdminOrdersTabProps> = ({
             key={st}
             type="button"
             onClick={() => setOrderStatusFilter(st)}
-            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-[background-color,color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow cursor-pointer ${
               orderStatusFilter === st
                 ? 'bg-yellow text-black'
                 : 'bg-surface text-text-soft border border-border hover:text-text'
@@ -80,7 +81,7 @@ export const AdminOrdersTab: React.FC<AdminOrdersTabProps> = ({
                 <span
                   className={
                     ord.paymentStatus === 'PAID'
-                      ? 'text-green-light'
+                      ? 'text-green-light font-semibold'
                       : 'text-yellow'
                   }
                 >
@@ -110,7 +111,7 @@ export const AdminOrdersTab: React.FC<AdminOrdersTabProps> = ({
                 onChange={(e) =>
                   onStatusUpdate(ord.orderNumber, e.target.value as OrderStatus)
                 }
-                className="px-3 py-2 rounded-xl bg-canvas border border-border text-xs text-text focus:border-yellow"
+                className="px-3 py-2 rounded-lg bg-canvas border border-border text-xs text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:border-yellow transition-colors duration-200"
               >
                 <option value="Order Placed">Order Placed</option>
                 <option value="Confirmed">Accept / Confirmed</option>
@@ -121,13 +122,13 @@ export const AdminOrdersTab: React.FC<AdminOrdersTabProps> = ({
                 <option value="Cancelled">Cancel &amp; Refund</option>
               </select>
 
-              <button
-                type="button"
+              <Button
+                variant="outline"
+                size="sm"
                 onClick={() => navigate(`/track/${ord.orderNumber}`)}
-                className="px-3.5 py-2 rounded-xl bg-elevated hover:bg-yellow hover:text-black text-xs font-semibold text-text border border-border transition-colors"
               >
                 View Live Tracker
-              </button>
+              </Button>
             </div>
           </div>
         ))}

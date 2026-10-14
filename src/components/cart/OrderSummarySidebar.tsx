@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Tag, ArrowRight } from 'lucide-react';
 import type { CartItem, Coupon, RestaurantSettings, OrderType } from '../../types/restaurant';
+import { Button } from '../ui/Button';
 
 interface OrderSummarySidebarProps {
   step: 'cart' | 'checkout';
@@ -38,11 +39,14 @@ export const OrderSummarySidebar: React.FC<OrderSummarySidebarProps> = ({
   onRemoveCoupon,
 }) => {
   const [couponInput, setCouponInput] = useState('');
+  const [isApplying, setIsApplying] = useState(false);
 
   const handleCouponSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!couponInput.trim()) return;
+    setIsApplying(true);
     const ok = await onApplyCoupon(couponInput.trim());
+    setIsApplying(false);
     if (ok) setCouponInput('');
   };
 
@@ -54,7 +58,7 @@ export const OrderSummarySidebar: React.FC<OrderSummarySidebarProps> = ({
 
       {/* Coupon Input Box */}
       <div className="space-y-3 pb-5 border-b border-border">
-        <label htmlFor="coupon-input" className="block text-xs font-medium text-text-soft">
+        <label htmlFor="coupon-input" className="block text-xs font-semibold uppercase tracking-wider text-text-soft">
           Have a coupon?
         </label>
 
@@ -71,7 +75,7 @@ export const OrderSummarySidebar: React.FC<OrderSummarySidebarProps> = ({
             <button
               type="button"
               onClick={onRemoveCoupon}
-              className="text-xs text-danger hover:underline font-medium"
+              className="text-xs text-danger hover:underline font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-danger rounded px-1"
             >
               Remove
             </button>
@@ -79,22 +83,26 @@ export const OrderSummarySidebar: React.FC<OrderSummarySidebarProps> = ({
         ) : (
           <form onSubmit={handleCouponSubmit} className="flex items-center gap-2">
             <div className="relative flex-1">
-              <Tag className="w-3.5 h-3.5 text-yellow absolute left-3 top-1/2 -translate-y-1/2" />
+              <Tag className="w-3.5 h-3.5 text-yellow absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 id="coupon-input"
                 type="text"
                 value={couponInput}
                 onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
                 placeholder="Enter code (e.g. WELCOME10)"
-                className="w-full pl-9 pr-3 py-2 rounded-xl bg-canvas border border-border text-xs font-mono-tabular text-text placeholder-text-muted focus:outline-none focus:border-yellow"
+                className="w-full pl-9 pr-3 py-2 rounded-lg bg-canvas border border-border text-xs font-mono-tabular text-text placeholder-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:border-yellow"
               />
             </div>
-            <button
+            <Button
               type="submit"
-              className="px-4 py-2 rounded-xl bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold transition-colors whitespace-nowrap"
+              variant="primary"
+              size="sm"
+              loading={isApplying}
+              disabled={!couponInput.trim()}
+              className="whitespace-nowrap"
             >
               Apply
-            </button>
+            </Button>
           </form>
         )}
 
@@ -105,7 +113,7 @@ export const OrderSummarySidebar: React.FC<OrderSummarySidebarProps> = ({
               key={c.id}
               type="button"
               onClick={() => onApplyCoupon(c.code)}
-              className="px-2.5 py-1 rounded-md bg-elevated hover:bg-surface border border-border text-[11px] font-mono-tabular text-yellow transition-colors"
+              className="px-2.5 py-1 rounded-md bg-elevated hover:bg-surface border border-border text-[11px] font-mono-tabular text-yellow transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow"
             >
               {c.code} (Min ${c.minOrderValue})
             </button>
@@ -153,37 +161,41 @@ export const OrderSummarySidebar: React.FC<OrderSummarySidebarProps> = ({
 
       {/* Primary CTA Button */}
       {step === 'cart' ? (
-        <button
-          type="button"
+        <Button
+          variant="primary"
+          size="lg"
+          fullWidth
           disabled={activeCartItems.length === 0}
           onClick={() => setStep('checkout')}
-          className="w-full py-3.5 rounded-xl bg-yellow hover:bg-yellow-hover disabled:opacity-40 text-black font-semibold text-sm inline-flex items-center justify-center gap-2 transition-colors"
+          rightIcon={<ArrowRight className="w-4 h-4" />}
         >
-          <span>Proceed to Checkout</span>
-          <ArrowRight className="w-4 h-4" />
-        </button>
+          Proceed to Checkout
+        </Button>
       ) : (
         <div className="space-y-2.5">
-          <button
+          <Button
             type="submit"
             form="checkout-form"
-            disabled={placingOrder}
-            className="w-full py-3.5 rounded-xl bg-yellow hover:bg-yellow-hover text-black font-semibold text-sm inline-flex items-center justify-center gap-2 transition-colors"
+            variant="primary"
+            size="lg"
+            fullWidth
+            loading={placingOrder}
+            rightIcon={<ArrowRight className="w-4 h-4" />}
           >
             <span>
               {placingOrder
                 ? 'Confirming with Kitchen...'
                 : `Confirm & Place Order — $${effectiveGrandTotal.toFixed(2)}`}
             </span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
-          <button
-            type="button"
+          </Button>
+          <Button
+            variant="ghost"
+            size="md"
+            fullWidth
             onClick={() => setStep('cart')}
-            className="w-full py-2.5 rounded-xl border border-border text-xs text-text-soft hover:text-text transition-colors"
           >
             ← Return to Cart
-          </button>
+          </Button>
         </div>
       )}
     </div>

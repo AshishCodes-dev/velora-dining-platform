@@ -1,10 +1,12 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { AnimatePresence } from 'motion/react';
 import { RestaurantProvider } from './context/RestaurantContext';
 import { Navbar } from './components/Navbar';
 import { GlobalSearchModal } from './components/GlobalSearchModal';
 import { Footer } from './components/Footer';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { Spinner } from './components/ui/Spinner';
 
 // Lazy-loaded routes for code splitting
 const HomePage = lazy(() => import('./pages/HomePage').then((m) => ({ default: m.HomePage })));
@@ -21,11 +23,37 @@ const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then((m) => ({ de
 function PageLoadingFallback() {
   return (
     <div className="min-h-[50vh] flex flex-col items-center justify-center space-y-4 px-4 py-20">
-      <div className="w-10 h-10 border-2 border-yellow/30 border-t-yellow rounded-full animate-spin" />
+      <Spinner size="lg" variant="yellow" />
       <p className="font-serif-display text-sm tracking-widest text-text-soft uppercase">
         Preparing Culinary Course...
       </p>
     </div>
+  );
+}
+
+function AnimatedRoutes() {
+  const location = useLocation();
+
+  return (
+    <AnimatePresence mode="wait">
+      <Suspense fallback={<PageLoadingFallback />}>
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/menu" element={<MenuPage />} />
+          <Route path="/menu/:id" element={<FoodDetailsPage />} />
+          <Route path="/offers" element={<OffersPage />} />
+          <Route path="/cart" element={<CartAndCheckoutPage />} />
+          <Route path="/checkout" element={<CartAndCheckoutPage />} />
+          <Route path="/track" element={<Navigate to="/track/10482" replace />} />
+          <Route path="/track/:orderNumber" element={<OrderTrackingPage />} />
+          <Route path="/reservations" element={<ReservationsPage />} />
+          <Route path="/profile" element={<AuthAndProfilePage />} />
+          <Route path="/login" element={<AuthAndProfilePage />} />
+          <Route path="/admin" element={<AdminDashboardPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </Suspense>
+    </AnimatePresence>
   );
 }
 
@@ -55,23 +83,7 @@ export function App() {
               onClose={() => setSearchOpen(false)}
             />
             <div className="flex-1">
-              <Suspense fallback={<PageLoadingFallback />}>
-                <Routes>
-                  <Route path="/" element={<HomePage />} />
-                  <Route path="/menu" element={<MenuPage />} />
-                  <Route path="/menu/:id" element={<FoodDetailsPage />} />
-                  <Route path="/offers" element={<OffersPage />} />
-                  <Route path="/cart" element={<CartAndCheckoutPage />} />
-                  <Route path="/checkout" element={<CartAndCheckoutPage />} />
-                  <Route path="/track" element={<Navigate to="/track/10482" replace />} />
-                  <Route path="/track/:orderNumber" element={<OrderTrackingPage />} />
-                  <Route path="/reservations" element={<ReservationsPage />} />
-                  <Route path="/profile" element={<AuthAndProfilePage />} />
-                  <Route path="/login" element={<AuthAndProfilePage />} />
-                  <Route path="/admin" element={<AdminDashboardPage />} />
-                  <Route path="*" element={<NotFoundPage />} />
-                </Routes>
-              </Suspense>
+              <AnimatedRoutes />
             </div>
             <Footer />
           </div>

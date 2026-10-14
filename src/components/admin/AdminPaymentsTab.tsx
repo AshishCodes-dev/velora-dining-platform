@@ -1,5 +1,6 @@
 import React from 'react';
 import type { PaymentRecord } from '../../types/restaurant';
+import { Badge } from '../ui/Badge';
 
 interface AdminPaymentsTabProps {
   payments: PaymentRecord[];
@@ -25,22 +26,19 @@ export const AdminPaymentsTab: React.FC<AdminPaymentsTabProps> = ({ payments }) 
           </thead>
           <tbody className="divide-y divide-border font-mono-tabular">
             {payments.map((p) => (
-              <tr key={p.id} className="hover:bg-white/5">
+              <tr key={p.id} className="hover:bg-white/5 transition-colors">
                 <td className="p-4 text-yellow">{p.transactionRef}</td>
                 <td className="p-4 text-yellow">#{p.orderNumber}</td>
                 <td className="p-4 font-sans text-text">{p.customerName}</td>
                 <td className="p-4 font-sans text-text-soft">{p.method}</td>
                 <td className="p-4 text-right text-green-light">${p.amount.toFixed(2)}</td>
                 <td className="p-4 font-sans">
-                  <span
-                    className={`px-2.5 py-1 rounded-md text-[11px] font-semibold ${
-                      p.status === 'PAID'
-                        ? 'bg-green-light/15 text-green-light'
-                        : 'bg-yellow/15 text-yellow'
-                    }`}
+                  <Badge
+                    variant={p.status === 'PAID' ? 'success' : 'yellow'}
+                    dot
                   >
                     {p.status}
-                  </span>
+                  </Badge>
                 </td>
               </tr>
             ))}

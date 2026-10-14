@@ -13,6 +13,8 @@ import {
 } from 'lucide-react';
 import { FoodCard } from '../FoodCard';
 import type { User, Order, Reservation, Review, Food } from '../../types/restaurant';
+import { Button } from '../ui/Button';
+import { EmptyState } from '../ui/EmptyState';
 
 export type ProfileTab = 'overview' | 'orders' | 'reservations' | 'favorites' | 'reviews' | 'addresses';
 
@@ -53,6 +55,8 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
 }) => {
   const [profileName, setProfileName] = useState(user.name);
   const [profilePhone, setProfilePhone] = useState(user.phone);
+  const [savingProfile, setSavingProfile] = useState(false);
+  const [addingAddress, setAddingAddress] = useState(false);
 
   // New Address Form State
   const [addrLabel, setAddrLabel] = useState('Residence');
@@ -65,24 +69,34 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
 
   const handleProfileSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await onUpdateProfile(profileName, profilePhone);
+    setSavingProfile(true);
+    try {
+      await onUpdateProfile(profileName, profilePhone);
+    } finally {
+      setSavingProfile(false);
+    }
   };
 
   const handleAddressSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await onAddAddress({
-      label: addrLabel,
-      houseFlat: addrHouse,
-      street: addrStreet,
-      area: addrArea,
-      city: addrCity,
-      state: addrState,
-      pincode: addrPin,
-    });
-    setAddrHouse('');
-    setAddrStreet('');
-    setAddrArea('');
-    setAddrPin('');
+    setAddingAddress(true);
+    try {
+      await onAddAddress({
+        label: addrLabel,
+        houseFlat: addrHouse,
+        street: addrStreet,
+        area: addrArea,
+        city: addrCity,
+        state: addrState,
+        pincode: addrPin,
+      });
+      setAddrHouse('');
+      setAddrStreet('');
+      setAddrArea('');
+      setAddrPin('');
+    } finally {
+      setAddingAddress(false);
+    }
   };
 
   return (
@@ -90,7 +104,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
       {/* Profile Sidebar */}
       <aside className="lg:col-span-3 nocturne-surface rounded-2xl p-5 space-y-6">
         <div className="flex items-center gap-3 pb-4 border-b border-border">
-          <div className="w-12 h-12 rounded-full bg-yellow/15 border border-yellow/30 flex items-center justify-center font-serif-display text-xl font-bold text-text">
+          <div className="w-12 h-12 rounded-full bg-yellow/15 border border-yellow/30 flex items-center justify-center font-serif-display text-xl font-bold text-yellow shadow-inner">
             {user.name.charAt(0)}
           </div>
           <div className="min-w-0">
@@ -127,7 +141,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                 key={item.id}
                 type="button"
                 onClick={() => onSelectTab(item.id)}
-                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium transition-colors ${
+                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium transition-[background-color,color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow cursor-pointer ${
                   active
                     ? 'bg-yellow text-black font-semibold'
                     : 'text-text-soft hover:text-text hover:bg-elevated'
@@ -141,14 +155,15 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
         </nav>
 
         <div className="pt-4 border-t border-border">
-          <button
-            type="button"
+          <Button
+            variant="danger"
+            size="sm"
+            fullWidth
             onClick={onLogout}
-            className="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-medium text-danger hover:bg-elevated transition-colors"
+            leftIcon={<LogOut className="w-4 h-4" />}
           >
-            <LogOut className="w-4 h-4" />
-            <span>Sign Out</span>
-          </button>
+            Sign Out
+          </Button>
         </div>
       </aside>
 
@@ -164,50 +179,52 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs text-text-soft mb-1">Full Name</label>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-text-soft mb-1.5">Full Name</label>
                 <input
                   type="text"
                   value={profileName}
                   onChange={(e) => setProfileName(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted"
+                  className="w-full px-3.5 py-2.5 rounded-lg bg-canvas border border-border text-xs text-text placeholder:text-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:border-yellow transition-colors duration-200"
                 />
               </div>
               <div>
-                <label className="block text-xs text-text-soft mb-1">Phone Number</label>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-text-soft mb-1.5">Phone Number</label>
                 <input
                   type="tel"
                   value={profilePhone}
                   onChange={(e) => setProfilePhone(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted"
+                  className="w-full px-3.5 py-2.5 rounded-lg bg-canvas border border-border text-xs text-text placeholder:text-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:border-yellow transition-colors duration-200"
                 />
               </div>
               <div>
-                <label className="block text-xs text-text-soft mb-1">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-text-soft mb-1.5">
                   Registered Email (Verified)
                 </label>
                 <input
                   type="email"
                   disabled
                   value={user.email}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-canvas/50 border border-border text-xs text-text-muted"
+                  className="w-full px-3.5 py-2.5 rounded-lg bg-canvas/50 border border-border text-xs text-text-muted cursor-not-allowed"
                 />
               </div>
               <div>
-                <label className="block text-xs text-text-soft mb-1">Account Role</label>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-text-soft mb-1.5">Account Role</label>
                 <input
                   type="text"
                   disabled
                   value={user.role}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-canvas/50 border border-border text-xs font-mono-tabular text-yellow"
+                  className="w-full px-3.5 py-2.5 rounded-lg bg-canvas/50 border border-border text-xs font-mono-tabular text-yellow cursor-not-allowed"
                 />
               </div>
             </div>
-            <button
+            <Button
               type="submit"
-              className="px-6 py-2.5 rounded-xl bg-green-light hover:bg-green-mid text-black text-xs font-semibold transition-colors"
+              variant="success"
+              size="md"
+              loading={savingProfile}
             >
               Save Profile Changes
-            </button>
+            </Button>
           </form>
         )}
 
@@ -217,15 +234,14 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
               Order History ({orders.length})
             </h2>
             {orders.length === 0 ? (
-              <div className="nocturne-surface rounded-2xl p-10 text-center space-y-3">
-                <p className="text-sm text-text-soft">No orders placed yet.</p>
-                <Link
-                  to="/menu"
-                  className="inline-block px-5 py-2.5 rounded-xl bg-green-light hover:bg-green-mid text-black text-xs font-semibold transition-colors"
-                >
-                  Order Now
-                </Link>
-              </div>
+              <EmptyState
+                icon={<ShoppingBag className="w-8 h-8" />}
+                title="No orders placed yet"
+                description="Experience our wood-fired pizzas, Wagyu steaks, and signature desserts."
+                actionLabel="Explore Menu"
+                actionTo="/menu"
+                className="py-12"
+              />
             ) : (
               orders.map((ord) => (
                 <div
@@ -236,7 +252,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                     <div className="flex items-center gap-2 font-mono-tabular text-xs">
                       <span className="font-bold text-yellow">#{ord.orderNumber}</span>
                       <span>·</span>
-                      <span className="text-green-light">{ord.status}</span>
+                      <span className="text-green-light font-semibold">{ord.status}</span>
                       <span>·</span>
                       <span className="text-text-muted">
                         {new Date(ord.createdAt).toLocaleDateString()}
@@ -250,12 +266,14 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                       {ord.paymentMethod}
                     </p>
                   </div>
-                  <Link
+                  <Button
+                    variant="primary"
+                    size="sm"
                     to={`/track/${ord.orderNumber}`}
-                    className="px-4 py-2 rounded-xl bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold whitespace-nowrap self-start sm:self-auto transition-colors"
+                    className="whitespace-nowrap self-start sm:self-auto"
                   >
                     Track Order →
-                  </Link>
+                  </Button>
                 </div>
               ))
             )}
@@ -268,17 +286,23 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
               <h2 className="font-serif-display text-2xl font-semibold text-text">
                 Table Reservations ({reservations.length})
               </h2>
-              <Link
+              <Button
+                variant="primary"
+                size="sm"
                 to="/reservations"
-                className="px-4 py-2 rounded-xl bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold transition-colors"
               >
                 + New Reservation
-              </Link>
+              </Button>
             </div>
             {reservations.length === 0 ? (
-              <div className="nocturne-surface rounded-2xl p-8 text-center text-xs text-text-soft">
-                No reservations yet.
-              </div>
+              <EmptyState
+                icon={<Calendar className="w-8 h-8" />}
+                title="No reservations on record"
+                description="Book an evening at the Velvet Chef Counter or Private Vault."
+                actionLabel="Book a Table"
+                actionTo="/reservations"
+                className="py-12"
+              />
             ) : (
               reservations.map((res) => (
                 <div
@@ -311,17 +335,14 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
               Saved Favorites &amp; Wishlist ({favoriteFoods.length})
             </h2>
             {favoriteFoods.length === 0 ? (
-              <div className="nocturne-surface rounded-2xl p-10 text-center space-y-3">
-                <p className="text-xs text-text-soft">
-                  Your wishlist is empty. Explore the menu to save your favorite dishes.
-                </p>
-                <Link
-                  to="/menu"
-                  className="inline-block px-5 py-2.5 rounded-xl bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold transition-colors"
-                >
-                  Explore Menu
-                </Link>
-              </div>
+              <EmptyState
+                icon={<Heart className="w-8 h-8 text-yellow" />}
+                title="Your wishlist is empty"
+                description="Explore the menu to save and bookmark your favorite creations."
+                actionLabel="Explore Menu"
+                actionTo="/menu"
+                className="py-12"
+              />
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {favoriteFoods.map((food) => (
@@ -353,14 +374,15 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                       {addr.area}, {addr.city}, {addr.state} {addr.pincode}
                     </p>
                   </div>
-                  <button
-                    type="button"
+                  <Button
+                    variant="ghost"
+                    size="sm"
                     onClick={() => onDeleteAddress(addr.id)}
                     aria-label={`Delete address ${addr.label}`}
-                    className="p-1.5 text-danger hover:bg-elevated rounded-lg transition-colors"
+                    className="p-1.5 text-danger hover:text-danger hover:bg-danger/10"
                   >
                     <Trash2 className="w-4 h-4" />
-                  </button>
+                  </Button>
                 </div>
               ))}
             </div>
@@ -380,7 +402,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                   value={addrLabel}
                   onChange={(e) => setAddrLabel(e.target.value)}
                   placeholder="Label (e.g. Home, Studio)"
-                  className="px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted"
+                  className="px-3.5 py-2.5 rounded-lg bg-canvas border border-border text-xs text-text placeholder:text-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:border-yellow transition-colors duration-200"
                 />
                 <input
                   type="text"
@@ -388,7 +410,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                   value={addrHouse}
                   onChange={(e) => setAddrHouse(e.target.value)}
                   placeholder="House / Flat / Apt"
-                  className="px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted"
+                  className="px-3.5 py-2.5 rounded-lg bg-canvas border border-border text-xs text-text placeholder:text-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:border-yellow transition-colors duration-200"
                 />
                 <input
                   type="text"
@@ -396,7 +418,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                   value={addrStreet}
                   onChange={(e) => setAddrStreet(e.target.value)}
                   placeholder="Street Name"
-                  className="px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted"
+                  className="px-3.5 py-2.5 rounded-lg bg-canvas border border-border text-xs text-text placeholder:text-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:border-yellow transition-colors duration-200"
                 />
                 <input
                   type="text"
@@ -404,7 +426,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                   value={addrArea}
                   onChange={(e) => setAddrArea(e.target.value)}
                   placeholder="Area / Neighborhood"
-                  className="px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted"
+                  className="px-3.5 py-2.5 rounded-lg bg-canvas border border-border text-xs text-text placeholder:text-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:border-yellow transition-colors duration-200"
                 />
                 <input
                   type="text"
@@ -412,7 +434,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                   value={addrCity}
                   onChange={(e) => setAddrCity(e.target.value)}
                   placeholder="City"
-                  className="px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted"
+                  className="px-3.5 py-2.5 rounded-lg bg-canvas border border-border text-xs text-text placeholder:text-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:border-yellow transition-colors duration-200"
                 />
                 <input
                   type="text"
@@ -420,7 +442,7 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                   value={addrState}
                   onChange={(e) => setAddrState(e.target.value)}
                   placeholder="State"
-                  className="px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted"
+                  className="px-3.5 py-2.5 rounded-lg bg-canvas border border-border text-xs text-text placeholder:text-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:border-yellow transition-colors duration-200"
                 />
                 <input
                   type="text"
@@ -428,16 +450,18 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                   value={addrPin}
                   onChange={(e) => setAddrPin(e.target.value)}
                   placeholder="Pincode / ZIP"
-                  className="px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted"
+                  className="px-3.5 py-2.5 rounded-lg bg-canvas border border-border text-xs text-text placeholder:text-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:border-yellow transition-colors duration-200"
                 />
               </div>
-              <button
+              <Button
                 type="submit"
-                className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold transition-colors"
+                variant="primary"
+                size="md"
+                loading={addingAddress}
+                leftIcon={<Plus className="w-3.5 h-3.5" />}
               >
-                <Plus className="w-3.5 h-3.5" />
-                <span>Save Address</span>
-              </button>
+                Save Address
+              </Button>
             </form>
           </div>
         )}
@@ -448,16 +472,21 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
               My Culinary Reviews ({myReviews.length})
             </h2>
             {myReviews.length === 0 ? (
-              <div className="nocturne-surface rounded-2xl p-8 text-center text-xs text-text-soft">
-                You haven’t written any reviews yet. Open any dish page to share your thoughts.
-              </div>
+              <EmptyState
+                icon={<MessageSquare className="w-8 h-8" />}
+                title="No reviews written yet"
+                description="Open any dish in the menu to share your dining notes and ratings."
+                actionLabel="Explore Menu"
+                actionTo="/menu"
+                className="py-12"
+              />
             ) : (
               myReviews.map((rev) => (
                 <div key={rev.id} className="nocturne-surface rounded-2xl p-5 space-y-2">
                   <div className="flex items-center justify-between">
                     <Link
                       to={`/menu/${rev.foodId}`}
-                      className="font-serif-display text-lg font-semibold text-text hover:text-yellow transition-colors"
+                      className="font-serif-display text-lg font-semibold text-text hover:text-yellow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-yellow rounded"
                     >
                       {rev.foodName}
                     </Link>

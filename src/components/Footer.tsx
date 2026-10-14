@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useRestaurant } from '../context/RestaurantContext';
+import { Button } from './ui/Button';
 
 export const Footer: React.FC = () => {
   const { settings, showToast } = useRestaurant();
@@ -24,7 +25,7 @@ export const Footer: React.FC = () => {
           <div className="space-y-3">
             <Link
               to="/"
-              className="font-serif-display text-2xl font-bold tracking-[0.14em] text-text block"
+              className="font-serif-display text-2xl font-bold tracking-[0.14em] text-text block hover:text-yellow transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow rounded-lg"
             >
               {settings?.name || 'VELORA'}
             </Link>
@@ -50,27 +51,27 @@ export const Footer: React.FC = () => {
             </h4>
             <ul className="space-y-2 text-xs text-text-soft">
               <li>
-                <Link to="/menu" className="hover:text-text transition-colors">
+                <Link to="/menu" className="hover:text-text transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-yellow rounded px-0.5">
                   Full Artisanal Menu
                 </Link>
               </li>
               <li>
-                <Link to="/reservations" className="hover:text-text transition-colors">
+                <Link to="/reservations" className="hover:text-text transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-yellow rounded px-0.5">
                   Table & Vault Reservations
                 </Link>
               </li>
               <li>
-                <Link to="/offers" className="hover:text-text transition-colors">
+                <Link to="/offers" className="hover:text-text transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-yellow rounded px-0.5">
                   Seasonal Offers & Privileges
                 </Link>
               </li>
               <li>
-                <Link to="/track/10482" className="hover:text-text transition-colors">
+                <Link to="/track/10482" className="hover:text-text transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-yellow rounded px-0.5">
                   Live Order Tracking (#10482)
                 </Link>
               </li>
               <li>
-                <Link to="/admin" className="hover:text-yellow transition-colors">
+                <Link to="/admin" className="hover:text-yellow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-yellow rounded px-0.5">
                   Executive Admin Console
                 </Link>
               </li>
@@ -112,14 +113,16 @@ export const Footer: React.FC = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="guest@domain.com"
-                className="flex-1 min-w-0 px-3 py-2 rounded-lg bg-elevated border border-border text-xs text-text placeholder-text-muted focus:outline-none focus:border-yellow"
+                className="flex-1 min-w-0 px-3 py-2 rounded-lg bg-elevated border border-border text-xs text-text placeholder:text-text-muted transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:border-yellow"
               />
-              <button
+              <Button
                 type="submit"
-                className="px-4 py-2 rounded-lg bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold whitespace-nowrap transition-colors"
+                variant="primary"
+                size="sm"
+                className="whitespace-nowrap"
               >
                 Join List
-              </button>
+              </Button>
             </form>
           </div>
         </div>
@@ -127,15 +130,15 @@ export const Footer: React.FC = () => {
         <div className="mt-12 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-text-muted">
           <p>© {new Date().getFullYear()} VELORA — Premium Restaurant &amp; Dining Platform. All rights reserved.</p>
           <div className="flex items-center gap-4">
-            <Link to="/menu" className="hover:text-text-soft">
+            <Link to="/menu" className="hover:text-text-soft focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-yellow rounded px-1">
               Dietary & Allergen Guide
             </Link>
             <span>·</span>
-            <Link to="/reservations" className="hover:text-text-soft">
+            <Link to="/reservations" className="hover:text-text-soft focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-yellow rounded px-1">
               Private Dining Policy
             </Link>
             <span>·</span>
-            <Link to="/profile" className="hover:text-text-soft">
+            <Link to="/profile" className="hover:text-text-soft focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-yellow rounded px-1">
               Guest Concierge
             </Link>
           </div>

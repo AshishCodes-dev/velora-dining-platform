@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { apiRequest, getStoredToken, setStoredToken } from '../services/api';
 import type {
   User,
@@ -469,22 +470,28 @@ export const RestaurantProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         aria-live="polite"
         className="fixed bottom-5 right-5 z-50 flex flex-col gap-2.5 max-w-sm w-full pointer-events-none px-4 sm:px-0"
       >
-        {toasts.map((t) => (
-          <div
-            key={t.id}
-            onClick={() => dismissToast(t.id)}
-            className={`pointer-events-auto cursor-pointer flex items-center justify-between gap-3 px-4 py-3 rounded-xl border shadow-xl transition-all duration-150 ${
-              t.type === 'error'
-                ? 'bg-danger/15 border-danger/40 text-danger'
-                : t.type === 'info'
-                ? 'bg-yellow/15 border-yellow/40 text-yellow'
-                : 'bg-green-deep border-green-mid/50 text-green-light'
-            }`}
-          >
-            <span className="text-sm font-medium">{t.text}</span>
-            <span className="text-xs opacity-60 hover:opacity-100">Dismiss</span>
-          </div>
-        ))}
+        <AnimatePresence>
+          {toasts.map((t) => (
+            <motion.div
+              key={t.id}
+              initial={{ opacity: 0, y: 12, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              onClick={() => dismissToast(t.id)}
+              className={`pointer-events-auto cursor-pointer flex items-center justify-between gap-3 px-4 py-3 rounded-xl border shadow-2xl transition-[background-color,border-color] duration-150 ${
+                t.type === 'error'
+                  ? 'bg-danger/20 border-danger/40 text-danger'
+                  : t.type === 'info'
+                  ? 'bg-yellow/20 border-yellow/40 text-yellow'
+                  : 'bg-green-deep border-green-mid/50 text-green-light'
+              }`}
+            >
+              <span className="text-sm font-medium">{t.text}</span>
+              <span className="text-xs opacity-60 hover:opacity-100">Dismiss</span>
+            </motion.div>
+          ))}
+        </AnimatePresence>
       </div>
     </RestaurantContext.Provider>
   );

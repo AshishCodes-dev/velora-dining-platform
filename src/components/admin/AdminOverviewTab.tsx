@@ -1,5 +1,6 @@
 import React from 'react';
 import type { AdminAnalyticsData, Order } from '../../types/restaurant';
+import { Button } from '../ui/Button';
 
 interface AdminOverviewTabProps {
   analytics: AdminAnalyticsData;
@@ -16,43 +17,43 @@ export const AdminOverviewTab: React.FC<AdminOverviewTabProps> = ({
     <div className="space-y-8">
       {/* 7 Overview KPI Cards (Tabular Numerals) */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-4">
-        <div className="nocturne-surface rounded-xl p-4">
+        <div className="nocturne-surface rounded-xl p-4 transition-colors hover:border-border-accent">
           <p className="text-[11px] text-text-muted">Total Revenue</p>
           <p className="font-mono-tabular text-xl font-bold text-green-light mt-1">
             ${analytics.overview.totalRevenue.toLocaleString()}
           </p>
         </div>
-        <div className="nocturne-surface rounded-xl p-4">
+        <div className="nocturne-surface rounded-xl p-4 transition-colors hover:border-border-accent">
           <p className="text-[11px] text-text-muted">Total Orders</p>
           <p className="font-mono-tabular text-xl font-bold text-text mt-1">
             {analytics.overview.totalOrders}
           </p>
         </div>
-        <div className="nocturne-surface rounded-xl p-4">
+        <div className="nocturne-surface rounded-xl p-4 transition-colors hover:border-border-accent">
           <p className="text-[11px] text-text-muted">Today’s Orders</p>
           <p className="font-mono-tabular text-xl font-bold text-yellow mt-1">
             {analytics.overview.todaysOrders + 18}
           </p>
         </div>
-        <div className="nocturne-surface rounded-xl p-4">
+        <div className="nocturne-surface rounded-xl p-4 transition-colors hover:border-border-accent">
           <p className="text-[11px] text-text-muted">Pending Orders</p>
           <p className="font-mono-tabular text-xl font-bold text-yellow mt-1">
             {analytics.overview.pendingOrders}
           </p>
         </div>
-        <div className="nocturne-surface rounded-xl p-4">
+        <div className="nocturne-surface rounded-xl p-4 transition-colors hover:border-border-accent">
           <p className="text-[11px] text-text-muted">Total Customers</p>
           <p className="font-mono-tabular text-xl font-bold text-text mt-1">
             {analytics.overview.totalCustomers}
           </p>
         </div>
-        <div className="nocturne-surface rounded-xl p-4">
+        <div className="nocturne-surface rounded-xl p-4 transition-colors hover:border-border-accent">
           <p className="text-[11px] text-text-muted">Reservations</p>
           <p className="font-mono-tabular text-xl font-bold text-green-light mt-1">
             {analytics.overview.totalReservations}
           </p>
         </div>
-        <div className="nocturne-surface rounded-xl p-4">
+        <div className="nocturne-surface rounded-xl p-4 transition-colors hover:border-border-accent">
           <p className="text-[11px] text-text-muted">Average Rating</p>
           <p className="font-mono-tabular text-xl font-bold text-yellow mt-1">
             ★ {analytics.overview.avgRating}
@@ -79,7 +80,7 @@ export const AdminOverviewTab: React.FC<AdminOverviewTabProps> = ({
                   </span>
                   <div className="w-full h-36 bg-canvas rounded-lg flex items-end overflow-hidden p-1">
                     <div
-                      className="w-full rounded-md bg-gradient-to-t from-yellow to-green-light"
+                      className="w-full rounded-md bg-gradient-to-t from-yellow to-green-light transition-[height] duration-500 ease-out"
                       style={{ height: `${heightPct}%` }}
                     />
                   </div>
@@ -113,7 +114,7 @@ export const AdminOverviewTab: React.FC<AdminOverviewTabProps> = ({
                   </div>
                   <div className="w-full h-2 rounded-full bg-canvas overflow-hidden">
                     <div
-                      className="h-full bg-yellow rounded-full"
+                      className="h-full bg-yellow rounded-full transition-[width] duration-500 ease-out"
                       style={{ width: `${Math.max(6, pct)}%` }}
                     />
                   </div>
@@ -130,13 +131,15 @@ export const AdminOverviewTab: React.FC<AdminOverviewTabProps> = ({
           <h2 className="font-serif-display text-xl font-semibold text-text">
             Most Popular Culinary Creations
           </h2>
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="sm"
             onClick={() => onSelectTab('menu')}
-            className="text-xs text-yellow hover:underline"
+            className="text-xs text-yellow hover:text-yellow-hover"
           >
             Manage Menu →
-          </button>
+          </Button>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
@@ -151,7 +154,7 @@ export const AdminOverviewTab: React.FC<AdminOverviewTabProps> = ({
             </thead>
             <tbody className="divide-y divide-border font-mono-tabular">
               {analytics.popularDishes.map((d) => (
-                <tr key={d.id} className="hover:bg-white/5">
+                <tr key={d.id} className="hover:bg-white/5 transition-colors">
                   <td className="py-3 pr-4 font-sans font-semibold text-text">
                     {d.name}
                   </td>

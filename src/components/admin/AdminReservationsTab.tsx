@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import type { Reservation, ReservationStatus } from '../../types/restaurant';
+import { Button } from '../ui/Button';
+import { Badge } from '../ui/Badge';
 
 interface AdminReservationsTabProps {
   reservations: Reservation[];
@@ -19,6 +21,12 @@ export const AdminReservationsTab: React.FC<AdminReservationsTabProps> = ({
     return true;
   });
 
+  const getStatusBadgeVariant = (status: ReservationStatus) => {
+    if (status === 'CANCELLED' || status === 'REJECTED') return 'danger';
+    if (status === 'CONFIRMED' || status === 'COMPLETED') return 'success';
+    return 'warning';
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center gap-3">
@@ -26,30 +34,29 @@ export const AdminReservationsTab: React.FC<AdminReservationsTabProps> = ({
           type="date"
           value={resDateFilter}
           onChange={(e) => setResDateFilter(e.target.value)}
-          className="px-3.5 py-2 rounded-xl bg-canvas border border-border text-xs font-mono-tabular text-text focus:border-yellow"
+          className="px-3.5 py-2 rounded-xl bg-canvas border border-border text-xs font-mono-tabular text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-colors"
         />
         {['All', 'PENDING', 'CONFIRMED', 'COMPLETED', 'CANCELLED', 'REJECTED'].map((st) => (
-          <button
+          <Button
             key={st}
             type="button"
+            variant={resStatusFilter === st ? 'primary' : 'secondary'}
+            size="sm"
             onClick={() => setResStatusFilter(st)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
-              resStatusFilter === st
-                ? 'bg-yellow text-black'
-                : 'bg-surface text-text-soft border border-border hover:text-text'
-            }`}
           >
             {st}
-          </button>
+          </Button>
         ))}
         {resDateFilter && (
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="sm"
             onClick={() => setResDateFilter('')}
-            className="text-xs text-yellow hover:underline"
+            className="text-xs text-yellow hover:text-yellow-hover"
           >
             Clear Date
-          </button>
+          </Button>
         )}
       </div>
 
@@ -57,7 +64,7 @@ export const AdminReservationsTab: React.FC<AdminReservationsTabProps> = ({
         {filteredReservations.map((r) => (
           <div
             key={r.id}
-            className="nocturne-surface rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+            className="nocturne-surface rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors hover:border-border-accent"
           >
             <div className="space-y-1">
               <p className="font-mono-tabular text-xs font-bold text-yellow">
@@ -71,31 +78,29 @@ export const AdminReservationsTab: React.FC<AdminReservationsTabProps> = ({
               )}
             </div>
             <div className="flex items-center gap-2">
-              <span
-                className={`font-mono-tabular text-xs font-semibold mr-2 ${
-                  r.status === 'CANCELLED' || r.status === 'REJECTED'
-                    ? 'text-danger'
-                    : r.status === 'CONFIRMED' || r.status === 'COMPLETED'
-                    ? 'text-green-light'
-                    : 'text-yellow'
-                }`}
+              <Badge
+                variant={getStatusBadgeVariant(r.status)}
+                dot
+                className="mr-2"
               >
                 {r.status}
-              </span>
-              <button
+              </Badge>
+              <Button
                 type="button"
+                variant="success"
+                size="sm"
                 onClick={() => onReservationStatus(r.id, 'CONFIRMED')}
-                className="px-3 py-1.5 rounded-lg bg-green-light hover:bg-green-mid text-black text-xs font-semibold transition-colors"
               >
                 Confirm
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
+                variant="danger"
+                size="sm"
                 onClick={() => onReservationStatus(r.id, 'REJECTED')}
-                className="px-3 py-1.5 rounded-lg bg-danger/15 text-danger hover:bg-danger/25 text-xs font-semibold transition-colors"
               >
                 Reject
-              </button>
+              </Button>
             </div>
           </div>
         ))}

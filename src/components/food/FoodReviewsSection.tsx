@@ -1,6 +1,9 @@
 import React from 'react';
 import { Edit3, Trash2 } from 'lucide-react';
+import { motion } from 'motion/react';
 import type { Food, Review, User } from '../../types/restaurant';
+import { Button } from '../ui/Button';
+import { staggerContainer, staggerItem } from '../../lib/motion';
 
 interface FoodReviewsSectionProps {
   food: Food;
@@ -64,7 +67,7 @@ export const FoodReviewsSection: React.FC<FoodReviewsSectionProps> = ({
                     <span className="w-8 text-text-soft">{star} ★</span>
                     <div className="flex-1 h-2 rounded-full bg-canvas overflow-hidden">
                       <div
-                        className="h-full bg-yellow rounded-full"
+                        className="h-full bg-yellow rounded-full transition-[width] duration-500 ease-out"
                         style={{ width: `${pct}%` }}
                       />
                     </div>
@@ -86,7 +89,7 @@ export const FoodReviewsSection: React.FC<FoodReviewsSectionProps> = ({
           </h3>
 
           <div>
-            <label className="block text-xs text-text-soft mb-1.5">
+            <label className="block text-xs font-semibold uppercase tracking-wider text-text-soft mb-1.5">
               Select Star Rating
             </label>
             <div className="flex items-center gap-2">
@@ -95,7 +98,7 @@ export const FoodReviewsSection: React.FC<FoodReviewsSectionProps> = ({
                   key={star}
                   type="button"
                   onClick={() => setReviewRating(star)}
-                  className={`px-3 py-1.5 rounded-lg font-mono-tabular text-xs font-semibold transition-colors ${
+                  className={`px-3 py-1.5 rounded-lg font-mono-tabular text-xs font-semibold transition-[background-color,border-color,color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow cursor-pointer ${
                     reviewRating >= star
                       ? 'bg-yellow text-black'
                       : 'bg-canvas text-text-muted border border-border hover:border-yellow/40'
@@ -108,7 +111,7 @@ export const FoodReviewsSection: React.FC<FoodReviewsSectionProps> = ({
           </div>
 
           <div>
-            <label htmlFor="review-comment" className="block text-xs text-text-soft mb-1.5">
+            <label htmlFor="review-comment" className="block text-xs font-semibold uppercase tracking-wider text-text-soft mb-1.5">
               Your Review
             </label>
             <textarea
@@ -117,12 +120,12 @@ export const FoodReviewsSection: React.FC<FoodReviewsSectionProps> = ({
               value={reviewComment}
               onChange={(e) => setReviewComment(e.target.value)}
               placeholder="Describe the flavor profile, presentation, and temperature..."
-              className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted focus:outline-none focus:border-yellow"
+              className="w-full px-3.5 py-2.5 rounded-lg bg-canvas border border-border text-xs text-text placeholder:text-text-muted transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:border-yellow"
             />
           </div>
 
           <div>
-            <label htmlFor="review-photo" className="block text-xs text-text-soft mb-1.5">
+            <label htmlFor="review-photo" className="block text-xs font-semibold uppercase tracking-wider text-text-soft mb-1.5">
               Optional Dish Photo URL
             </label>
             <input
@@ -131,40 +134,39 @@ export const FoodReviewsSection: React.FC<FoodReviewsSectionProps> = ({
               value={reviewImageUrl}
               onChange={(e) => setReviewImageUrl(e.target.value)}
               placeholder="Optional photo URL or leave blank"
-              className="w-full px-3.5 py-2 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted focus:outline-none focus:border-yellow"
+              className="w-full px-3.5 py-2 rounded-lg bg-canvas border border-border text-xs text-text placeholder:text-text-muted transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:border-yellow"
             />
           </div>
 
           <div className="flex items-center gap-2">
-            <button
+            <Button
               type="submit"
-              disabled={submittingReview}
-              className="flex-1 py-2.5 rounded-xl bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold transition-colors disabled:opacity-50"
+              variant="primary"
+              size="md"
+              loading={submittingReview}
+              className="flex-1"
             >
-              {submittingReview
-                ? 'Saving...'
-                : editingReviewId
-                ? 'Update Review'
-                : 'Publish Review'}
-            </button>
+              {editingReviewId ? 'Update Review' : 'Publish Review'}
+            </Button>
             {editingReviewId && (
-              <button
+              <Button
                 type="button"
+                variant="outline"
+                size="md"
                 onClick={() => {
                   setEditingReviewId(null);
                   setReviewComment('');
                   setReviewRating(5);
                 }}
-                className="px-4 py-2.5 rounded-xl border border-border text-xs text-text-soft hover:text-text transition-colors"
               >
                 Cancel
-              </button>
+              </Button>
             )}
           </div>
         </form>
       </div>
 
-      {/* Right Column: Reviews List */}
+      {/* Right Column: Reviews List with Staggered Entrance */}
       <div className="lg:col-span-7 space-y-4">
         {reviews.length === 0 ? (
           <div className="nocturne-surface rounded-2xl p-10 text-center space-y-2">
@@ -176,62 +178,70 @@ export const FoodReviewsSection: React.FC<FoodReviewsSectionProps> = ({
             </p>
           </div>
         ) : (
-          reviews.map((rev) => {
-            const canManage =
-              user &&
-              (user.id === rev.userId || user.role === 'ADMIN' || user.role === 'STAFF');
-            return (
-              <article
-                key={rev.id}
-                className="nocturne-surface rounded-2xl p-6 space-y-3"
-              >
-                <div className="flex items-center justify-between gap-4">
-                  <div>
-                    <p className="text-sm font-semibold text-text">{rev.userName}</p>
-                    <p className="text-[11px] font-mono-tabular text-text-muted">
-                      {new Date(rev.createdAt).toLocaleDateString()} · Verified Tasting
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="font-mono-tabular text-sm font-semibold">
-                      <span className="text-yellow">{'★'.repeat(rev.rating)}</span>
-                      {5 - rev.rating > 0 && (
-                        <span className="text-text-muted">{'★'.repeat(5 - rev.rating)}</span>
+          <motion.div
+            variants={staggerContainer}
+            initial="initial"
+            animate="animate"
+            className="space-y-4"
+          >
+            {reviews.map((rev) => {
+              const canManage =
+                user &&
+                (user.id === rev.userId || user.role === 'ADMIN' || user.role === 'STAFF');
+              return (
+                <motion.article
+                  key={rev.id}
+                  variants={staggerItem}
+                  className="nocturne-surface rounded-2xl p-6 space-y-3"
+                >
+                  <div className="flex items-center justify-between gap-4">
+                    <div>
+                      <p className="text-sm font-semibold text-text">{rev.userName}</p>
+                      <p className="text-[11px] font-mono-tabular text-text-muted">
+                        {new Date(rev.createdAt).toLocaleDateString()} · Verified Tasting
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="font-mono-tabular text-sm font-semibold">
+                        <span className="text-yellow">{'★'.repeat(rev.rating)}</span>
+                        {5 - rev.rating > 0 && (
+                          <span className="text-text-muted">{'★'.repeat(5 - rev.rating)}</span>
+                        )}
+                        <span className="text-yellow ml-1">({rev.rating}.0)</span>
+                      </span>
+                      {canManage && (
+                        <div className="flex items-center gap-1">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setEditingReviewId(rev.id);
+                              setReviewRating(rev.rating);
+                              setReviewComment(rev.comment);
+                            }}
+                            aria-label="Edit review"
+                            className="p-1.5 rounded-lg text-text-soft hover:text-text hover:bg-white/5 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-yellow"
+                          >
+                            <Edit3 className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => onDeleteReview(rev.id)}
+                            aria-label="Delete review"
+                            className="p-1.5 rounded-lg text-danger hover:bg-danger/10 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-danger"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
                       )}
-                      <span className="text-yellow ml-1">({rev.rating}.0)</span>
-                    </span>
-                    {canManage && (
-                      <div className="flex items-center gap-1">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setEditingReviewId(rev.id);
-                            setReviewRating(rev.rating);
-                            setReviewComment(rev.comment);
-                          }}
-                          aria-label="Edit review"
-                          className="p-1.5 rounded-lg text-text-soft hover:text-text hover:bg-elevated transition-colors"
-                        >
-                          <Edit3 className="w-3.5 h-3.5" />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => onDeleteReview(rev.id)}
-                          aria-label="Delete review"
-                          className="p-1.5 rounded-lg text-danger hover:bg-elevated transition-colors"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-                    )}
+                    </div>
                   </div>
-                </div>
-                <p className="text-xs sm:text-sm text-text-soft leading-relaxed">
-                  {rev.comment}
-                </p>
-              </article>
-            );
-          })
+                  <p className="text-xs sm:text-sm text-text-soft leading-relaxed">
+                    {rev.comment}
+                  </p>
+                </motion.article>
+              );
+            })}
+          </motion.div>
         )}
       </div>
     </section>

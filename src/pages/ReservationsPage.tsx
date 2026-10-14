@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, Clock, Users, CheckCircle2, XCircle } from 'lucide-react';
+import { motion } from 'motion/react';
 import { apiRequest } from '../services/api';
 import { useRestaurant } from '../context/RestaurantContext';
 import type { Reservation } from '../types/restaurant';
+import { Button } from '../components/ui/Button';
+import { Skeleton } from '../components/ui/Skeleton';
+import { pageTransitionVariants } from '../lib/motion';
 
 interface TimeSlot {
   time: string;
@@ -128,7 +132,12 @@ export const ReservationsPage: React.FC = () => {
   );
 
   return (
-    <div className="max-w-[1280px] mx-auto px-4 sm:px-6 py-10 space-y-14">
+    <motion.div
+      variants={pageTransitionVariants}
+      initial="initial"
+      animate="animate"
+      className="max-w-[1280px] mx-auto px-4 sm:px-6 py-10 space-y-14"
+    >
       {/* Header */}
       <div className="border-b border-border pb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
@@ -198,13 +207,13 @@ export const ReservationsPage: React.FC = () => {
               </div>
 
               <div className="flex flex-wrap items-center gap-3">
-                <button
-                  type="button"
+                <Button
+                  variant="primary"
+                  size="md"
                   onClick={() => setConfirmedRes(null)}
-                  className="px-5 py-2.5 rounded-xl bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold transition-colors"
                 >
                   Make Another Reservation
-                </button>
+                </Button>
               </div>
             </div>
           ) : (
@@ -219,7 +228,7 @@ export const ReservationsPage: React.FC = () => {
               {/* Date, Guests, Dining Room Area */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-xs text-text-soft mb-1.5">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-text-soft mb-1.5">
                     <Calendar className="w-3.5 h-3.5 inline mr-1 text-yellow" />
                     Select Date
                   </label>
@@ -228,19 +237,19 @@ export const ReservationsPage: React.FC = () => {
                     required
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs font-mono-tabular text-text"
+                    className="w-full px-3.5 py-2.5 rounded-lg bg-canvas border border-border text-xs font-mono-tabular text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:border-yellow transition-colors duration-200"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs text-text-soft mb-1.5">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-text-soft mb-1.5">
                     <Users className="w-3.5 h-3.5 inline mr-1 text-green-light" />
                     Number of Guests
                   </label>
                   <select
                     value={guests}
                     onChange={(e) => setGuests(Number(e.target.value))}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs font-mono-tabular text-text"
+                    className="w-full px-3.5 py-2.5 rounded-lg bg-canvas border border-border text-xs font-mono-tabular text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:border-yellow transition-colors duration-200"
                   >
                     {[1, 2, 3, 4, 5, 6, 8, 10, 12, 16].map((n) => (
                       <option key={n} value={n}>
@@ -251,7 +260,7 @@ export const ReservationsPage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-xs text-text-soft mb-1.5">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-text-soft mb-1.5">
                     Sanctuary Seating Area
                   </label>
                   <select
@@ -259,7 +268,7 @@ export const ReservationsPage: React.FC = () => {
                     onChange={(e) =>
                       setTableArea(e.target.value as Reservation['tableArea'])
                     }
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text"
+                    className="w-full px-3.5 py-2.5 rounded-lg bg-canvas border border-border text-xs text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:border-yellow transition-colors duration-200"
                   >
                     <option value="Velvet Chef Counter">Velvet Chef Counter</option>
                     <option value="Main Dining Room">Main Dining Room</option>
@@ -272,7 +281,7 @@ export const ReservationsPage: React.FC = () => {
               {/* Available Time Slots */}
               <div className="space-y-2.5">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-medium text-text-soft">
+                  <label className="text-xs font-semibold uppercase tracking-wider text-text-soft">
                     <Clock className="w-3.5 h-3.5 inline mr-1 text-yellow" />
                     Available Evening Time Slots ({date})
                   </label>
@@ -290,9 +299,9 @@ export const ReservationsPage: React.FC = () => {
                         type="button"
                         disabled={!slot.available}
                         onClick={() => setTime(slot.time)}
-                        className={`p-2.5 rounded-xl border text-center font-mono-tabular transition-all ${
+                        className={`p-2.5 rounded-xl border text-center font-mono-tabular transition-[background-color,border-color,color] duration-150 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow cursor-pointer ${
                           !slot.available
-                            ? 'bg-canvas/40 border-border text-text-muted line-through opacity-50 cursor-not-allowed'
+                            ? 'bg-canvas/40 border-border text-text-muted line-through opacity-50 cursor-not-allowed pointer-events-none'
                             : selected
                             ? 'bg-yellow border-yellow text-black font-semibold'
                             : 'bg-canvas border-border text-text hover:border-yellow/50'
@@ -311,40 +320,46 @@ export const ReservationsPage: React.FC = () => {
               {/* Guest Contact Info */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
                 <div>
-                  <label className="block text-xs text-text-soft mb-1">Guest Name</label>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-text-soft mb-1.5">
+                    Guest Name
+                  </label>
                   <input
                     type="text"
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text"
+                    className="w-full px-3.5 py-2.5 rounded-lg bg-canvas border border-border text-xs text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:border-yellow transition-colors duration-200"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-text-soft mb-1">Phone Number</label>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-text-soft mb-1.5">
+                    Phone Number
+                  </label>
                   <input
                     type="tel"
                     required
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text"
+                    className="w-full px-3.5 py-2.5 rounded-lg bg-canvas border border-border text-xs text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:border-yellow transition-colors duration-200"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-text-soft mb-1">Email Address</label>
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-text-soft mb-1.5">
+                    Email Address
+                  </label>
                   <input
                     type="email"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text"
+                    className="w-full px-3.5 py-2.5 rounded-lg bg-canvas border border-border text-xs text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:border-yellow transition-colors duration-200"
                   />
                 </div>
               </div>
 
               {/* Special Request */}
               <div>
-                <label className="block text-xs text-text-soft mb-1">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-text-soft mb-1.5">
                   Special Request (Dietary Restrictions, Celebration, Sommelier Pairing)
                 </label>
                 <textarea
@@ -352,19 +367,19 @@ export const ReservationsPage: React.FC = () => {
                   value={specialRequest}
                   onChange={(e) => setSpecialRequest(e.target.value)}
                   placeholder="e.g., Anniversary table styling, gluten-free tasting menu, quiet corner booth..."
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted"
+                  className="w-full px-3.5 py-2.5 rounded-lg bg-canvas border border-border text-xs text-text placeholder-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:border-yellow transition-colors duration-200"
                 />
               </div>
 
-              <button
+              <Button
                 type="submit"
-                disabled={submitting}
-                className="w-full py-3.5 rounded-xl bg-green-light hover:bg-green-mid text-black font-semibold text-sm transition-colors"
+                variant="success"
+                size="lg"
+                fullWidth
+                loading={submitting}
               >
-                {submitting
-                  ? 'Confirming Seating...'
-                  : `Confirm Table Reservation (${date} at ${time})`}
-              </button>
+                Confirm Table Reservation ({date} at {time})
+              </Button>
             </form>
           )}
         </div>
@@ -377,7 +392,10 @@ export const ReservationsPage: React.FC = () => {
             </h2>
 
             {loadingList ? (
-              <div className="h-32 rounded-xl bg-canvas animate-pulse" />
+              <div className="space-y-3">
+                <Skeleton variant="rectangular" className="h-24 w-full" />
+                <Skeleton variant="rectangular" className="h-24 w-full" />
+              </div>
             ) : upcomingReservations.length === 0 ? (
               <p className="text-xs text-text-muted py-4">
                 No upcoming reservations yet. Select a date and time slot on the left to book your table.
@@ -404,14 +422,15 @@ export const ReservationsPage: React.FC = () => {
                       <p className="text-[11px] text-text-soft">"{res.specialRequest}"</p>
                     )}
                     <div className="pt-2 flex justify-end">
-                      <button
-                        type="button"
+                      <Button
+                        variant="danger"
+                        size="sm"
                         onClick={() => handleCancelReservation(res.id)}
-                        className="inline-flex items-center gap-1 text-xs text-danger hover:underline"
+                        leftIcon={<XCircle className="w-3.5 h-3.5" />}
+                        className="text-xs py-1"
                       >
-                        <XCircle className="w-3.5 h-3.5" />
-                        <span>Cancel Reservation</span>
-                      </button>
+                        Cancel Reservation
+                      </Button>
                     </div>
                   </div>
                 ))}
@@ -450,6 +469,6 @@ export const ReservationsPage: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };

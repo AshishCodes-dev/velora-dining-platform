@@ -1,9 +1,10 @@
 import { useReducedMotion } from 'motion/react';
+import type { Variants } from 'motion/react';
 
 export const EASE_OUT = [0.16, 1, 0.3, 1] as const;
 export const EASE_SPRING = { type: 'spring', stiffness: 400, damping: 28 } as const;
 
-export const pageTransitionVariants = {
+export const pageTransitionVariants: Variants = {
   initial: { opacity: 0, y: 8 },
   animate: {
     opacity: 1,
@@ -13,11 +14,11 @@ export const pageTransitionVariants = {
   exit: {
     opacity: 0,
     y: -8,
-    transition: { duration: 0.18, ease: 'easeIn' },
+    transition: { duration: 0.18, ease: 'easeIn' as const },
   },
 };
 
-export const fadeUpVariants = {
+export const fadeUpVariants: Variants = {
   initial: { opacity: 0, y: 16 },
   animate: {
     opacity: 1,
@@ -26,7 +27,7 @@ export const fadeUpVariants = {
   },
 };
 
-export const staggerContainer = {
+export const staggerContainer: Variants = {
   initial: {},
   animate: {
     transition: {
@@ -36,7 +37,7 @@ export const staggerContainer = {
   },
 };
 
-export const staggerItem = {
+export const staggerItem: Variants = {
   initial: { opacity: 0, y: 12 },
   animate: {
     opacity: 1,
@@ -45,7 +46,7 @@ export const staggerItem = {
   },
 };
 
-export const scaleInVariants = {
+export const scaleInVariants: Variants = {
   initial: { opacity: 0, scale: 0.96 },
   animate: {
     opacity: 1,
@@ -55,18 +56,18 @@ export const scaleInVariants = {
   exit: {
     opacity: 0,
     scale: 0.96,
-    transition: { duration: 0.18, ease: 'easeIn' },
+    transition: { duration: 0.18, ease: 'easeIn' as const },
   },
 };
 
 export const heartPopKeyframes = {
   scale: [1, 1.3, 0.92, 1],
-  transition: { duration: 0.35, ease: 'easeInOut' },
+  transition: { duration: 0.35, ease: 'easeInOut' as const },
 };
 
 export const badgeBounceKeyframes = {
   scale: [1, 1.35, 0.9, 1],
-  transition: { duration: 0.3, ease: 'easeOut' },
+  transition: { duration: 0.3, ease: 'easeOut' as const },
 };
 
 /**

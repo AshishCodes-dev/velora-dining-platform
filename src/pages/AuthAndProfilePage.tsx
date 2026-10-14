@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Shield } from 'lucide-react';
+import { motion } from 'motion/react';
 import { useRestaurant } from '../context/RestaurantContext';
 import { apiRequest } from '../services/api';
 import type { Order, Reservation, Review } from '../types/restaurant';
 import { AuthSection } from '../components/auth/AuthSection';
 import { UserProfileView, type ProfileTab } from '../components/profile/UserProfileView';
+import { Button } from '../components/ui/Button';
+import { pageTransitionVariants } from '../lib/motion';
 
 export const AuthAndProfilePage: React.FC = () => {
   const {
@@ -141,7 +144,12 @@ export const AuthAndProfilePage: React.FC = () => {
   const favoriteFoods = foods.filter((f) => favorites.includes(f.id));
 
   return (
-    <div className="max-w-[1280px] mx-auto px-4 sm:px-6 py-10 space-y-10">
+    <motion.div
+      variants={pageTransitionVariants}
+      initial="initial"
+      animate="animate"
+      className="max-w-[1280px] mx-auto px-4 sm:px-6 py-10 space-y-10"
+    >
       {/* Demo Accounts Bar (Controlled by VITE_DEMO_MODE=true) */}
       {isDemoMode && (
         <div className="nocturne-surface rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-yellow/30">
@@ -162,60 +170,48 @@ export const AuthAndProfilePage: React.FC = () => {
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <button
-              type="button"
+            <Button
+              variant="secondary"
+              size="sm"
               onClick={() => setShowDemoAccounts((prev) => !prev)}
-              className="px-3.5 py-2 rounded-xl text-xs font-semibold bg-green-deep border border-green-mid text-green-light hover:bg-green-mid/30 transition-colors"
             >
               {showDemoAccounts ? 'Hide Demo Accounts ▲' : 'Demo Accounts ▼'}
-            </button>
+            </Button>
             {showDemoAccounts && (
               <>
-                <button
-                  type="button"
+                <Button
+                  variant={user?.role === 'CUSTOMER' ? 'success' : 'outline'}
+                  size="sm"
                   onClick={() => demoLogin('CUSTOMER')}
-                  className={`px-3.5 py-2 rounded-xl text-xs font-semibold transition-colors ${
-                    user?.role === 'CUSTOMER'
-                      ? 'bg-green-light text-black'
-                      : 'bg-canvas text-text-soft hover:text-text border border-border'
-                  }`}
                 >
                   Customer (Elena)
-                </button>
-                <button
-                  type="button"
+                </Button>
+                <Button
+                  variant={user?.role === 'STAFF' ? 'primary' : 'outline'}
+                  size="sm"
                   onClick={() => demoLogin('STAFF')}
-                  className={`px-3.5 py-2 rounded-xl text-xs font-semibold transition-colors ${
-                    user?.role === 'STAFF'
-                      ? 'bg-yellow text-black'
-                      : 'bg-canvas text-text-soft hover:text-text border border-border'
-                  }`}
                 >
                   Staff (Maître D’)
-                </button>
-                <button
-                  type="button"
+                </Button>
+                <Button
+                  variant={user?.role === 'ADMIN' ? 'primary' : 'outline'}
+                  size="sm"
                   onClick={async () => {
                     await demoLogin('ADMIN');
                   }}
-                  className={`px-3.5 py-2 rounded-xl text-xs font-semibold transition-colors ${
-                    user?.role === 'ADMIN'
-                      ? 'bg-yellow text-black'
-                      : 'bg-canvas text-text-soft hover:text-text border border-border'
-                  }`}
                 >
                   Admin (Chef Julian)
-                </button>
+                </Button>
               </>
             )}
             {(user?.role === 'ADMIN' || user?.role === 'STAFF') && (
-              <button
-                type="button"
+              <Button
+                variant="primary"
+                size="sm"
                 onClick={() => navigate('/admin')}
-                className="px-3.5 py-2 rounded-xl bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold transition-colors"
               >
                 Open Admin Console →
-              </button>
+              </Button>
             )}
           </div>
         </div>
@@ -245,6 +241,6 @@ export const AuthAndProfilePage: React.FC = () => {
           onLogout={logout}
         />
       )}
-    </div>
+    </motion.div>
   );
 };

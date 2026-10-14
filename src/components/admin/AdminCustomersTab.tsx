@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Button } from '../ui/Button';
+import { Badge } from '../ui/Badge';
 
 export interface CustomerSummary {
   id: string;
@@ -36,7 +38,7 @@ export const AdminCustomersTab: React.FC<AdminCustomersTabProps> = ({
         value={customerSearch}
         onChange={(e) => setCustomerSearch(e.target.value)}
         placeholder="Search customers by name or email..."
-        className="w-full max-w-md px-4 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted focus:border-yellow"
+        className="w-full max-w-md px-4 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-colors"
       />
 
       <div className="nocturne-surface rounded-2xl overflow-x-auto">
@@ -53,7 +55,7 @@ export const AdminCustomersTab: React.FC<AdminCustomersTabProps> = ({
           </thead>
           <tbody className="divide-y divide-border font-mono-tabular">
             {filteredCustomers.map((c) => (
-              <tr key={c.id} className="hover:bg-white/5">
+              <tr key={c.id} className="hover:bg-white/5 transition-colors">
                 <td className="p-4 font-sans">
                   <p className="font-semibold text-text">{c.name}</p>
                   <p className="text-[11px] text-text-muted">{c.email}</p>
@@ -64,22 +66,22 @@ export const AdminCustomersTab: React.FC<AdminCustomersTabProps> = ({
                   ${c.totalSpending.toFixed(2)}
                 </td>
                 <td className="p-4 font-sans">
-                  <span
-                    className={
-                      c.status === 'ACTIVE' ? 'text-green-light' : 'text-danger'
-                    }
+                  <Badge
+                    variant={c.status === 'ACTIVE' ? 'success' : 'danger'}
+                    dot
                   >
                     {c.status}
-                  </span>
+                  </Badge>
                 </td>
                 <td className="p-4 text-right font-sans">
-                  <button
+                  <Button
                     type="button"
+                    variant={c.status === 'ACTIVE' ? 'outline' : 'secondary'}
+                    size="sm"
                     onClick={() => onToggleCustomer(c.id)}
-                    className="px-3 py-1 rounded-lg border border-border hover:border-yellow text-xs text-text transition-colors"
                   >
                     {c.status === 'ACTIVE' ? 'Disable' : 'Enable'}
-                  </button>
+                  </Button>
                 </td>
               </tr>
             ))}

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { FoodCard } from '../FoodCard';
 import type { Food } from '../../types/restaurant';
+import { Button } from '../ui/Button';
+import { EmptyState } from '../ui/EmptyState';
+import { Heart } from 'lucide-react';
 
 interface AuthSectionProps {
   favoriteFoods: Food[];
@@ -59,7 +61,7 @@ export const AuthSection: React.FC<AuthSectionProps> = ({
           <button
             type="button"
             onClick={() => setAuthMode('login')}
-            className={`flex-1 py-2 rounded-lg text-xs font-semibold transition-colors ${
+            className={`flex-1 py-2 rounded-lg text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow ${
               authMode === 'login' ? 'bg-yellow text-black' : 'text-text-muted hover:text-text'
             }`}
           >
@@ -68,7 +70,7 @@ export const AuthSection: React.FC<AuthSectionProps> = ({
           <button
             type="button"
             onClick={() => setAuthMode('register')}
-            className={`flex-1 py-2 rounded-lg text-xs font-semibold transition-colors ${
+            className={`flex-1 py-2 rounded-lg text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow ${
               authMode === 'register' ? 'bg-yellow text-black' : 'text-text-muted hover:text-text'
             }`}
           >
@@ -90,25 +92,25 @@ export const AuthSection: React.FC<AuthSectionProps> = ({
           {authMode === 'register' && (
             <>
               <div>
-                <label className="block text-xs text-text-soft mb-1">Full Name</label>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-text-soft mb-1.5">Full Name</label>
                 <input
                   type="text"
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Elena Rostova"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted"
+                  className="w-full px-3.5 py-2.5 rounded-lg bg-canvas border border-border text-xs text-text placeholder:text-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:border-yellow transition-colors duration-200"
                 />
               </div>
               <div>
-                <label className="block text-xs text-text-soft mb-1">Phone Number</label>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-text-soft mb-1.5">Phone Number</label>
                 <input
                   type="tel"
                   required
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="+1 (415) 602-8819"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted"
+                  className="w-full px-3.5 py-2.5 rounded-lg bg-canvas border border-border text-xs text-text placeholder:text-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:border-yellow transition-colors duration-200"
                 />
               </div>
             </>
@@ -116,27 +118,27 @@ export const AuthSection: React.FC<AuthSectionProps> = ({
 
           {authMode !== 'reset' && (
             <div>
-              <label className="block text-xs text-text-soft mb-1">Email Address</label>
+              <label className="block text-xs font-semibold uppercase tracking-wider text-text-soft mb-1.5">Email Address</label>
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="guest@example.com"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted"
+                className="w-full px-3.5 py-2.5 rounded-lg bg-canvas border border-border text-xs text-text placeholder:text-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:border-yellow transition-colors duration-200"
               />
             </div>
           )}
 
           {(authMode === 'login' || authMode === 'register') && (
             <div>
-              <div className="flex items-center justify-between mb-1">
-                <label className="text-xs text-text-soft">Password</label>
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="text-xs font-semibold uppercase tracking-wider text-text-soft">Password</label>
                 {authMode === 'login' && (
                   <button
                     type="button"
                     onClick={() => setAuthMode('forgot')}
-                    className="text-xs text-yellow hover:underline"
+                    className="text-xs text-yellow hover:underline focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-yellow rounded px-1"
                   >
                     Forgot password?
                   </button>
@@ -148,7 +150,7 @@ export const AuthSection: React.FC<AuthSectionProps> = ({
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted"
+                className="w-full px-3.5 py-2.5 rounded-lg bg-canvas border border-border text-xs text-text placeholder:text-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:border-yellow transition-colors duration-200"
               />
             </div>
           )}
@@ -168,54 +170,56 @@ export const AuthSection: React.FC<AuthSectionProps> = ({
                 </div>
               )}
               <div>
-                <label className="block text-xs text-text-soft mb-1">Reset Token</label>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-text-soft mb-1.5">Reset Token</label>
                 <input
                   type="text"
                   required
                   value={resetTokenInput}
                   onChange={(e) => setResetTokenInput(e.target.value)}
                   placeholder="Paste reset token here"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs font-mono-tabular text-text placeholder-text-muted"
+                  className="w-full px-3.5 py-2.5 rounded-lg bg-canvas border border-border text-xs font-mono-tabular text-text placeholder:text-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:border-yellow transition-colors duration-200"
                 />
               </div>
               <div>
-                <label className="block text-xs text-text-soft mb-1">New Password</label>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-text-soft mb-1.5">New Password</label>
                 <input
                   type="password"
                   required
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   placeholder="At least 6 characters"
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted"
+                  className="w-full px-3.5 py-2.5 rounded-lg bg-canvas border border-border text-xs text-text placeholder:text-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:border-yellow transition-colors duration-200"
                 />
               </div>
             </>
           )}
 
-          <button
+          <Button
             type="submit"
-            disabled={authSubmitting}
-            className="w-full py-3 rounded-xl bg-yellow hover:bg-yellow-hover disabled:opacity-50 text-black text-xs font-semibold transition-colors"
+            variant="primary"
+            size="lg"
+            fullWidth
+            loading={authSubmitting}
           >
-            {authSubmitting
-              ? 'Processing...'
-              : authMode === 'login'
+            {authMode === 'login'
               ? 'Sign In to Velora'
               : authMode === 'register'
               ? 'Create Guest Profile'
               : authMode === 'forgot'
               ? 'Request Reset Key'
               : 'Set New Password'}
-          </button>
+          </Button>
 
           {authMode === 'forgot' && (
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="sm"
+              fullWidth
               onClick={() => setAuthMode('login')}
-              className="w-full text-center text-xs text-text-muted hover:text-text"
             >
               Back to Sign In
-            </button>
+            </Button>
           )}
         </form>
       </div>
@@ -232,17 +236,14 @@ export const AuthSection: React.FC<AuthSectionProps> = ({
         </div>
 
         {favoriteFoods.length === 0 ? (
-          <div className="nocturne-surface rounded-2xl p-10 text-center space-y-3">
-            <p className="text-sm text-text-soft">
-              No dishes saved to favorites yet. Click the heart icon on any dish to bookmark it.
-            </p>
-            <Link
-              to="/menu"
-              className="inline-block px-5 py-2.5 rounded-xl bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold transition-colors"
-            >
-              Browse Menu
-            </Link>
-          </div>
+          <EmptyState
+            icon={<Heart className="w-8 h-8 text-yellow" />}
+            title="No dishes saved to favorites yet"
+            description="Click the heart icon on any dish across our menu to bookmark it."
+            actionLabel="Browse Artisanal Menu"
+            actionTo="/menu"
+            className="py-12"
+          />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {favoriteFoods.map((food) => (

@@ -1,12 +1,16 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Heart } from 'lucide-react';
+import { motion } from 'motion/react';
 import { apiRequest } from '../services/api';
 import { useRestaurant } from '../context/RestaurantContext';
 import { DishVisual } from '../components/DishVisual';
 import type { Food, Review, CustomizationAddon } from '../types/restaurant';
 import { FoodCustomizer } from '../components/food/FoodCustomizer';
 import { FoodReviewsSection } from '../components/food/FoodReviewsSection';
+import { Button } from '../components/ui/Button';
+import { Skeleton } from '../components/ui/Skeleton';
+import { pageTransitionVariants } from '../lib/motion';
 
 export const FoodDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -25,6 +29,7 @@ export const FoodDetailsPage: React.FC = () => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [visualMode, setVisualMode] = useState<'photo' | 'illustration'>('photo');
+  const [heartPumping, setHeartPumping] = useState(false);
 
   // Customization State
   const [selectedSize, setSelectedSize] = useState<'Regular' | 'Large' | 'Family'>('Regular');
@@ -103,6 +108,13 @@ export const FoodDetailsPage: React.FC = () => {
     });
   };
 
+  const handleToggleFavorite = () => {
+    if (!food) return;
+    setHeartPumping(true);
+    toggleFavorite(food.id);
+    setTimeout(() => setHeartPumping(false), 350);
+  };
+
   const handleReviewSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!food) return;
@@ -171,8 +183,13 @@ export const FoodDetailsPage: React.FC = () => {
   if (loading) {
     return (
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 py-12 grid grid-cols-1 lg:grid-cols-12 gap-10">
-        <div className="lg:col-span-6 h-96 rounded-2xl bg-surface animate-pulse" />
-        <div className="lg:col-span-6 h-96 rounded-2xl bg-surface animate-pulse" />
+        <div className="lg:col-span-6 space-y-4">
+          <Skeleton variant="rectangular" className="h-96 w-full rounded-2xl" />
+          <Skeleton variant="rectangular" className="h-24 w-full rounded-2xl" />
+        </div>
+        <div className="lg:col-span-6 space-y-4">
+          <Skeleton variant="rectangular" className="h-96 w-full rounded-2xl" />
+        </div>
       </div>
     );
   }
@@ -184,12 +201,13 @@ export const FoodDetailsPage: React.FC = () => {
         <p className="text-xs text-text-soft">
           This creation may have rotated out of our seasonal tasting menu.
         </p>
-        <Link
+        <Button
+          variant="primary"
+          size="md"
           to="/menu"
-          className="inline-block px-5 py-2.5 rounded-xl bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold transition-colors"
         >
           Return to Menu
-        </Link>
+        </Button>
       </div>
     );
   }
@@ -197,22 +215,28 @@ export const FoodDetailsPage: React.FC = () => {
   const fav = isFavorite(food.id);
 
   return (
-    <div className="max-w-[1280px] mx-auto px-4 sm:px-6 py-10 space-y-16">
+    <motion.div
+      variants={pageTransitionVariants}
+      initial="initial"
+      animate="animate"
+      className="max-w-[1280px] mx-auto px-4 sm:px-6 py-10 space-y-16"
+    >
       {/* Top Breadcrumb Navigation */}
       <div className="flex items-center justify-between">
-        <button
-          type="button"
+        <Button
+          variant="ghost"
+          size="sm"
           onClick={() => navigate('/menu')}
-          className="inline-flex items-center gap-2 text-xs font-medium text-text-soft hover:text-text transition-colors"
+          leftIcon={<ArrowLeft className="w-4 h-4" />}
+          className="text-text-soft hover:text-text"
         >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Back to Artisanal Menu</span>
-        </button>
+          Back to Artisanal Menu
+        </Button>
 
         <div className="text-xs text-text-muted">
           <span>{food.categoryName}</span>
           <span className="mx-1.5">·</span>
-          <span className="text-text">{food.name}</span>
+          <span className="text-text font-medium">{food.name}</span>
         </div>
       </div>
 
@@ -233,9 +257,9 @@ export const FoodDetailsPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setVisualMode('photo')}
-                className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors ${
+                className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-yellow ${
                   visualMode === 'photo'
-                    ? 'bg-yellow text-black'
+                    ? 'bg-yellow text-black font-semibold'
                     : 'text-text-soft hover:text-text'
                 }`}
               >
@@ -244,9 +268,9 @@ export const FoodDetailsPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setVisualMode('illustration')}
-                className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors ${
+                className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-yellow ${
                   visualMode === 'illustration'
-                    ? 'bg-yellow text-black'
+                    ? 'bg-yellow text-black font-semibold'
                     : 'text-text-soft hover:text-text'
                 }`}
               >
@@ -254,18 +278,20 @@ export const FoodDetailsPage: React.FC = () => {
               </button>
             </div>
 
-            <button
+            <motion.button
               type="button"
-              onClick={() => toggleFavorite(food.id)}
+              animate={heartPumping ? { scale: [1, 1.3, 0.92, 1] } : { scale: 1 }}
+              transition={{ duration: 0.35, ease: 'easeInOut' }}
+              onClick={handleToggleFavorite}
               aria-label="Toggle favorite"
-              className="absolute top-3 right-3 w-10 h-10 rounded-full bg-canvas/85 flex items-center justify-center text-text hover:bg-canvas transition-colors"
+              className="absolute top-3 right-3 w-10 h-10 rounded-full bg-canvas/85 backdrop-blur-sm border border-border/50 flex items-center justify-center text-text hover:bg-canvas transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow cursor-pointer"
             >
               <Heart
-                className={`w-5 h-5 ${
-                  fav ? 'fill-yellow text-yellow' : 'text-text'
+                className={`w-5 h-5 transition-colors ${
+                  fav ? 'fill-yellow text-yellow' : 'text-text hover:text-yellow'
                 }`}
               />
-            </button>
+            </motion.button>
           </div>
 
           {/* Nutritional & Preparation Facts */}
@@ -344,6 +370,6 @@ export const FoodDetailsPage: React.FC = () => {
         onSubmitReview={handleReviewSubmit}
         onDeleteReview={handleDeleteReview}
       />
-    </div>
+    </motion.div>
   );
 };

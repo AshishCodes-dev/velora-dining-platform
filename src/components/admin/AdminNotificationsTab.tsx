@@ -1,6 +1,8 @@
 import React from 'react';
 import { Check } from 'lucide-react';
 import type { NotificationItem } from '../../types/restaurant';
+import { Button } from '../ui/Button';
+import { Badge } from '../ui/Badge';
 
 interface AdminNotificationsTabProps {
   notifications: NotificationItem[];
@@ -14,25 +16,33 @@ export const AdminNotificationsTab: React.FC<AdminNotificationsTabProps> = ({
   return (
     <div className="space-y-4">
       <div className="flex justify-end">
-        <button
+        <Button
           type="button"
+          variant="primary"
+          size="sm"
           onClick={onMarkAllRead}
-          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold transition-colors"
+          leftIcon={<Check className="w-3.5 h-3.5" />}
         >
-          <Check className="w-3.5 h-3.5" />
-          <span>Mark All Read</span>
-        </button>
+          Mark All Read
+        </Button>
       </div>
       {notifications.map((n) => (
         <div
           key={n.id}
-          className={`nocturne-surface rounded-xl p-5 flex items-center justify-between gap-4 ${
+          className={`nocturne-surface rounded-xl p-5 flex items-center justify-between gap-4 transition-colors hover:border-border-accent ${
             !n.read ? 'border-yellow/50' : ''
           }`}
         >
-          <div>
-            <p className="text-sm font-semibold text-text">{n.title}</p>
-            <p className="text-xs text-text-soft mt-1">{n.message}</p>
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <p className="text-sm font-semibold text-text">{n.title}</p>
+              {!n.read && (
+                <Badge variant="yellow" dot size="sm">
+                  New
+                </Badge>
+              )}
+            </div>
+            <p className="text-xs text-text-soft">{n.message}</p>
           </div>
           <span className="text-[11px] font-mono-tabular text-text-muted">
             {new Date(n.createdAt).toLocaleTimeString([], {

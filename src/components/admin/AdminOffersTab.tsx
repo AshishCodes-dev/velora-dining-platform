@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import type { Offer } from '../../types/restaurant';
+import { Button } from '../ui/Button';
 
 interface AdminOffersTabProps {
   offers: Offer[];
@@ -44,7 +45,7 @@ export const AdminOffersTab: React.FC<AdminOffersTabProps> = ({
           value={offerTitle}
           onChange={(e) => setOfferTitle(e.target.value)}
           placeholder="Offer Title"
-          className="w-full px-3.5 py-2 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted focus:border-yellow"
+          className="w-full px-3.5 py-2 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-colors"
         />
         <input
           type="text"
@@ -52,7 +53,7 @@ export const AdminOffersTab: React.FC<AdminOffersTabProps> = ({
           value={offerSub}
           onChange={(e) => setOfferSub(e.target.value)}
           placeholder="Subtitle (e.g. 20% Off Mains)"
-          className="w-full px-3.5 py-2 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted focus:border-yellow"
+          className="w-full px-3.5 py-2 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-colors"
         />
         <input
           type="text"
@@ -60,21 +61,23 @@ export const AdminOffersTab: React.FC<AdminOffersTabProps> = ({
           value={offerCode}
           onChange={(e) => setOfferCode(e.target.value.toUpperCase())}
           placeholder="Linked Coupon Code"
-          className="w-full px-3.5 py-2 rounded-xl bg-canvas border border-border text-xs font-mono-tabular text-text placeholder-text-muted focus:border-yellow"
+          className="w-full px-3.5 py-2 rounded-xl bg-canvas border border-border text-xs font-mono-tabular text-text placeholder-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-colors"
         />
-        <button
+        <Button
           type="submit"
-          className="w-full py-2.5 rounded-xl bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold transition-colors"
+          variant="primary"
+          size="md"
+          fullWidth
         >
           Publish Offer
-        </button>
+        </Button>
       </form>
 
       <div className="lg:col-span-8 space-y-3">
         {offers.map((o) => (
           <div
             key={o.id}
-            className="nocturne-surface rounded-xl p-5 flex items-center justify-between gap-4"
+            className="nocturne-surface rounded-xl p-5 flex items-center justify-between gap-4 transition-colors hover:border-border-accent"
           >
             <div>
               <p className="text-sm font-semibold text-text">{o.title}</p>
@@ -83,14 +86,16 @@ export const AdminOffersTab: React.FC<AdminOffersTabProps> = ({
                 Code: {o.couponCode}
               </p>
             </div>
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="sm"
               onClick={() => onDeleteOffer(o.id)}
               aria-label={`Delete offer ${o.title}`}
-              className="p-2 text-danger hover:bg-white/5 rounded-lg transition-colors"
+              className="p-2 text-danger hover:text-danger hover:bg-danger/10"
             >
               <Trash2 className="w-4 h-4" />
-            </button>
+            </Button>
           </div>
         ))}
       </div>

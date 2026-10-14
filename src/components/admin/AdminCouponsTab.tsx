@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import type { Coupon } from '../../types/restaurant';
+import { Button } from '../ui/Button';
+import { Badge } from '../ui/Badge';
 
 interface AdminCouponsTabProps {
   coupons: Coupon[];
@@ -58,7 +60,7 @@ export const AdminCouponsTab: React.FC<AdminCouponsTabProps> = ({
             value={coupCode}
             onChange={(e) => setCoupCode(e.target.value.toUpperCase())}
             placeholder="ROYAL30"
-            className="w-full px-3.5 py-2 rounded-xl bg-canvas border border-border text-xs font-mono-tabular text-text placeholder-text-muted focus:border-yellow"
+            className="w-full px-3.5 py-2 rounded-xl bg-canvas border border-border text-xs font-mono-tabular text-text placeholder-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-colors"
           />
         </div>
         <div>
@@ -69,7 +71,7 @@ export const AdminCouponsTab: React.FC<AdminCouponsTabProps> = ({
             value={coupTitle}
             onChange={(e) => setCoupTitle(e.target.value)}
             placeholder="30% Off Royal Tasting"
-            className="w-full px-3.5 py-2 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted focus:border-yellow"
+            className="w-full px-3.5 py-2 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-colors"
           />
         </div>
         <div className="grid grid-cols-3 gap-2">
@@ -78,7 +80,7 @@ export const AdminCouponsTab: React.FC<AdminCouponsTabProps> = ({
             <select
               value={coupType}
               onChange={(e) => setCoupType(e.target.value as 'PERCENTAGE' | 'FIXED')}
-              className="w-full px-2 py-2 rounded-xl bg-canvas border border-border text-xs text-text focus:border-yellow"
+              className="w-full px-2 py-2 rounded-xl bg-canvas border border-border text-xs text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-colors"
             >
               <option value="PERCENTAGE">%</option>
               <option value="FIXED">$</option>
@@ -90,7 +92,7 @@ export const AdminCouponsTab: React.FC<AdminCouponsTabProps> = ({
               type="number"
               value={coupValue}
               onChange={(e) => setCoupValue(e.target.value)}
-              className="w-full px-2.5 py-2 rounded-xl bg-canvas border border-border text-xs font-mono-tabular text-text focus:border-yellow"
+              className="w-full px-2.5 py-2 rounded-xl bg-canvas border border-border text-xs font-mono-tabular text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-colors"
             />
           </div>
           <div>
@@ -99,23 +101,25 @@ export const AdminCouponsTab: React.FC<AdminCouponsTabProps> = ({
               type="number"
               value={coupMin}
               onChange={(e) => setCoupMin(e.target.value)}
-              className="w-full px-2.5 py-2 rounded-xl bg-canvas border border-border text-xs font-mono-tabular text-text focus:border-yellow"
+              className="w-full px-2.5 py-2 rounded-xl bg-canvas border border-border text-xs font-mono-tabular text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-colors"
             />
           </div>
         </div>
-        <button
+        <Button
           type="submit"
-          className="w-full py-2.5 rounded-xl bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold transition-colors"
+          variant="primary"
+          size="md"
+          fullWidth
         >
           Create Coupon
-        </button>
+        </Button>
       </form>
 
       <div className="lg:col-span-8 space-y-3">
         {coupons.map((c) => (
           <div
             key={c.id}
-            className="nocturne-surface rounded-xl p-5 flex items-center justify-between gap-4"
+            className="nocturne-surface rounded-xl p-5 flex items-center justify-between gap-4 transition-colors hover:border-border-accent"
           >
             <div>
               <p className="font-mono-tabular text-sm font-bold text-yellow">
@@ -133,22 +137,27 @@ export const AdminCouponsTab: React.FC<AdminCouponsTabProps> = ({
               <button
                 type="button"
                 onClick={() => onToggleCoupon(c)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
-                  c.isActive
-                    ? 'bg-green-light/15 text-green-light'
-                    : 'bg-white/5 text-text-muted'
-                }`}
+                aria-label={`Toggle active for ${c.code}`}
+                className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow rounded-full transition-transform active:scale-95"
               >
-                {c.isActive ? 'Active' : 'Inactive'}
+                <Badge
+                  variant={c.isActive ? 'success' : 'neutral'}
+                  dot
+                  className="cursor-pointer"
+                >
+                  {c.isActive ? 'Active' : 'Inactive'}
+                </Badge>
               </button>
-              <button
+              <Button
                 type="button"
+                variant="ghost"
+                size="sm"
                 onClick={() => onDeleteCoupon(c.id)}
                 aria-label={`Delete coupon ${c.code}`}
-                className="p-2 text-danger hover:bg-white/5 rounded-lg transition-colors"
+                className="p-2 text-danger hover:text-danger hover:bg-danger/10"
               >
                 <Trash2 className="w-4 h-4" />
-              </button>
+              </Button>
             </div>
           </div>
         ))}

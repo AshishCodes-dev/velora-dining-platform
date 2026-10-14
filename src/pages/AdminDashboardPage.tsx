@@ -51,6 +51,7 @@ import { AdminAnalyticsTab } from '../components/admin/AdminAnalyticsTab';
 import { AdminSettingsTab } from '../components/admin/AdminSettingsTab';
 import { AdminStaffTab } from '../components/admin/AdminStaffTab';
 import { AdminNotificationsTab } from '../components/admin/AdminNotificationsTab';
+import { Button } from '../components/ui/Button';
 
 type AdminTab =
   | 'dashboard'
@@ -351,20 +352,22 @@ export const AdminDashboardPage: React.FC = () => {
             This workspace is protected by Role-Based Access Control (ADMIN / STAFF). Click below to sign in instantly as Executive Chef Julian Vance (Admin) or Maître D’ Sora Takahashi (Staff).
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
-            <button
-              type="button"
+            <Button
+              variant="primary"
+              size="lg"
               onClick={() => demoLogin('ADMIN')}
-              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold transition-colors"
+              className="w-full sm:w-auto"
             >
               Sign In as Executive Admin
-            </button>
-            <button
-              type="button"
+            </Button>
+            <Button
+              variant="success"
+              size="lg"
               onClick={() => demoLogin('STAFF')}
-              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-green-light hover:bg-green-mid text-black text-xs font-semibold transition-colors"
+              className="w-full sm:w-auto"
             >
               Sign In as Staff Member
-            </button>
+            </Button>
           </div>
         </div>
       </div>
@@ -392,7 +395,7 @@ export const AdminDashboardPage: React.FC = () => {
     <div className="min-h-[calc(100vh-4rem)] flex flex-col md:flex-row">
       {/* SIDEBAR NAVIGATION */}
       <aside
-        className={`bg-canvas border-r border-border p-4 transition-all duration-200 shrink-0 ${
+        className={`bg-canvas border-r border-border p-4 transition-[width,padding] duration-200 ease-out shrink-0 ${
           sidebarCollapsed ? 'w-full md:w-20' : 'w-full md:w-64'
         }`}
       >
@@ -411,7 +414,7 @@ export const AdminDashboardPage: React.FC = () => {
             type="button"
             onClick={() => setSidebarCollapsed((prev) => !prev)}
             aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-            className="p-1.5 rounded-lg text-text-muted hover:text-text hover:bg-white/5 hidden md:block shrink-0"
+            className="p-1.5 rounded-lg text-text-muted hover:text-text hover:bg-white/5 hidden md:block shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow cursor-pointer"
           >
             {sidebarCollapsed ? (
               <ChevronRight className="w-4 h-4" />
@@ -421,7 +424,7 @@ export const AdminDashboardPage: React.FC = () => {
           </button>
         </div>
 
-        <nav aria-label="Admin Navigation" className="flex md:flex-col gap-1 overflow-x-auto md:overflow-visible pb-2 md:pb-0">
+        <nav aria-label="Admin Navigation" className="flex md:flex-col gap-1 overflow-x-auto md:overflow-visible pb-2 md:pb-0 scrollbar-none">
           {sidebarItems.map((item) => {
             const Icon = item.icon;
             const active = activeTab === item.id;
@@ -430,7 +433,7 @@ export const AdminDashboardPage: React.FC = () => {
                 key={item.id}
                 type="button"
                 onClick={() => selectTab(item.id)}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs transition-colors whitespace-nowrap shrink-0 ${
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs transition-[background-color,color] duration-150 whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow cursor-pointer ${
                   active
                     ? 'bg-yellow text-black font-semibold'
                     : 'text-text-soft hover:text-text hover:bg-white/5'
@@ -445,7 +448,7 @@ export const AdminDashboardPage: React.FC = () => {
           <button
             type="button"
             onClick={() => navigate('/profile')}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-text-soft hover:text-text hover:bg-white/5 whitespace-nowrap shrink-0"
+            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-text-soft hover:text-text hover:bg-white/5 whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow cursor-pointer"
           >
             <Users className="w-4 h-4 shrink-0" />
             {!sidebarCollapsed && <span>Profile</span>}
@@ -457,7 +460,7 @@ export const AdminDashboardPage: React.FC = () => {
               logout();
               navigate('/');
             }}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-danger hover:bg-white/5 whitespace-nowrap shrink-0"
+            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium text-danger hover:bg-white/5 whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger cursor-pointer"
           >
             <LogOut className="w-4 h-4 shrink-0" />
             {!sidebarCollapsed && <span>Logout</span>}
@@ -478,25 +481,26 @@ export const AdminDashboardPage: React.FC = () => {
             </h1>
           </div>
           <div className="flex items-center gap-3">
-            <button
-              type="button"
+            <Button
+              variant="outline"
+              size="sm"
               onClick={fetchAllAdminData}
-              className="px-3.5 py-2 rounded-xl border border-border hover:border-yellow text-xs font-medium text-text transition-colors"
+              loading={loadingAdmin}
             >
-              {loadingAdmin ? 'Syncing...' : 'Refresh Telemetry'}
-            </button>
-            <button
-              type="button"
+              Sync Telemetry
+            </Button>
+            <Button
+              variant="primary"
+              size="sm"
               onClick={() => {
                 setEditingFood(null);
                 setShowDishForm(true);
                 selectTab('menu');
               }}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-yellow text-black hover:bg-yellow-hover text-xs font-semibold transition-colors"
+              leftIcon={<Plus className="w-3.5 h-3.5" />}
             >
-              <Plus className="w-3.5 h-3.5" />
-              <span>Add Dish</span>
-            </button>
+              Add Dish
+            </Button>
           </div>
         </div>
 

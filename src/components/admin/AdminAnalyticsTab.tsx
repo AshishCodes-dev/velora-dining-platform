@@ -23,7 +23,7 @@ export const AdminAnalyticsTab: React.FC<AdminAnalyticsTabProps> = ({ analytics 
               </div>
               <div className="w-full h-2.5 bg-canvas rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-green-light rounded-full"
+                  className="h-full bg-green-light rounded-full transition-[width] duration-500 ease-out"
                   style={{ width: `${cp.share}%` }}
                 />
               </div>
@@ -46,7 +46,7 @@ export const AdminAnalyticsTab: React.FC<AdminAnalyticsTabProps> = ({ analytics 
                 </span>
                 <div className="w-full h-36 bg-canvas rounded-lg flex items-end p-1">
                   <div
-                    className="w-full bg-yellow rounded-md"
+                    className="w-full bg-yellow rounded-md transition-[height] duration-500 ease-out"
                     style={{ height: `${pct}%` }}
                   />
                 </div>

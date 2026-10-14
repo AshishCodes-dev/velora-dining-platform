@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import type { RestaurantSettings } from '../../types/restaurant';
+import { Button } from '../ui/Button';
 
 interface AdminSettingsTabProps {
   settings: RestaurantSettings | null;
@@ -58,7 +59,7 @@ export const AdminSettingsTab: React.FC<AdminSettingsTabProps> = ({
             type="text"
             value={restName}
             onChange={(e) => setRestName(e.target.value)}
-            className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text focus:border-yellow"
+            className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-colors"
           />
         </div>
         <div>
@@ -67,7 +68,7 @@ export const AdminSettingsTab: React.FC<AdminSettingsTabProps> = ({
             type="text"
             value={restPhone}
             onChange={(e) => setRestPhone(e.target.value)}
-            className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text focus:border-yellow"
+            className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-colors"
           />
         </div>
         <div>
@@ -76,7 +77,7 @@ export const AdminSettingsTab: React.FC<AdminSettingsTabProps> = ({
             type="email"
             value={restEmail}
             onChange={(e) => setRestEmail(e.target.value)}
-            className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text focus:border-yellow"
+            className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-colors"
           />
         </div>
         <div>
@@ -85,7 +86,7 @@ export const AdminSettingsTab: React.FC<AdminSettingsTabProps> = ({
             type="text"
             value={restAddress}
             onChange={(e) => setRestAddress(e.target.value)}
-            className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text focus:border-yellow"
+            className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-colors"
           />
         </div>
         <div>
@@ -94,7 +95,7 @@ export const AdminSettingsTab: React.FC<AdminSettingsTabProps> = ({
             type="number"
             value={restDeliveryFee}
             onChange={(e) => setRestDeliveryFee(e.target.value)}
-            className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs font-mono-tabular text-text focus:border-yellow"
+            className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs font-mono-tabular text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-colors"
           />
         </div>
         <div>
@@ -103,16 +104,17 @@ export const AdminSettingsTab: React.FC<AdminSettingsTabProps> = ({
             type="number"
             value={restTax}
             onChange={(e) => setRestTax(e.target.value)}
-            className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs font-mono-tabular text-text focus:border-yellow"
+            className="w-full px-3.5 py-2.5 rounded-xl bg-canvas border border-border text-xs font-mono-tabular text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-colors"
           />
         </div>
       </div>
-      <button
+      <Button
         type="submit"
-        className="px-6 py-2.5 rounded-xl bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold transition-colors"
+        variant="primary"
+        size="md"
       >
         Save Restaurant Settings
-      </button>
+      </Button>
     </form>
   );
 };

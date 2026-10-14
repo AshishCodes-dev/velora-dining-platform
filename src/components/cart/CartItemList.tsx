@@ -1,8 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Bookmark, Trash2, Minus, Plus } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 import { DishVisual } from '../DishVisual';
 import type { CartItem } from '../../types/restaurant';
+import { Button } from '../ui/Button';
+import { Tooltip } from '../ui/Tooltip';
 
 interface CartItemListProps {
   activeCartItems: CartItem[];
@@ -40,7 +43,7 @@ export const CartItemList: React.FC<CartItemListProps> = ({
         </p>
         <Link
           to="/menu"
-          className="text-xs font-semibold text-yellow hover:underline whitespace-nowrap"
+          className="text-xs font-semibold text-yellow hover:underline whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-yellow rounded px-1"
         >
           + Add Dishes
         </Link>
@@ -55,102 +58,124 @@ export const CartItemList: React.FC<CartItemListProps> = ({
         </div>
       ) : (
         <div className="space-y-4">
-          {activeCartItems.map((item) => (
-            <div
-              key={item.id}
-              className="nocturne-surface rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
-            >
-              <div className="flex items-start gap-4 flex-1 min-w-0">
-                <Link
-                  to={`/menu/${item.foodId}`}
-                  className="w-24 h-20 rounded-xl overflow-hidden shrink-0 block"
-                >
-                  <DishVisual
-                    src={item.foodImage}
-                    alt={item.foodName}
-                    illustrationType={item.illustrationType}
-                    showArtAccent={false}
-                  />
-                </Link>
-
-                <div className="space-y-1 min-w-0 flex-1">
+          <AnimatePresence>
+            {activeCartItems.map((item) => (
+              <motion.div
+                key={item.id}
+                layout
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.2 }}
+                className="nocturne-surface rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+              >
+                <div className="flex items-start gap-4 flex-1 min-w-0">
                   <Link
                     to={`/menu/${item.foodId}`}
-                    className="font-serif-display text-lg font-semibold text-text hover:text-yellow block truncate"
+                    className="w-24 h-20 rounded-xl overflow-hidden shrink-0 block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow"
                   >
-                    {item.foodName}
+                    <DishVisual
+                      src={item.foodImage}
+                      alt={item.foodName}
+                      illustrationType={item.illustrationType}
+                      showArtAccent={false}
+                    />
                   </Link>
-                  <p className="text-xs text-text-soft">
-                    Size: <span className="text-text">{item.selectedSize}</span>
-                    {item.selectedAddons.length > 0 && (
-                      <>
-                        {' '}
-                        · Add-ons:{' '}
-                        <span className="text-green-light">
-                          {item.selectedAddons.map((a) => a.name).join(', ')}
-                        </span>
-                      </>
-                    )}
-                  </p>
-                  {item.specialInstructions && (
-                    <p className="text-[11px] text-yellow">
-                      Note: "{item.specialInstructions}"
+
+                  <div className="space-y-1 min-w-0 flex-1">
+                    <Link
+                      to={`/menu/${item.foodId}`}
+                      className="font-serif-display text-lg font-semibold text-text hover:text-yellow block truncate focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-yellow rounded"
+                    >
+                      {item.foodName}
+                    </Link>
+                    <p className="text-xs text-text-soft">
+                      Size: <span className="text-text">{item.selectedSize}</span>
+                      {item.selectedAddons.length > 0 && (
+                        <>
+                          {' '}
+                          · Add-ons:{' '}
+                          <span className="text-green-light">
+                            {item.selectedAddons.map((a) => a.name).join(', ')}
+                          </span>
+                        </>
+                      )}
                     </p>
-                  )}
-                  <div className="pt-1 flex items-center gap-4 text-xs text-text-muted">
-                    <button
-                      type="button"
-                      onClick={() => onUpdateCartItem(item.id, { savedForLater: true })}
-                      className="inline-flex items-center gap-1 hover:text-text transition-colors"
-                    >
-                      <Bookmark className="w-3.5 h-3.5" />
-                      <span>Save for later</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => onRemoveCartItem(item.id)}
-                      className="inline-flex items-center gap-1 text-danger hover:underline"
-                    >
-                      <Trash2 className="w-3.5 h-3.5" />
-                      <span>Remove</span>
-                    </button>
+                    {item.specialInstructions && (
+                      <p className="text-[11px] text-yellow">
+                        Note: "{item.specialInstructions}"
+                      </p>
+                    )}
+                    <div className="pt-1 flex items-center gap-4 text-xs text-text-muted">
+                      <button
+                        type="button"
+                        onClick={() => onUpdateCartItem(item.id, { savedForLater: true })}
+                        className="inline-flex items-center gap-1 text-text-muted hover:text-text transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-yellow rounded px-1"
+                      >
+                        <Bookmark className="w-3.5 h-3.5" />
+                        <span>Save for later</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => onRemoveCartItem(item.id)}
+                        className="inline-flex items-center gap-1 text-danger hover:underline focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-danger rounded px-1"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                        <span>Remove</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Quantity & Line Total */}
-              <div className="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-3">
-                <span className="font-mono-tabular text-base font-semibold text-yellow">
-                  ${(item.unitFinalPrice * item.quantity).toFixed(2)}
-                </span>
-                <div className="flex items-center gap-2.5 px-2.5 py-1 rounded-lg bg-canvas border border-border">
-                  <button
-                    type="button"
-                    onClick={() =>
-                      onUpdateCartItem(item.id, { quantity: item.quantity - 1 })
-                    }
-                    aria-label="Decrease quantity"
-                    className="p-1 text-text-soft hover:text-text"
-                  >
-                    <Minus className="w-3.5 h-3.5" />
-                  </button>
-                  <span className="font-mono-tabular text-xs font-semibold text-text w-5 text-center">
-                    {item.quantity}
+                {/* Quantity & Line Total */}
+                <div className="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto gap-3">
+                  <span className="font-mono-tabular text-base font-semibold text-yellow">
+                    ${(item.unitFinalPrice * item.quantity).toFixed(2)}
                   </span>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      onUpdateCartItem(item.id, { quantity: item.quantity + 1 })
-                    }
-                    aria-label="Increase quantity"
-                    className="p-1 text-text-soft hover:text-text"
-                  >
-                    <Plus className="w-3.5 h-3.5" />
-                  </button>
+                  <div className="flex items-center gap-2.5 px-2.5 py-1 rounded-lg bg-canvas border border-border">
+                    {item.quantity <= 1 ? (
+                      <Tooltip content="Minimum 1 portion">
+                        <motion.button
+                          type="button"
+                          disabled
+                          aria-label="Decrease quantity"
+                          className="p-1 text-text-muted/40 cursor-not-allowed rounded"
+                        >
+                          <Minus className="w-3.5 h-3.5" />
+                        </motion.button>
+                      </Tooltip>
+                    ) : (
+                      <motion.button
+                        type="button"
+                        whileTap={{ scale: 0.88 }}
+                        onClick={() =>
+                          onUpdateCartItem(item.id, { quantity: item.quantity - 1 })
+                        }
+                        aria-label="Decrease quantity"
+                        className="p-1 text-text-soft hover:text-text hover:bg-white/5 rounded transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-yellow"
+                      >
+                        <Minus className="w-3.5 h-3.5" />
+                      </motion.button>
+                    )}
+                    <span className="font-mono-tabular text-xs font-semibold text-text w-5 text-center select-none">
+                      {item.quantity}
+                    </span>
+                    <motion.button
+                      type="button"
+                      whileTap={{ scale: 0.88 }}
+                      onClick={() =>
+                        onUpdateCartItem(item.id, { quantity: item.quantity + 1 })
+                      }
+                      aria-label="Increase quantity"
+                      className="p-1 text-text-soft hover:text-text hover:bg-white/5 rounded transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-yellow"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                    </motion.button>
+                  </div>
                 </div>
-              </div>
-            </div>
-          ))}
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
       )}
 
@@ -173,20 +198,23 @@ export const CartItemList: React.FC<CartItemListProps> = ({
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <button
-                    type="button"
+                  <Button
+                    variant="primary"
+                    size="sm"
                     onClick={() => onUpdateCartItem(item.id, { savedForLater: false })}
-                    className="px-3 py-1.5 rounded-lg bg-yellow text-black hover:bg-yellow-hover text-xs font-semibold transition-colors"
+                    className="text-xs px-3 py-1.5"
                   >
                     Move to Cart
-                  </button>
-                  <button
-                    type="button"
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
                     onClick={() => onRemoveCartItem(item.id)}
-                    className="p-1.5 text-danger hover:bg-elevated rounded-lg transition-colors"
+                    className="p-1.5 text-danger hover:text-danger hover:bg-danger/10"
+                    aria-label={`Remove ${item.foodName}`}
                   >
                     <Trash2 className="w-4 h-4" />
-                  </button>
+                  </Button>
                 </div>
               </div>
             ))}

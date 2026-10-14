@@ -1,9 +1,13 @@
 import React, { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, Calendar, Sparkles, Check } from 'lucide-react';
+import { motion } from 'motion/react';
 import { useRestaurant } from '../context/RestaurantContext';
 import { FoodCard } from '../components/FoodCard';
 import { DishVisual } from '../components/DishVisual';
+import { Button } from '../components/ui/Button';
+import { Skeleton } from '../components/ui/Skeleton';
+import { pageTransitionVariants, fadeUpVariants, staggerContainer, staggerItem } from '../lib/motion';
 
 const offerAccentBadge: Record<string, string> = {
   purple: 'text-yellow',
@@ -37,11 +41,16 @@ export const HomePage: React.FC = () => {
     }
     await applyCoupon(code);
     showToast(`✓ Coupon ${code} ready for checkout`, 'success');
-    setTimeout(() => setCopiedCode(null), 2500);
+    setTimeout(() => setCopiedCode(null), 2000);
   };
 
   return (
-    <div className="space-y-24 pb-12">
+    <motion.div
+      variants={pageTransitionVariants}
+      initial="initial"
+      animate="animate"
+      className="space-y-24 pb-12"
+    >
       {/* 1. HERO SECTION */}
       <section className="relative overflow-hidden pt-10 pb-16 sm:pt-16 sm:pb-24 border-b border-border">
         {/* Decorative 2D Botanical & Celestial Background Shapes */}
@@ -62,7 +71,7 @@ export const HomePage: React.FC = () => {
 
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           {/* Left Column: Editorial Copy & Primary CTAs */}
-          <div className="lg:col-span-6 space-y-6">
+          <motion.div variants={fadeUpVariants} className="lg:col-span-6 space-y-6">
             <div className="flex flex-wrap items-center gap-2 text-xs text-yellow font-medium">
               <span className="tracking-[0.14em] font-semibold text-text">VELORA</span>
               <span aria-hidden="true">·</span>
@@ -81,21 +90,23 @@ export const HomePage: React.FC = () => {
 
             {/* Primary & Secondary CTAs */}
             <div className="flex flex-wrap items-center gap-4 pt-2">
-              <Link
+              <Button
+                variant="primary"
+                size="lg"
                 to="/menu"
-                className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-yellow hover:bg-yellow-hover text-black font-semibold text-sm transition-colors whitespace-nowrap"
+                rightIcon={<ArrowRight className="w-4 h-4" />}
               >
-                <span>Order Now</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+                Order Now
+              </Button>
 
-              <Link
+              <Button
+                variant="secondary"
+                size="lg"
                 to="/reservations"
-                className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl border border-green-mid bg-elevated hover:bg-green-deep text-text-soft hover:text-text font-semibold text-sm transition-colors whitespace-nowrap"
+                leftIcon={<Calendar className="w-4 h-4 text-yellow" />}
               >
-                <Calendar className="w-4 h-4 text-yellow" />
-                <span>Reserve a Table</span>
-              </Link>
+                Reserve a Table
+              </Button>
             </div>
 
             {/* Proof Metrics Row (Tabular Numerals) */}
@@ -117,16 +128,18 @@ export const HomePage: React.FC = () => {
                 <p className="text-xs text-text-muted mt-0.5">Culinary Excellence</p>
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          {/* Right Column: Hero Visual Showcase + 2D Culinary Frame */}
+          {/* Right Column: Hero Visual Showcase */}
           <div className="lg:col-span-6 relative">
-            <div className="relative rounded-2xl overflow-hidden border border-border shadow-2xl aspect-[16/10] bg-surface">
-              <DishVisual
-                src="/images/hero_signature_platter.webp"
-                alt="Velora Wagyu and Saffron Lobster Tasting Platter"
-                illustrationType="platter"
-              />
+            <div className="relative rounded-2xl overflow-hidden border border-border shadow-2xl aspect-[16/10] bg-surface group">
+              <div className="w-full h-full transition-transform duration-700 ease-out group-hover:scale-105">
+                <DishVisual
+                  src="/images/hero_signature_platter.webp"
+                  alt="Velora Wagyu and Saffron Lobster Tasting Platter"
+                  illustrationType="platter"
+                />
+              </div>
               <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-green-deep/50 via-canvas/40 to-transparent pointer-events-none" />
               <div className="absolute bottom-4 left-4 right-4 p-4 rounded-xl bg-canvas/90 backdrop-blur-md border border-border flex items-center justify-between gap-4">
                 <div>
@@ -137,12 +150,14 @@ export const HomePage: React.FC = () => {
                     Velora Wagyu &amp; Saffron Lobster Platter
                   </p>
                 </div>
-                <Link
+                <Button
+                  variant="primary"
+                  size="sm"
                   to="/menu/food-1"
-                  className="px-4 py-2 rounded-lg bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold whitespace-nowrap shrink-0 transition-colors"
+                  className="whitespace-nowrap shrink-0"
                 >
                   View Dish · $48.60
-                </Link>
+                </Button>
               </div>
             </div>
           </div>
@@ -162,77 +177,107 @@ export const HomePage: React.FC = () => {
           </div>
           <Link
             to="/menu"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-green-light hover:underline whitespace-nowrap"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-green-light hover:underline whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-green-light rounded px-1"
           >
             <span>Explore Complete Menu ({foods.length} Dishes)</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
-        {/* Interactive Category Filter Bar */}
+        {/* Interactive Category Filter Bar with layoutId sliding indicator */}
         <div
           role="tablist"
           aria-label="Filter featured dishes by category"
-          className="flex items-center gap-2 overflow-x-auto pb-2"
+          className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none"
         >
           <button
             type="button"
             role="tab"
             aria-selected={selectedCategory === 'All'}
             onClick={() => setSelectedCategory('All')}
-            className={`px-4 py-2 rounded-lg text-xs font-semibold transition-colors whitespace-nowrap shrink-0 ${
+            className={`relative px-4 py-2.5 rounded-lg text-xs font-semibold whitespace-nowrap shrink-0 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow ${
               selectedCategory === 'All'
-                ? 'bg-yellow text-black'
+                ? 'text-black'
                 : 'bg-surface text-text-soft hover:text-text border border-border'
             }`}
           >
-            Featured Highlights
+            {selectedCategory === 'All' && (
+              <motion.span
+                layoutId="activeHomeCategory"
+                className="absolute inset-0 bg-yellow rounded-lg z-0"
+                transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+              />
+            )}
+            <span className="relative z-10">Featured Highlights</span>
           </button>
-          {categories.map((cat) => (
-            <button
-              key={cat.id}
-              type="button"
-              role="tab"
-              aria-selected={selectedCategory === cat.name}
-              onClick={() => setSelectedCategory(cat.name)}
-              className={`px-4 py-2 rounded-lg text-xs font-semibold transition-colors whitespace-nowrap shrink-0 ${
-                selectedCategory === cat.name
-                  ? 'bg-yellow text-black'
-                  : 'bg-surface text-text-soft hover:text-text border border-border'
-              }`}
-            >
-              {cat.name} ({cat.dishCount ?? 2})
-            </button>
-          ))}
+          {categories.map((cat) => {
+            const isSelected = selectedCategory === cat.name;
+            return (
+              <button
+                key={cat.id}
+                type="button"
+                role="tab"
+                aria-selected={isSelected}
+                onClick={() => setSelectedCategory(cat.name)}
+                className={`relative px-4 py-2.5 rounded-lg text-xs font-semibold whitespace-nowrap shrink-0 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow ${
+                  isSelected
+                    ? 'text-black'
+                    : 'bg-surface text-text-soft hover:text-text border border-border'
+                }`}
+              >
+                {isSelected && (
+                  <motion.span
+                    layoutId="activeHomeCategory"
+                    className="absolute inset-0 bg-yellow rounded-lg z-0"
+                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                  />
+                )}
+                <span className="relative z-10">
+                  {cat.name} ({cat.dishCount ?? 2})
+                </span>
+              </button>
+            );
+          })}
         </div>
 
         {/* Dish Cards Grid */}
         {loadingCatalog ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
             {[1, 2, 3, 4, 5, 6].map((n) => (
-              <div
-                key={n}
-                className="h-96 rounded-2xl bg-surface border border-border animate-pulse"
-              />
+              <div key={n} className="rounded-2xl nocturne-surface p-4 space-y-4">
+                <Skeleton variant="rectangular" className="w-full aspect-[4/3] rounded-xl" />
+                <div className="space-y-2">
+                  <Skeleton variant="text" className="w-1/3 h-4" />
+                  <Skeleton variant="text" className="w-2/3 h-6" />
+                  <Skeleton variant="text" className="w-full h-3" />
+                </div>
+              </div>
             ))}
           </div>
         ) : displayedFoods.length === 0 ? (
           <div className="p-12 rounded-2xl nocturne-surface text-center space-y-3">
             <p className="font-serif-display text-2xl text-text">No dishes in this category yet</p>
-            <button
-              type="button"
+            <Button
+              variant="primary"
+              size="sm"
               onClick={() => setSelectedCategory('All')}
-              className="px-4 py-2 rounded-lg bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold transition-colors"
             >
               Show Featured Highlights
-            </button>
+            </Button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+          <motion.div
+            variants={staggerContainer}
+            initial="initial"
+            animate="animate"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7"
+          >
             {displayedFoods.map((food) => (
-              <FoodCard key={food.id} food={food} />
+              <motion.div key={food.id} variants={staggerItem}>
+                <FoodCard food={food} />
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         )}
       </section>
 
@@ -249,67 +294,61 @@ export const HomePage: React.FC = () => {
           </div>
           <Link
             to="/offers"
-            className="text-xs font-semibold text-yellow hover:underline whitespace-nowrap"
+            className="text-xs font-semibold text-yellow hover:underline whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-yellow rounded px-1"
           >
             View All Active Coupons →
           </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {offers.slice(0, 3).map((offer) => (
-            <div
-              key={offer.id}
-              className="nocturne-surface rounded-2xl p-6 flex flex-col justify-between relative overflow-hidden card-lift"
-            >
-              {/* 2D Abstract Corner Ornament */}
-              <svg
-                aria-hidden="true"
-                viewBox="0 0 80 80"
-                className="absolute top-0 right-0 w-20 h-20 opacity-20 pointer-events-none"
-                fill="none"
+          {offers.slice(0, 3).map((offer) => {
+            const isCopied = copiedCode === offer.couponCode;
+            return (
+              <div
+                key={offer.id}
+                className="nocturne-surface rounded-2xl p-6 flex flex-col justify-between relative overflow-hidden transition-[transform,box-shadow,border-color] duration-300 ease-out hover:-translate-y-1 hover:border-border-accent hover:shadow-[0_12px_28px_-8px_rgba(0,0,0,0.7)]"
               >
-                <circle cx="80" cy="0" r="60" className="stroke-green-mid" strokeWidth="1.5" />
-                <circle cx="80" cy="0" r="40" className="stroke-yellow" strokeWidth="1" />
-              </svg>
-
-              <div className="space-y-3">
-                <p className={`text-xs font-medium ${offerAccentBadge[offer.accentColor] ?? 'text-yellow'}`}>
-                  {offer.badgeText} · Valid until {offer.validUntil}
-                </p>
-                <h3 className="font-serif-display text-2xl font-semibold text-text">
-                  {offer.title}
-                </h3>
-                <p className="text-sm font-semibold text-yellow">{offer.subtitle}</p>
-                <p className="text-xs text-text-soft leading-relaxed">{offer.description}</p>
-              </div>
-
-              <div className="pt-6 mt-6 border-t border-border flex items-center justify-between gap-3">
-                <div>
-                  <span className="text-[11px] text-text-muted block">Privilege Code</span>
-                  <span className="font-mono-tabular text-sm font-semibold text-green-light">
-                    {offer.couponCode}
-                  </span>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => handleClaimOffer(offer.couponCode)}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold transition-colors whitespace-nowrap"
+                {/* 2D Abstract Corner Ornament */}
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 80 80"
+                  className="absolute top-0 right-0 w-20 h-20 opacity-20 pointer-events-none"
+                  fill="none"
                 >
-                  {copiedCode === offer.couponCode ? (
-                    <>
-                      <Check className="w-3.5 h-3.5" />
-                      <span>Applied</span>
-                    </>
-                  ) : (
-                    <>
-                      <Sparkles className="w-3.5 h-3.5" />
-                      <span>Apply Coupon</span>
-                    </>
-                  )}
-                </button>
+                  <circle cx="80" cy="0" r="60" className="stroke-green-mid" strokeWidth="1.5" />
+                  <circle cx="80" cy="0" r="40" className="stroke-yellow" strokeWidth="1" />
+                </svg>
+
+                <div className="space-y-3">
+                  <p className={`text-xs font-medium ${offerAccentBadge[offer.accentColor] ?? 'text-yellow'}`}>
+                    {offer.badgeText} · Valid until {offer.validUntil}
+                  </p>
+                  <h3 className="font-serif-display text-2xl font-semibold text-text">
+                    {offer.title}
+                  </h3>
+                  <p className="text-sm font-semibold text-yellow">{offer.subtitle}</p>
+                  <p className="text-xs text-text-soft leading-relaxed">{offer.description}</p>
+                </div>
+
+                <div className="pt-6 mt-6 border-t border-border flex items-center justify-between gap-3">
+                  <div>
+                    <span className="text-[11px] text-text-muted block">Privilege Code</span>
+                    <span className="font-mono-tabular text-sm font-semibold text-green-light">
+                      {offer.couponCode}
+                    </span>
+                  </div>
+                  <Button
+                    variant={isCopied ? 'success' : 'primary'}
+                    size="sm"
+                    onClick={() => handleClaimOffer(offer.couponCode)}
+                    leftIcon={isCopied ? <Check className="w-3.5 h-3.5 text-black" /> : <Sparkles className="w-3.5 h-3.5" />}
+                  >
+                    {isCopied ? 'Applied' : 'Apply Coupon'}
+                  </Button>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 
@@ -362,9 +401,9 @@ export const HomePage: React.FC = () => {
           </div>
         </div>
 
-        {/* Attributable Testimonials (Adjacent to Craft Claims) */}
+        {/* Attributable Testimonials */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <blockquote className="nocturne-surface rounded-2xl p-6 flex flex-col justify-between">
+          <blockquote className="nocturne-surface rounded-2xl p-6 flex flex-col justify-between transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1 hover:border-border-accent">
             <p className="text-xs sm:text-sm text-text leading-relaxed">
               “Before discovering VELORA, fine-dining delivery always arrived lukewarm with soggy crusts. Their heated obsidian vessels kept our Black Truffle Burrata Pizza and A5 Wagyu medallions at ideal serving temperature 30 minutes across town.”
             </p>
@@ -373,11 +412,11 @@ export const HomePage: React.FC = () => {
                 <p className="font-semibold text-text">Elena Rostova</p>
                 <p className="text-text-muted">Principal Architect, Studio Lumina SF</p>
               </div>
-              <span className="font-mono-tabular text-yellow">5.0 ★</span>
+              <span className="font-mono-tabular text-yellow font-semibold">5.0 ★</span>
             </footer>
           </blockquote>
 
-          <blockquote className="nocturne-surface rounded-2xl p-6 flex flex-col justify-between">
+          <blockquote className="nocturne-surface rounded-2xl p-6 flex flex-col justify-between transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1 hover:border-border-accent">
             <p className="text-xs sm:text-sm text-text leading-relaxed">
               “We hosted our executive client dinner in the Private Sommelier Vault. Reserving seats and pre-selecting dietary preferences online took under two minutes, and the 8-hour Saffron Lamb Biryani was unforgettable.”
             </p>
@@ -386,11 +425,11 @@ export const HomePage: React.FC = () => {
                 <p className="font-semibold text-text">Marcus Sterling</p>
                 <p className="text-text-muted">Managing Partner, Pacific Heights Ventures</p>
               </div>
-              <span className="font-mono-tabular text-yellow">5.0 ★</span>
+              <span className="font-mono-tabular text-yellow font-semibold">5.0 ★</span>
             </footer>
           </blockquote>
 
-          <blockquote className="nocturne-surface rounded-2xl p-6 flex flex-col justify-between">
+          <blockquote className="nocturne-surface rounded-2xl p-6 flex flex-col justify-between transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1 hover:border-border-accent">
             <p className="text-xs sm:text-sm text-text leading-relaxed">
               “Finding plant-forward haute cuisine that feels indulgent used to be a challenge. VELORA’s Saffron Wild Morel Agnolotti and Velvet Raspberry Yuzu Tart turned our anniversary into a five-star tasting experience.”
             </p>
@@ -399,7 +438,7 @@ export const HomePage: React.FC = () => {
                 <p className="font-semibold text-text">Dr. Camille Laurent</p>
                 <p className="text-text-muted">Culinary Critic &amp; Editorial Columnist</p>
               </div>
-              <span className="font-mono-tabular text-yellow">4.9 ★</span>
+              <span className="font-mono-tabular text-yellow font-semibold">4.9 ★</span>
             </footer>
           </blockquote>
         </div>
@@ -420,23 +459,23 @@ export const HomePage: React.FC = () => {
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-4 shrink-0">
-            <button
-              type="button"
+            <Button
+              variant="primary"
+              size="lg"
               onClick={() => navigate('/reservations')}
-              className="px-6 py-3.5 rounded-xl bg-yellow hover:bg-yellow-hover text-black text-sm font-semibold transition-colors whitespace-nowrap"
             >
               Book a Table Now
-            </button>
-            <button
-              type="button"
+            </Button>
+            <Button
+              variant="secondary"
+              size="lg"
               onClick={() => navigate('/track/10482')}
-              className="px-6 py-3.5 rounded-xl border border-green-mid text-text-soft hover:text-text text-sm font-semibold transition-colors whitespace-nowrap"
             >
               Track Live Order #10482
-            </button>
+            </Button>
           </div>
         </div>
       </section>
-    </div>
+    </motion.div>
   );
 };

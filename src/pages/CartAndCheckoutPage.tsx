@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { ShoppingBag, ArrowRight } from 'lucide-react';
+import { motion } from 'motion/react';
 import { useRestaurant } from '../context/RestaurantContext';
 import { apiRequest } from '../services/api';
 import type { Order, OrderType } from '../types/restaurant';
 import { CartItemList } from '../components/cart/CartItemList';
 import { CheckoutForm } from '../components/cart/CheckoutForm';
 import { OrderSummarySidebar } from '../components/cart/OrderSummarySidebar';
+import { EmptyState } from '../components/ui/EmptyState';
+import { Button } from '../components/ui/Button';
+import { pageTransitionVariants } from '../lib/motion';
 
 export const CartAndCheckoutPage: React.FC = () => {
   const {
@@ -139,7 +144,12 @@ export const CartAndCheckoutPage: React.FC = () => {
   );
 
   return (
-    <div className="max-w-[1280px] mx-auto px-4 sm:px-6 py-10 space-y-10">
+    <motion.div
+      variants={pageTransitionVariants}
+      initial="initial"
+      animate="animate"
+      className="max-w-[1280px] mx-auto px-4 sm:px-6 py-10 space-y-10"
+    >
       {/* Header & Step Switcher */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-border pb-6">
         <div>
@@ -156,7 +166,7 @@ export const CartAndCheckoutPage: React.FC = () => {
             <button
               type="button"
               onClick={() => setStep('cart')}
-              className={`px-4 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+              className={`px-4 py-1.5 rounded-lg text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow ${
                 step === 'cart'
                   ? 'bg-yellow text-black'
                   : 'text-text-soft hover:text-text'
@@ -167,7 +177,7 @@ export const CartAndCheckoutPage: React.FC = () => {
             <button
               type="button"
               onClick={() => setStep('checkout')}
-              className={`px-4 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+              className={`px-4 py-1.5 rounded-lg text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow ${
                 step === 'checkout'
                   ? 'bg-green-light text-black'
                   : 'text-text-soft hover:text-text'
@@ -181,26 +191,31 @@ export const CartAndCheckoutPage: React.FC = () => {
 
       {/* Empty Cart State */}
       {activeCartItems.length === 0 && savedCartItems.length === 0 ? (
-        <div className="nocturne-surface rounded-2xl py-20 px-4 text-center space-y-4">
-          <p className="font-serif-display text-3xl text-text">Your cart is currently empty</p>
-          <p className="text-xs sm:text-sm text-text-soft max-w-md mx-auto">
-            Explore our wood-fired sourdough pizzas, A5 Wagyu medallions, royal saffron biryanis, and artisanal desserts.
-          </p>
-          <div className="pt-2 flex items-center justify-center gap-4">
-            <Link
-              to="/menu"
-              className="px-6 py-3 rounded-xl bg-green-light hover:bg-green-mid text-black text-xs font-semibold transition-colors"
-            >
-              Explore Artisanal Menu
-            </Link>
-            <Link
-              to="/track/10482"
-              className="px-6 py-3 rounded-xl border border-border text-xs font-semibold text-text hover:bg-elevated transition-colors"
-            >
-              Track Active Order #10482
-            </Link>
-          </div>
-        </div>
+        <EmptyState
+          icon={<ShoppingBag className="w-8 h-8" />}
+          title="Your cart is currently empty"
+          description="Explore our wood-fired sourdough pizzas, A5 Wagyu medallions, royal saffron biryanis, and artisanal desserts."
+          actionNode={
+            <div className="pt-2 flex flex-wrap items-center justify-center gap-4">
+              <Button
+                variant="primary"
+                size="md"
+                to="/menu"
+                rightIcon={<ArrowRight className="w-4 h-4" />}
+              >
+                Explore Artisanal Menu
+              </Button>
+              <Button
+                variant="outline"
+                size="md"
+                to="/track/10482"
+              >
+                Track Active Order #10482
+              </Button>
+            </div>
+          }
+          className="py-16"
+        />
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           {/* Left Column: Cart Items OR Checkout Form */}
@@ -265,6 +280,6 @@ export const CartAndCheckoutPage: React.FC = () => {
           />
         </div>
       )}
-    </div>
+    </motion.div>
   );
 };

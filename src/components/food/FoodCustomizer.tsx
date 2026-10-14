@@ -1,6 +1,9 @@
 import React from 'react';
 import { Minus, Plus, ShoppingBag, Check } from 'lucide-react';
+import { motion } from 'motion/react';
 import type { Food, CustomizationAddon } from '../../types/restaurant';
+import { Button } from '../ui/Button';
+import { Tooltip } from '../ui/Tooltip';
 
 interface FoodCustomizerProps {
   food: Food;
@@ -80,7 +83,7 @@ export const FoodCustomizer: React.FC<FoodCustomizerProps> = ({
           <h2 className="text-sm font-semibold text-text">
             Select Portion Size
           </h2>
-          <span className="text-xs text-green-light">Required</span>
+          <span className="text-xs text-green-light font-medium">Required</span>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {food.sizes.map((s) => {
@@ -90,7 +93,7 @@ export const FoodCustomizer: React.FC<FoodCustomizerProps> = ({
                 key={s.name}
                 type="button"
                 onClick={() => setSelectedSize(s.name)}
-                className={`p-3.5 rounded-xl border text-left transition-all ${
+                className={`p-3.5 rounded-xl border text-left transition-[background-color,border-color,transform] duration-200 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow cursor-pointer ${
                   active
                     ? 'bg-yellow border-yellow text-black'
                     : 'bg-canvas border-border text-text hover:border-border-accent'
@@ -126,7 +129,7 @@ export const FoodCustomizer: React.FC<FoodCustomizerProps> = ({
                   key={addon.id}
                   type="button"
                   onClick={() => toggleAddon(addon)}
-                  className={`w-full flex items-center justify-between px-4 py-3 rounded-xl border text-xs transition-colors ${
+                  className={`w-full flex items-center justify-between px-4 py-3 rounded-xl border text-xs transition-[background-color,border-color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow cursor-pointer ${
                     checked
                       ? 'bg-yellow/10 border-yellow text-text'
                       : 'bg-canvas border-border text-text-soft hover:border-border-accent'
@@ -134,15 +137,15 @@ export const FoodCustomizer: React.FC<FoodCustomizerProps> = ({
                 >
                   <div className="flex items-center gap-2.5">
                     <span
-                      className={`w-4 h-4 rounded flex items-center justify-center border ${
+                      className={`w-4 h-4 rounded flex items-center justify-center border transition-colors ${
                         checked
                           ? 'bg-yellow border-yellow text-black'
                           : 'border-border'
                       }`}
                     >
-                      {checked && <Check className="w-3 h-3" />}
+                      {checked && <Check className="w-3 h-3 text-black stroke-[3]" />}
                     </span>
-                    <span className="font-medium">{addon.name}</span>
+                    <span className="font-medium text-text">{addon.name}</span>
                   </div>
                   <span className="font-mono-tabular font-semibold text-yellow">
                     +${addon.price.toFixed(2)}
@@ -158,7 +161,7 @@ export const FoodCustomizer: React.FC<FoodCustomizerProps> = ({
       <div className="space-y-2">
         <label
           htmlFor="special-notes"
-          className="block text-xs font-semibold text-text-soft"
+          className="block text-xs font-semibold uppercase tracking-wider text-text-soft"
         >
           Special Kitchen Note (Allergies, Spice Adjustment, Plating)
         </label>
@@ -168,44 +171,62 @@ export const FoodCustomizer: React.FC<FoodCustomizerProps> = ({
           value={specialInstructions}
           onChange={(e) => setSpecialInstructions(e.target.value)}
           placeholder="e.g., Sauce on the side, extra crispy crust, nut allergy..."
-          className="w-full px-4 py-2.5 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted focus:outline-none focus:border-yellow"
+          className="w-full px-4 py-2.5 rounded-lg bg-canvas border border-border text-xs text-text placeholder:text-text-muted transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:border-yellow"
         />
       </div>
 
       {/* 4. Quantity Stepper & Dynamic Add to Cart CTA */}
       <div className="pt-4 border-t border-border flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-        <div className="flex items-center justify-between sm:justify-start gap-4 px-4 py-2.5 rounded-xl bg-canvas border border-border">
-          <button
-            type="button"
-            onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-            aria-label="Decrease quantity"
-            className="p-1 text-text-soft hover:text-text"
-          >
-            <Minus className="w-4 h-4" />
-          </button>
-          <span className="font-mono-tabular text-sm font-semibold text-text w-6 text-center">
+        <div className="flex items-center justify-between sm:justify-start gap-3 px-3 py-2 rounded-lg bg-canvas border border-border">
+          {quantity <= 1 ? (
+            <Tooltip content="Minimum 1 portion">
+              <motion.button
+                type="button"
+                disabled
+                aria-label="Decrease quantity"
+                className="p-1.5 text-text-muted/40 cursor-not-allowed rounded"
+              >
+                <Minus className="w-4 h-4" />
+              </motion.button>
+            </Tooltip>
+          ) : (
+            <motion.button
+              type="button"
+              whileTap={{ scale: 0.88 }}
+              onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+              aria-label="Decrease quantity"
+              className="p-1.5 text-text-soft hover:text-text hover:bg-white/5 rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow"
+            >
+              <Minus className="w-4 h-4" />
+            </motion.button>
+          )}
+
+          <span className="font-mono-tabular text-sm font-semibold text-text w-6 text-center select-none">
             {quantity}
           </span>
-          <button
+
+          <motion.button
             type="button"
+            whileTap={{ scale: 0.88 }}
             onClick={() => setQuantity((q) => q + 1)}
             aria-label="Increase quantity"
-            className="p-1 text-text-soft hover:text-text"
+            className="p-1.5 text-text-soft hover:text-text hover:bg-white/5 rounded transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow"
           >
             <Plus className="w-4 h-4" />
-          </button>
+          </motion.button>
         </div>
 
-        <button
-          type="button"
+        <Button
+          variant="primary"
+          size="lg"
           onClick={onAddToCart}
-          className="flex-1 inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-yellow hover:bg-yellow-hover text-black font-semibold text-sm transition-colors whitespace-nowrap"
+          leftIcon={<ShoppingBag className="w-4 h-4" />}
+          className="flex-1"
         >
-          <ShoppingBag className="w-4 h-4" />
           <span className="font-mono-tabular">
             Add to Cart — ${totalPrice.toFixed(2)}
           </span>
-        </button>
+        </Button>
       </div>
     </div>
   );

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { X, Edit3, Trash2 } from 'lucide-react';
 import type { Food, Category } from '../../types/restaurant';
+import { Button } from '../ui/Button';
+import { Badge } from '../ui/Badge';
 
 interface AdminMenuTabProps {
   foods: Food[];
@@ -83,16 +85,19 @@ export const AdminMenuTab: React.FC<AdminMenuTabProps> = ({
             <h2 className="font-serif-display text-2xl font-semibold text-text">
               {editingFood ? `Edit Dish: ${editingFood.name}` : 'Create New Culinary Dish'}
             </h2>
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="sm"
               onClick={() => {
                 setShowDishForm(false);
                 setEditingFood(null);
               }}
-              className="p-1.5 text-text-muted hover:text-text transition-colors"
+              aria-label="Close dish form"
+              className="p-1.5 text-text-muted hover:text-text"
             >
               <X className="w-5 h-5" />
-            </button>
+            </Button>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -103,7 +108,7 @@ export const AdminMenuTab: React.FC<AdminMenuTabProps> = ({
                 required
                 value={dishName}
                 onChange={(e) => setDishName(e.target.value)}
-                className="w-full px-3.5 py-2 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted focus:border-yellow"
+                className="w-full px-3.5 py-2 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-colors"
               />
             </div>
             <div>
@@ -111,7 +116,7 @@ export const AdminMenuTab: React.FC<AdminMenuTabProps> = ({
               <select
                 value={dishCat}
                 onChange={(e) => setDishCat(e.target.value)}
-                className="w-full px-3.5 py-2 rounded-xl bg-canvas border border-border text-xs text-text focus:border-yellow"
+                className="w-full px-3.5 py-2 rounded-xl bg-canvas border border-border text-xs text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-colors"
               >
                 {categories.map((c) => (
                   <option key={c.id} value={c.name}>
@@ -128,7 +133,7 @@ export const AdminMenuTab: React.FC<AdminMenuTabProps> = ({
                   required
                   value={dishPrice}
                   onChange={(e) => setDishPrice(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-canvas border border-border text-xs font-mono-tabular text-text focus:border-yellow"
+                  className="w-full px-3 py-2 rounded-xl bg-canvas border border-border text-xs font-mono-tabular text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-colors"
                 />
               </div>
               <div>
@@ -137,7 +142,7 @@ export const AdminMenuTab: React.FC<AdminMenuTabProps> = ({
                   type="number"
                   value={dishDiscount}
                   onChange={(e) => setDishDiscount(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-canvas border border-border text-xs font-mono-tabular text-text focus:border-yellow"
+                  className="w-full px-3 py-2 rounded-xl bg-canvas border border-border text-xs font-mono-tabular text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-colors"
                 />
               </div>
             </div>
@@ -152,7 +157,7 @@ export const AdminMenuTab: React.FC<AdminMenuTabProps> = ({
                 type="text"
                 value={dishIngredients}
                 onChange={(e) => setDishIngredients(e.target.value)}
-                className="w-full px-3.5 py-2 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted focus:border-yellow"
+                className="w-full px-3.5 py-2 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-colors"
               />
             </div>
             <div>
@@ -163,7 +168,7 @@ export const AdminMenuTab: React.FC<AdminMenuTabProps> = ({
                 type="text"
                 value={dishTags}
                 onChange={(e) => setDishTags(e.target.value)}
-                className="w-full px-3.5 py-2 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted focus:border-yellow"
+                className="w-full px-3.5 py-2 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-colors"
               />
             </div>
           </div>
@@ -174,7 +179,7 @@ export const AdminMenuTab: React.FC<AdminMenuTabProps> = ({
               rows={2}
               value={dishDesc}
               onChange={(e) => setDishDesc(e.target.value)}
-              className="w-full px-3.5 py-2 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted focus:border-yellow"
+              className="w-full px-3.5 py-2 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-colors"
             />
           </div>
 
@@ -184,6 +189,7 @@ export const AdminMenuTab: React.FC<AdminMenuTabProps> = ({
                 type="checkbox"
                 checked={dishVeg}
                 onChange={(e) => setDishVeg(e.target.checked)}
+                className="accent-yellow rounded focus-visible:ring-2 focus-visible:ring-yellow"
               />
               <span>Vegetarian</span>
             </label>
@@ -192,6 +198,7 @@ export const AdminMenuTab: React.FC<AdminMenuTabProps> = ({
                 type="checkbox"
                 checked={dishPopular}
                 onChange={(e) => setDishPopular(e.target.checked)}
+                className="accent-yellow rounded focus-visible:ring-2 focus-visible:ring-yellow"
               />
               <span>Mark Popular</span>
             </label>
@@ -200,28 +207,31 @@ export const AdminMenuTab: React.FC<AdminMenuTabProps> = ({
                 type="checkbox"
                 checked={dishFeatured}
                 onChange={(e) => setDishFeatured(e.target.checked)}
+                className="accent-yellow rounded focus-visible:ring-2 focus-visible:ring-yellow"
               />
               <span>Mark Featured</span>
             </label>
           </div>
 
           <div className="flex items-center gap-3 pt-2">
-            <button
+            <Button
               type="submit"
-              className="px-5 py-2.5 rounded-xl bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold transition-colors"
+              variant="primary"
+              size="md"
             >
               {editingFood ? 'Update Dish' : 'Save New Dish'}
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
+              variant="outline"
+              size="md"
               onClick={() => {
                 setShowDishForm(false);
                 setEditingFood(null);
               }}
-              className="px-4 py-2.5 rounded-xl border border-border hover:border-yellow text-xs text-text-soft hover:text-text transition-colors"
             >
               Cancel
-            </button>
+            </Button>
           </div>
         </form>
       )}
@@ -240,7 +250,7 @@ export const AdminMenuTab: React.FC<AdminMenuTabProps> = ({
           </thead>
           <tbody className="divide-y divide-border font-mono-tabular">
             {foods.map((food) => (
-              <tr key={food.id} className="hover:bg-white/5">
+              <tr key={food.id} className="hover:bg-white/5 transition-colors">
                 <td className="p-4 font-sans">
                   <p className="font-semibold text-text">{food.name}</p>
                   <p className="text-[11px] text-text-muted">
@@ -255,33 +265,40 @@ export const AdminMenuTab: React.FC<AdminMenuTabProps> = ({
                   <button
                     type="button"
                     onClick={() => onToggleDishAvailability(food)}
-                    className={`px-2.5 py-1 rounded-md text-[11px] font-semibold transition-colors ${
-                      food.isAvailable
-                        ? 'bg-green-light/15 text-green-light'
-                        : 'bg-white/5 text-text-muted'
-                    }`}
+                    aria-label={`Toggle availability for ${food.name}`}
+                    className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow rounded-full transition-transform active:scale-95"
                   >
-                    {food.isAvailable ? 'Available' : 'Disabled'}
+                    <Badge
+                      variant={food.isAvailable ? 'success' : 'neutral'}
+                      dot
+                      className="cursor-pointer"
+                    >
+                      {food.isAvailable ? 'Available' : 'Disabled'}
+                    </Badge>
                   </button>
                 </td>
                 <td className="p-4 text-right">
-                  <div className="inline-flex items-center gap-2">
-                    <button
+                  <div className="inline-flex items-center gap-1.5">
+                    <Button
                       type="button"
+                      variant="ghost"
+                      size="sm"
                       onClick={() => openEdit(food)}
                       aria-label={`Edit ${food.name}`}
-                      className="p-1.5 rounded-lg text-text-soft hover:text-text hover:bg-white/10 transition-colors"
+                      className="p-1.5 text-text-soft hover:text-text"
                     >
                       <Edit3 className="w-4 h-4" />
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                       type="button"
+                      variant="ghost"
+                      size="sm"
                       onClick={() => onDeleteDish(food.id)}
                       aria-label={`Delete ${food.name}`}
-                      className="p-1.5 rounded-lg text-danger hover:bg-white/10 transition-colors"
+                      className="p-1.5 text-danger hover:text-danger hover:bg-danger/10"
                     >
                       <Trash2 className="w-4 h-4" />
-                    </button>
+                    </Button>
                   </div>
                 </td>
               </tr>

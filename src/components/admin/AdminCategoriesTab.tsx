@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import type { Category } from '../../types/restaurant';
+import { Button } from '../ui/Button';
 
 interface AdminCategoriesTabProps {
   categories: Category[];
@@ -41,7 +42,7 @@ export const AdminCategoriesTab: React.FC<AdminCategoriesTabProps> = ({
             value={newCatName}
             onChange={(e) => setNewCatName(e.target.value)}
             placeholder="e.g. Sommelier Cheese Board"
-            className="w-full px-3.5 py-2 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted focus:border-yellow"
+            className="w-full px-3.5 py-2 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-colors"
           />
         </div>
         <div>
@@ -51,22 +52,24 @@ export const AdminCategoriesTab: React.FC<AdminCategoriesTabProps> = ({
             value={newCatDesc}
             onChange={(e) => setNewCatDesc(e.target.value)}
             placeholder="Artisanal aged cheeses & accompaniments"
-            className="w-full px-3.5 py-2 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted focus:border-yellow"
+            className="w-full px-3.5 py-2 rounded-xl bg-canvas border border-border text-xs text-text placeholder-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-colors"
           />
         </div>
-        <button
+        <Button
           type="submit"
-          className="w-full py-2.5 rounded-xl bg-yellow hover:bg-yellow-hover text-black text-xs font-semibold transition-colors"
+          variant="primary"
+          size="md"
+          fullWidth
         >
           Create Category
-        </button>
+        </Button>
       </form>
 
       <div className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
         {categories.map((cat) => (
           <div
             key={cat.id}
-            className="nocturne-surface rounded-xl p-5 flex items-center justify-between gap-4"
+            className="nocturne-surface rounded-xl p-5 flex items-center justify-between gap-4 transition-colors hover:border-border-accent"
           >
             <div>
               <p className="text-sm font-semibold text-text">{cat.name}</p>
@@ -75,14 +78,16 @@ export const AdminCategoriesTab: React.FC<AdminCategoriesTabProps> = ({
                 {cat.dishCount ?? 0} active dishes
               </p>
             </div>
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="sm"
               onClick={() => onDeleteCategory(cat.id)}
               aria-label={`Delete category ${cat.name}`}
-              className="p-2 text-danger hover:bg-white/5 rounded-lg"
+              className="p-2 text-danger hover:text-danger hover:bg-danger/10"
             >
               <Trash2 className="w-4 h-4" />
-            </button>
+            </Button>
           </div>
         ))}
       </div>
