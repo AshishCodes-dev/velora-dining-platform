@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import express, { type Request, type Response, type NextFunction } from 'express';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -12,6 +13,13 @@ import { apiRateLimiter, authRateLimiter } from './backend/utils/security.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// In development, __dirname is project root. In production (dist-server/server.js), root is process.cwd() or parent dir.
+const ROOT_DIR = fs.existsSync(path.join(process.cwd(), 'dist'))
+  ? process.cwd()
+  : fs.existsSync(path.join(__dirname, '../dist'))
+  ? path.resolve(__dirname, '..')
+  : __dirname;
 
 const PORT = Number(process.env.PORT) || 3000;
 
@@ -39,6 +47,12 @@ export function createExpressApp() {
   const allowedOrigins = clientUrlEnv
     ? clientUrlEnv.split(',').map((u) => u.trim().replace(/\/$/, '')).filter(Boolean)
     : [];
+
+  // Automatically include Render's own domain if available
+  const renderExternalUrl = process.env.RENDER_EXTERNAL_URL?.trim().replace(/\/$/, '');
+  if (renderExternalUrl && !allowedOrigins.includes(renderExternalUrl)) {
+    allowedOrigins.push(renderExternalUrl);
+  }
 
   app.use(
     cors({
@@ -112,10 +126,10 @@ export function createExpressApp() {
   });
 
   // Static images directory
-  app.use(
-    '/images',
-    express.static(path.join(__dirname, 'public/images'))
-  );
+  const imagesPath = path.join(ROOT_DIR, 'public/images');
+  if (fs.existsSync(imagesPath)) {
+    app.use('/images', express.static(imagesPath));
+  }
 
   // Centralized Express Error Handler (never leaks stack traces in production)
   app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
@@ -145,14 +159,19 @@ export async function startServer() {
     });
     app.use(vite.middlewares);
   } else {
-    const distPath = path.join(__dirname, 'dist');
+    const distPath = path.join(ROOT_DIR, 'dist');
+    const indexHtmlPath = path.join(distPath, 'index.html');
     app.use(express.static(distPath));
     // SPA fallback excluding /api/*
     app.get('*', (req: Request, res: Response, next: NextFunction) => {
       if (req.path.startsWith('/api')) {
         return next();
       }
-      res.sendFile(path.join(distPath, 'index.html'));
+      if (fs.existsSync(indexHtmlPath)) {
+        res.sendFile(indexHtmlPath);
+      } else {
+        res.status(404).send('VELORA UI build not found.');
+      }
     });
   }
 
