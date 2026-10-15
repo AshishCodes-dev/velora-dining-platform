@@ -193,10 +193,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSearch }) => {
             size="sm"
             to="/cart"
             aria-label={`Cart with ${cartCount} items`}
-            className="gap-2 px-3.5"
+            className="gap-1.5 sm:gap-2 px-2.5 sm:px-3.5"
           >
             <ShoppingBag className="w-4 h-4" />
-            <span>Cart</span>
+            <span className="hidden sm:inline">Cart</span>
             <motion.span
               key={cartCount}
               initial={{ scale: 0.8 }}

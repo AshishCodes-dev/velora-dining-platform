@@ -143,7 +143,7 @@ export const FoodCard: React.FC<FoodCardProps> = ({ food }) => {
       </div>
 
       {/* Footer Price & Action */}
-      <div className="px-5 pb-5 pt-3 border-t border-border flex items-center justify-between gap-3">
+      <div className="px-5 pb-5 pt-3 border-t border-border flex flex-wrap items-center justify-between gap-2.5">
         <div className="flex items-baseline gap-2 font-mono-tabular">
           <span className="text-lg font-semibold text-yellow">
             ${discountedPrice.toFixed(2)}
@@ -155,7 +155,7 @@ export const FoodCard: React.FC<FoodCardProps> = ({ food }) => {
           )}
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2">
           <Button
             variant="ghost"
             size="sm"

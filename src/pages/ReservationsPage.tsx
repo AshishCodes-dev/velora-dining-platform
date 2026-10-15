@@ -20,7 +20,7 @@ export const ReservationsPage: React.FC = () => {
   const [name, setName] = useState(user?.name || 'Elena Rostova');
   const [phone, setPhone] = useState(user?.phone || '+1 (415) 602-8819');
   const [email, setEmail] = useState(user?.email || 'elena@example.com');
-  const [date, setDate] = useState('2026-10-09');
+  const [date, setDate] = useState(() => new Date().toISOString().split('T')[0]);
   const [time, setTime] = useState('20:00');
   const [guests, setGuests] = useState(2);
   const [tableArea, setTableArea] = useState<Reservation['tableArea']>('Velvet Chef Counter');
@@ -235,6 +235,7 @@ export const ReservationsPage: React.FC = () => {
                   <input
                     type="date"
                     required
+                    min={new Date().toISOString().split('T')[0]}
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
                     className="w-full px-3.5 py-2.5 rounded-lg bg-canvas border border-border text-xs font-mono-tabular text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:border-yellow transition-colors duration-200"

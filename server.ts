@@ -40,13 +40,18 @@ export function createExpressApp() {
   // Compression for text/json responses
   app.use(compression());
 
-  // CORS: Explicit allow-list from CLIENT_URL, never default to '*' in production
+  // CORS: Allow-list including Vercel and Render domains, local testing, and CLIENT_URL
   const isProd = process.env.NODE_ENV === 'production';
   const isTest = process.env.NODE_ENV === 'test';
   const clientUrlEnv = process.env.CLIENT_URL?.trim();
-  const allowedOrigins = clientUrlEnv
-    ? clientUrlEnv.split(',').map((u) => u.trim().replace(/\/$/, '')).filter(Boolean)
-    : [];
+  const allowedOrigins: string[] = [
+    'https://velora-dining-platform.vercel.app',
+    'https://velora-dining-platform.onrender.com',
+    'https://portfolio-frontend-iota-lilac.vercel.app',
+    ...(clientUrlEnv
+      ? clientUrlEnv.split(',').map((u) => u.trim().replace(/\/$/, '')).filter(Boolean)
+      : []),
+  ];
 
   // Automatically include Render's own domain if available
   const renderExternalUrl = process.env.RENDER_EXTERNAL_URL?.trim().replace(/\/$/, '');
@@ -61,27 +66,25 @@ export function createExpressApp() {
         if (!origin || isTest) return callback(null, true);
         const normalizedOrigin = origin.replace(/\/$/, '');
 
-        if (!isProd) {
-          // In development, allow localhost ports and matching CLIENT_URL
-          if (
-            normalizedOrigin.startsWith('http://localhost') ||
-            normalizedOrigin.startsWith('http://127.0.0.1') ||
-            allowedOrigins.includes(normalizedOrigin)
-          ) {
-            return callback(null, true);
-          }
-        }
-
-        if (allowedOrigins.length > 0 && allowedOrigins.includes(normalizedOrigin)) {
+        // Allow localhost and local loopback
+        if (
+          normalizedOrigin.startsWith('http://localhost') ||
+          normalizedOrigin.startsWith('http://127.0.0.1')
+        ) {
           return callback(null, true);
         }
 
-        if (isProd && allowedOrigins.length === 0) {
-          // If in production and CLIENT_URL not set, allow same-origin only
-          return callback(new Error('CORS blocked: CLIENT_URL is not configured for cross-origin access.'));
+        // Allow any vercel deployment (production or preview branch) and render
+        if (
+          normalizedOrigin.endsWith('.vercel.app') ||
+          normalizedOrigin.endsWith('.onrender.com') ||
+          allowedOrigins.includes(normalizedOrigin)
+        ) {
+          return callback(null, true);
         }
 
-        return callback(new Error(`CORS blocked: origin ${origin} is not allowed.`));
+        // Return false without throwing error so Express does not crash with 500
+        return callback(null, false);
       },
       credentials: true,
       methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],

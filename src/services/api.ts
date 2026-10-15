@@ -41,14 +41,21 @@ export async function apiRequest<T>(
   }
 
   const url = endpoint.startsWith('http') ? endpoint : `${API_BASE_URL}${endpoint}`;
-  const res = await fetch(url, {
-    ...options,
-    headers,
-  });
+  try {
+    const res = await fetch(url, {
+      ...options,
+      headers,
+    });
 
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok) {
-    throw new Error(data.message || data.error || `Request failed with status ${res.status}`);
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      throw new Error(data.message || data.error || `Request failed with status ${res.status}`);
+    }
+    return data as T;
+  } catch (err: unknown) {
+    if (err instanceof TypeError && (err.message.includes('fetch') || err.message.includes('NetworkError'))) {
+      throw new Error('Unable to connect to the server. Please verify your connection or try again in a moment.');
+    }
+    throw err;
   }
-  return data as T;
 }

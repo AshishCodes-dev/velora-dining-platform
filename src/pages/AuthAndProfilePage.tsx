@@ -28,8 +28,8 @@ export const AuthAndProfilePage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const isDemoMode = import.meta.env.VITE_DEMO_MODE === 'true';
-  const [showDemoAccounts, setShowDemoAccounts] = useState(false);
+  const isDemoMode = true;
+  const [showDemoAccounts, setShowDemoAccounts] = useState(true);
 
   // Profile Active Tab
   const initialTab = (searchParams.get('tab') as ProfileTab) || 'overview';

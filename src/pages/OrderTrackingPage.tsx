@@ -122,9 +122,9 @@ export const OrderTrackingPage: React.FC = () => {
               navigate(`/track/${lookupInput.replace(/^#/, '').trim()}`);
             }
           }}
-          className="flex items-center gap-2"
+          className="flex items-center gap-2 w-full sm:w-auto"
         >
-          <div className="relative">
+          <div className="relative flex-1 sm:w-56">
             <Search className="w-4 h-4 text-text-muted absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               type="text"
@@ -132,13 +132,14 @@ export const OrderTrackingPage: React.FC = () => {
               onChange={(e) => setLookupInput(e.target.value)}
               placeholder="Order # (e.g. 10482)"
               aria-label="Order number lookup"
-              className="pl-9 pr-4 py-2 rounded-lg bg-surface border border-border text-xs font-mono-tabular text-text placeholder:text-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:border-yellow transition-colors duration-200"
+              className="w-full pl-9 pr-4 py-2 rounded-lg bg-surface border border-border text-xs font-mono-tabular text-text placeholder:text-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:border-yellow transition-colors duration-200"
             />
           </div>
           <Button
             type="submit"
             variant="primary"
             size="sm"
+            className="shrink-0"
           >
             Track Order
           </Button>

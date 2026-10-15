@@ -186,8 +186,8 @@ export const MenuPage: React.FC = () => {
         </div>
 
         {/* Segmented Dietary Controls */}
-        <div className="flex flex-wrap items-center gap-3">
-          <div className="flex items-center p-1 rounded-lg bg-canvas border border-border">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+          <div className="flex items-center p-1 rounded-lg bg-canvas border border-border overflow-x-auto max-w-full scrollbar-none">
             <button
               type="button"
               onClick={() => setDietFilter('all')}
@@ -217,21 +217,19 @@ export const MenuPage: React.FC = () => {
             </button>
           </div>
 
-          {/* Spice Filter */}
-          <select
-            aria-label="Filter by spice level"
-            value={spicyFilter}
-            onChange={(e) => setSpicyFilter(e.target.value as 'all' | 'mild' | 'spicy')}
-            className="px-3.5 py-2.5 rounded-lg bg-canvas border border-border text-xs text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:border-yellow transition-colors duration-200"
-          >
-            <option value="all">All Spice Levels</option>
-            <option value="mild">Mild &amp; Subtle</option>
-            <option value="spicy">Medium &amp; Fiery Spice</option>
-          </select>
+          {/* Spice & Sort Selects */}
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <select
+              aria-label="Filter by spice level"
+              value={spicyFilter}
+              onChange={(e) => setSpicyFilter(e.target.value as 'all' | 'mild' | 'spicy')}
+              className="flex-1 sm:flex-none px-3 py-2 rounded-lg bg-canvas border border-border text-xs text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:border-yellow transition-colors duration-200"
+            >
+              <option value="all">All Spice Levels</option>
+              <option value="mild">Mild &amp; Subtle</option>
+              <option value="spicy">Medium &amp; Fiery</option>
+            </select>
 
-          {/* Sort Select */}
-          <div className="flex items-center gap-2">
-            <SlidersHorizontal className="w-4 h-4 text-yellow hidden sm:block" />
             <select
               aria-label="Sort menu items"
               value={sortBy}
@@ -240,12 +238,12 @@ export const MenuPage: React.FC = () => {
                   e.target.value as 'featured' | 'price-asc' | 'price-desc' | 'rating'
                 )
               }
-              className="px-3.5 py-2.5 rounded-lg bg-canvas border border-border text-xs text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:border-yellow transition-colors duration-200"
+              className="flex-1 sm:flex-none px-3 py-2 rounded-lg bg-canvas border border-border text-xs text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow focus-visible:border-yellow transition-colors duration-200"
             >
-              <option value="featured">Sort: Chef Curated</option>
-              <option value="rating">Sort: Highest Rated</option>
-              <option value="price-asc">Sort: Price (Low to High)</option>
-              <option value="price-desc">Sort: Price (High to Low)</option>
+              <option value="featured">Sort: Featured</option>
+              <option value="rating">Sort: Top Rated</option>
+              <option value="price-asc">Sort: Price Low → High</option>
+              <option value="price-desc">Sort: Price High → Low</option>
             </select>
           </div>
         </div>

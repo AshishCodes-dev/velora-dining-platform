@@ -141,12 +141,12 @@ export const HomePage: React.FC = () => {
                 />
               </div>
               <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-green-deep/50 via-canvas/40 to-transparent pointer-events-none" />
-              <div className="absolute bottom-4 left-4 right-4 p-4 rounded-xl bg-canvas/90 backdrop-blur-md border border-border flex items-center justify-between gap-4">
-                <div>
-                  <p className="text-xs text-yellow font-medium">
+              <div className="absolute bottom-2.5 sm:bottom-4 left-2.5 sm:left-4 right-2.5 sm:right-4 p-3 sm:p-4 rounded-xl bg-canvas/90 backdrop-blur-md border border-border flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4">
+                <div className="min-w-0">
+                  <p className="text-[11px] sm:text-xs text-yellow font-medium truncate">
                     Chef Julian’s Evening Centerpiece · 25 min prep
                   </p>
-                  <p className="font-serif-display text-lg font-semibold text-text">
+                  <p className="font-serif-display text-sm sm:text-lg font-semibold text-text truncate">
                     Velora Wagyu &amp; Saffron Lobster Platter
                   </p>
                 </div>
@@ -154,7 +154,7 @@ export const HomePage: React.FC = () => {
                   variant="primary"
                   size="sm"
                   to="/menu/food-1"
-                  className="whitespace-nowrap shrink-0"
+                  className="whitespace-nowrap shrink-0 w-full sm:w-auto"
                 >
                   View Dish · $48.60
                 </Button>

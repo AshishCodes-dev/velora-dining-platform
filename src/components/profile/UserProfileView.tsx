@@ -103,17 +103,28 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
       {/* Profile Sidebar */}
       <aside className="lg:col-span-3 nocturne-surface rounded-2xl p-5 space-y-6">
-        <div className="flex items-center gap-3 pb-4 border-b border-border">
-          <div className="w-12 h-12 rounded-full bg-yellow/15 border border-yellow/30 flex items-center justify-center font-serif-display text-xl font-bold text-yellow shadow-inner">
-            {user.name.charAt(0)}
+        <div className="flex items-center justify-between gap-3 pb-4 border-b border-border">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-yellow/15 border border-yellow/30 flex items-center justify-center font-serif-display text-lg lg:text-xl font-bold text-yellow shadow-inner shrink-0">
+              {user.name.charAt(0)}
+            </div>
+            <div className="min-w-0">
+              <p className="text-sm font-semibold text-text truncate">{user.name}</p>
+              <p className="text-xs text-yellow font-mono-tabular">{user.role}</p>
+            </div>
           </div>
-          <div className="min-w-0">
-            <p className="text-sm font-semibold text-text truncate">{user.name}</p>
-            <p className="text-xs text-yellow font-mono-tabular">{user.role}</p>
-          </div>
+          <Button
+            variant="danger"
+            size="sm"
+            onClick={onLogout}
+            leftIcon={<LogOut className="w-3.5 h-3.5" />}
+            className="lg:hidden shrink-0"
+          >
+            Sign Out
+          </Button>
         </div>
 
-        <nav aria-label="Profile navigation" className="space-y-1">
+        <nav aria-label="Profile navigation" className="flex lg:flex-col gap-1.5 overflow-x-auto lg:overflow-visible pb-2 lg:pb-0 scrollbar-none">
           {[
             { id: 'overview' as const, label: 'Personal Profile', icon: UserIcon },
             { id: 'orders' as const, label: `My Orders (${orders.length})`, icon: ShoppingBag },
@@ -141,20 +152,20 @@ export const UserProfileView: React.FC<UserProfileViewProps> = ({
                 key={item.id}
                 type="button"
                 onClick={() => onSelectTab(item.id)}
-                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium transition-[background-color,color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow cursor-pointer ${
+                className={`flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-medium whitespace-nowrap shrink-0 transition-[background-color,color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow cursor-pointer ${
                   active
                     ? 'bg-yellow text-black font-semibold'
                     : 'text-text-soft hover:text-text hover:bg-elevated'
                 }`}
               >
-                <Icon className="w-4 h-4" />
+                <Icon className="w-4 h-4 shrink-0" />
                 <span>{item.label}</span>
               </button>
             );
           })}
         </nav>
 
-        <div className="pt-4 border-t border-border">
+        <div className="pt-4 border-t border-border hidden lg:block">
           <Button
             variant="danger"
             size="sm"
